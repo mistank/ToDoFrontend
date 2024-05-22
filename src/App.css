@@ -1,3 +1,39 @@
 body {
   background-color: #131517;
 }
+
+@keyframes fadeout {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Kod za fadein i fadeout animacije. Ovo se mora podesiti jer inace fadeout animacija ne moze da radi jer se element odmah uklanja iz DOM-a */
+.fade-enter {
+  opacity: 0;
+}
+
+.fade-enter-active {
+  opacity: 1;
+  transition: opacity 250ms;
+}
+
+.fade-exit {
+  opacity: 1;
+}
+
+.fade-exit-active {
+  opacity: 0;
+  transition: opacity 250ms;
+}
