@@ -8,6 +8,7 @@ export default function UserLog() {
   return (
     <div className="relative flex gap-5 justify-between w-auto">
       <button
+        className="notif-btn"
         onClick={() => {
           setNotificationModalIsOpen((notificationModalIsOpen) => !notificationModalIsOpen);
           if (userModalIsOpen) {
@@ -15,7 +16,7 @@ export default function UserLog() {
           }
         }}
       >
-        <img className="w-6 h-6" src={`${notificationModalIsOpen ? '/src/assets/icons/notification_bell_fill.png' : '/src/assets/icons/notification_bell.png'}`} alt="notifications" />
+        <img className="notif-bell w-6 h-6" src={`${notificationModalIsOpen ? '/src/assets/icons/notification_bell_fill.png' : '/src/assets/icons/notification_bell.png'}`} alt="notifications" />
       </button>
       <div className="flex flex-col h-auto relative">
         <button
@@ -25,16 +26,30 @@ export default function UserLog() {
               setNotificationModalIsOpen((notificationModalIsOpen) => !notificationModalIsOpen);
             }
           }}
-          className="flex flex-row log-btn items-center justify-between w-[auto]"
+          className="user-log-btn flex flex-row log-btn items-center justify-between w-[auto]"
         >
           <div className="flex flex-row items-center">
             <img className="w-6 h-6" src="/src/assets/icons/user.png" alt="user" />
             <img className={`w-4 h-4 transition-transform duration-500 ${userModalIsOpen ? 'rotate-180' : ''}`} src="/src/assets/icons/arrow-down.png" alt="" />
           </div>
         </button>
-        {userModalIsOpen && <UserModal isOpen={userModalIsOpen}></UserModal>}
+        {userModalIsOpen && (
+          <UserModal
+            isOpen={userModalIsOpen}
+            onClose={() => {
+              setUserModalIsOpen(false);
+            }}
+          ></UserModal>
+        )}
       </div>
-      {notificationModalIsOpen && <NotificationModal isOpen={notificationModalIsOpen}></NotificationModal>}
+      {notificationModalIsOpen && (
+        <NotificationModal
+          isOpen={notificationModalIsOpen}
+          onClose={() => {
+            setNotificationModalIsOpen(false);
+          }}
+        ></NotificationModal>
+      )}
     </div>
   );
 }
