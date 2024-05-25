@@ -1,14 +1,13 @@
 import './App.css';
-import Header from './components/Header/Header.jsx';
-import Mainboard from './components/Mainboard.jsx';
+import { useContext } from 'react';
+import UnloggedView from './components/UnloggedView/UnloggedView.jsx';
+import { AuthContext } from './components/AuthProvider.jsx';
+import LoggedInView from './components/LoggedView.jsx';
 
 function App() {
-  return (
-    <div className="flex flex-col">
-      <Header></Header>
-      <Mainboard className="flex-1"></Mainboard>
-    </div>
-  );
+  const { isAuthenticated } = useContext(AuthContext);
+
+  return isAuthenticated ? <LoggedInView isAuthenticated={isAuthenticated}></LoggedInView> : <UnloggedView></UnloggedView>;
 }
 
 export default App;

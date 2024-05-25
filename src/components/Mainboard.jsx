@@ -3,6 +3,7 @@ export default function Mainboard() {
   return (
     <main>
       <Sidebar></Sidebar>
+      {/* Glavni deo mainboarda */}
     </main>
   );
 }

@@ -6,7 +6,7 @@ export default function UserModal({ isOpen, onClose }) {
 
   useEffect(() => {
     function handleClickOutside(event) {
-      if (modalRef.current && !modalRef.current.contains(event.target) && !event.target.closest('user-log-btn')) {
+      if (modalRef.current && !modalRef.current.contains(event.target) && !event.target.closest('.user-log-btn')) {
         onClose();
       }
     }

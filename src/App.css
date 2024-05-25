@@ -19,6 +19,18 @@ body {
   }
 }
 
+@keyframes slowfloat {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
 /* Kod za fadein i fadeout animacije. Ovo se mora podesiti jer inace fadeout animacija ne moze da radi jer se element odmah uklanja iz DOM-a */
 .fade-enter {
   opacity: 0;
