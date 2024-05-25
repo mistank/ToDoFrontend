@@ -2,7 +2,7 @@
 /* eslint-disable react/no-unescaped-entities */
 import googleIcon from '../../assets/icons/google_icon.svg';
 
-export default function LoginForm({ setMode }) {
+export default function LoginForm({ setMode, googleLogin }) {
   return (
     <form className="flex flex-col space-y-4 text-white w-[80%] items-center">
       <h2 className="text-3xl font-bold mb-2 text-left w-[100%]">Login</h2>
@@ -26,7 +26,13 @@ export default function LoginForm({ setMode }) {
         <span className="px-2 text-[#4D4D4D]">Or</span>
         <hr style={{ borderColor: '#4D4D4D' }} className="flex-grow border-t" />
       </div>
-      <button className="p-2 text-white rounded-md w-[15%]">
+      <button
+        onClick={(event) => {
+          event.preventDefault();
+          googleLogin();
+        }}
+        className="p-2 text-white rounded-md w-[15%]"
+      >
         <img className="w-[100%]" src={googleIcon} alt="" />
       </button>
       <p className="text-center">

@@ -1,7 +1,7 @@
 import Header from './Header/Header.jsx';
 import Mainboard from './Mainboard.jsx';
 
-export default function LoggedInView() {
+export default function LoggedView() {
   return (
     <>
       <Header></Header>
