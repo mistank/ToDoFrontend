@@ -1,14 +1,16 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/no-unescaped-entities */
 import googleIcon from '../../assets/icons/google_icon.svg';
+import useGoogleLoginHook from '../hooks/useGoogleLogin.jsx';
 
-export default function LoginForm({ setMode, googleLogin }) {
+export default function LoginForm({ setMode }) {
+  const initiateGoogleLogin = useGoogleLoginHook();
   return (
     <form className="flex flex-col space-y-4 text-white w-[80%] items-center">
       <h2 className="text-3xl font-bold mb-2 text-left w-[100%]">Login</h2>
       <p className="text-left w-[100%] ">Please enter your credentials to login.</p>
-      <input type="text" placeholder="Username" className=" placeholder:text-white p-2 border rounded-md w-[100%] bg-transparent focus:outline-none" />
-      <input type="password" placeholder="Password" className="placeholder:text-white p-2 border rounded-md w-[100%] bg-transparent focus:outline-none" />
+      <input type="text" placeholder="Username" autoComplete="name" className=" placeholder:text-white p-2 border rounded-md w-[100%] bg-transparent focus:outline-none" />
+      <input type="password" placeholder="Password" autoComplete="email" className="placeholder:text-white p-2 border rounded-md w-[100%] bg-transparent focus:outline-none" />
       <div className="flex items-center w-[100%]">
         <input type="checkbox" id="remember-me" />
         <label htmlFor="remember-me" className="ml-2">
@@ -29,7 +31,7 @@ export default function LoginForm({ setMode, googleLogin }) {
       <button
         onClick={(event) => {
           event.preventDefault();
-          googleLogin();
+          initiateGoogleLogin();
         }}
         className="p-2 text-white rounded-md w-[15%]"
       >

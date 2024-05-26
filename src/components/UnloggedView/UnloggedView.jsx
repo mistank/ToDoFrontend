@@ -4,13 +4,13 @@ import LoginForm from './LoginForm.jsx';
 import ForgotPasswordForm from './ForgotPasswordForm.jsx';
 import SignUpForm from './SignupForm.jsx';
 
-export default function UnloggedView({ googleLogin }) {
+export default function UnloggedView() {
   const [mode, setMode] = useState('login');
 
   let form;
   switch (mode) {
     case 'login':
-      form = <LoginForm googleLogin={googleLogin} setMode={setMode} />;
+      form = <LoginForm setMode={setMode} />;
       break;
     case 'signup':
       form = <SignUpForm setMode={setMode} />;
@@ -19,7 +19,7 @@ export default function UnloggedView({ googleLogin }) {
       form = <ForgotPasswordForm setMode={setMode} />;
       break;
     default:
-      form = <LoginForm googleLogin={googleLogin} setMode={setMode} />;
+      form = <LoginForm setMode={setMode} />;
   }
 
   return (

@@ -1,4 +1,4 @@
-import Icons from './Icons.jsx';
+import Icons from './Icons';
 import { useState } from 'react';
 
 export default function Sidebar() {
