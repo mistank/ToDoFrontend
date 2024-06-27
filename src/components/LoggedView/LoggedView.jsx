@@ -1,9 +1,9 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Header from '../Header/Header.jsx';
-import Mainboard from './Mainboard.jsx';
-import { AuthContext } from '../AuthProvider.jsx';
+import { useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import Header from "./Header/Header.jsx";
+import Mainboard from "./Mainboard.jsx";
+import { AuthContext } from "../AuthProvider.jsx";
 
 export default function LoggedView() {
   const navigate = useNavigate();
@@ -11,7 +11,7 @@ export default function LoggedView() {
 
   useEffect(() => {
     if (!isAuthenticated) {
-      navigate('/login');
+      navigate("/login");
     }
   }, [isAuthenticated, navigate]);
 
