@@ -8,12 +8,14 @@ export default function LoginForm({ setMode }) {
   const initiateGoogleLogin = useGoogleLoginHook();
   const initiateRegularLogin = useRegularLogin();
 
-  const handleRegularLogin = (event) => {
+  const handleRegularLogin = () => {
     // Handle regular login logic here
-    console.log("Logging in");
-    event.preventDefault();
-    initiateRegularLogin();
+    const username = document.querySelector("input[type=text]").value;
+    const password = document.querySelector("input[type=password]").value;
+    initiateRegularLogin(username, password);
   };
+
+  console.log("local storage: ", localStorage.getItem("isAuthenticated"));
 
   return (
     <form className="flex w-[80%] flex-col items-center space-y-4 text-white">
@@ -40,8 +42,9 @@ export default function LoginForm({ setMode }) {
         </label>
       </div>
       <button
-        onClick={() => {
-          handleRegularLogin();
+        onClick={(event) => {
+          event.preventDefault();
+          handleRegularLogin(event);
         }}
         type="submit"
         className="w-[100%] rounded-md bg-blue-500 p-2 text-white"

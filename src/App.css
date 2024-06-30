@@ -49,3 +49,7 @@ body {
   opacity: 0;
   transition: opacity 250ms;
 }
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
+}

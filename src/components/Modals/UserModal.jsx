@@ -5,7 +5,7 @@ import useGoogleLogout from "../hooks/useGoogleLogout.jsx";
 
 export default function UserModal({ isOpen, onClose }) {
   const modalRef = useRef();
-  const { userInfo } = useContext(AuthContext);
+  const { userInfo, logout } = useContext(AuthContext);
   const initiateGoogleLogout = useGoogleLogout();
 
   // Close modal when clicked outside
@@ -36,6 +36,7 @@ export default function UserModal({ isOpen, onClose }) {
       initiateGoogleLogout();
     } else {
       // Handle regular logout logic here
+      logout();
     }
   };
   const handleEditProfile = () => {
@@ -51,12 +52,12 @@ export default function UserModal({ isOpen, onClose }) {
         transform: "scale(1)",
         boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.3)",
       }}
-      className="absolute right-0 top-[150%]  min-h-48 min-w-48 rounded-md bg-[#1E1F25] text-[#D8DCF0] "
+      className="absolute right-0 top-[150%] z-50  min-h-48 min-w-48 rounded-md bg-[#1E1F25] text-[#D8DCF0] "
     >
       <div className="p-4">
         <img
           className="mx-auto h-16 w-16 rounded-full object-cover"
-          src={`${userInfo.picture}`}
+          src="src/assets/icons/user.png"
           alt="Profile"
         />
         <h2 className="mt-2 text-center text-lg font-semibold">

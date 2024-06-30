@@ -5,9 +5,9 @@ export const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
   const [isAuthenticated, setIsAuthenticated] = useState(
-    localStorage.getItem("isAuthenticated") === "false",
+    localStorage.getItem("isAuthenticated") == "true",
   );
-  const [userInfo, setUserInfo] = useState(null);
+  const [userInfo, setUserInfo] = useState({});
 
   useEffect(() => {
     // Provera lokalnog skladišta za prethodno stanje autentifikacije
@@ -24,6 +24,7 @@ export function AuthProvider({ children }) {
     setIsAuthenticated(false);
     localStorage.setItem("isAuthenticated", "false");
     localStorage.removeItem("GoogleLogin");
+    setUserInfo(null);
   };
 
   return (
