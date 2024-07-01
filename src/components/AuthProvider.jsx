@@ -7,7 +7,12 @@ export function AuthProvider({ children }) {
   const [isAuthenticated, setIsAuthenticated] = useState(
     localStorage.getItem("isAuthenticated") == "true",
   );
-  const [userInfo, setUserInfo] = useState({});
+  const [userInfo, setUserInfo] = useState({
+    username: "",
+    email: "",
+    firstName: "",
+    lastName: "",
+  });
 
   useEffect(() => {
     // Provera lokalnog skladišta za prethodno stanje autentifikacije

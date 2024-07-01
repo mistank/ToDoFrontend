@@ -1,8 +1,9 @@
+/* eslint-disable react/prop-types */
 import { useState } from "react";
 import UserModal from "../../Modals/UserModal.jsx";
 import NotificationModal from "../../Modals/NotificationModal.jsx";
 // }
-export default function UserLog() {
+export default function UserLog({ setMode }) {
   const [userModalIsOpen, setUserModalIsOpen] = useState(false);
   const [notificationModalIsOpen, setNotificationModalIsOpen] = useState(false);
   return (
@@ -55,6 +56,7 @@ export default function UserLog() {
             onClose={() => {
               setUserModalIsOpen(false);
             }}
+            setMode={setMode}
           ></UserModal>
         )}
       </div>

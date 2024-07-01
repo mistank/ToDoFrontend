@@ -1,12 +1,10 @@
+/* eslint-disable react/prop-types */
 import Sidebar from "./Sidebar.jsx";
 import ProfileSettings from "./ProfileSettings/ProfileSettings.jsx";
 import Projects from "./Projects.jsx";
 import TaskView from "./TaskView.jsx";
-import { useState } from "react";
 
-export default function Mainboard() {
-  const [mode, setMode] = useState("profile-settings");
-
+export default function Mainboard({ mode, setMode }) {
   let form;
   switch (mode) {
     case "profile-settings":

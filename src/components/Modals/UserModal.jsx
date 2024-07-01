@@ -3,7 +3,7 @@ import { useContext, useEffect, useRef } from "react";
 import { AuthContext } from "../AuthProvider.jsx";
 import useGoogleLogout from "../hooks/useGoogleLogout.jsx";
 
-export default function UserModal({ isOpen, onClose }) {
+export default function UserModal({ isOpen, onClose, setMode }) {
   const modalRef = useRef();
   const { userInfo, logout } = useContext(AuthContext);
   const initiateGoogleLogout = useGoogleLogout();
@@ -39,9 +39,6 @@ export default function UserModal({ isOpen, onClose }) {
       logout();
     }
   };
-  const handleEditProfile = () => {
-    // Handle edit profile logic here
-  };
 
   return isOpen ? (
     <div
@@ -61,13 +58,13 @@ export default function UserModal({ isOpen, onClose }) {
           alt="Profile"
         />
         <h2 className="mt-2 text-center text-lg font-semibold">
-          {userInfo.family_name + " " + userInfo.given_name}
+          {userInfo.firstName + " " + userInfo.lastName}
         </h2>
         <p className="mt-1 text-center text-sm">{userInfo.email}</p>
       </div>
       <button
         className="w-full rounded px-4 py-2 text-[#D8DCF0]"
-        onClick={handleEditProfile}
+        onClick={() => setMode("profile-settings")}
       >
         Edit Profile
       </button>
