@@ -1,7 +1,8 @@
+/* eslint-disable react/prop-types */
 import Icons from "./Icons";
 import { useState } from "react";
 
-export default function Sidebar() {
+export default function Sidebar({ setMode }) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -30,8 +31,8 @@ export default function Sidebar() {
           />
         </button>
       </div>
-      <section className="flex h-[100vh] w-20 flex-col items-center justify-center gap-10 bg-[#1E1F25] xs:hidden">
-        <Icons></Icons>
+      <section className=" z-10 flex h-[100vh] w-20 flex-col items-center justify-center gap-10 bg-[#1E1F25] xs:hidden">
+        <Icons setMode={setMode}></Icons>
       </section>
     </>
   );

@@ -1,5 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.gradient-fade-bottom {
+  background: linear-gradient(to bottom, transparent, #1e1f25);
+  pointer-events: none; /* Ovo osigurava da gradient ne ometa interakciju sa elementima ispod njega. */
+}

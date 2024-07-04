@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { useState, useEffect, useContext } from "react";
@@ -76,43 +77,43 @@ export default function ProfileSettings({ setMode }) {
 
   return (
     <>
-      <div className="shadow-lgs mt-5 h-[80vh] w-[100%] rounded-lg bg-[#1E1F25] p-8 text-white">
-        <div className="mb-6 flex items-center justify-between">
-          <h2 className="text-3xl font-bold">Settings</h2>
-          <div>
-            <button
-              onClick={() => setMode("task-view")}
-              className="mr-4 rounded bg-gray-700 px-4 py-2 font-bold text-white hover:bg-gray-600"
-            >
-              Cancel
-            </button>
-            <button
-              className="rounded bg-[#5051F9] px-4 py-2 font-bold text-white hover:bg-[#6d6dfc]"
-              onClick={() => {
-                handleSave();
-              }}
-            >
-              Save
-            </button>
-          </div>
-        </div>
-        <div className="mb-4 flex space-x-4">
-          <button className="border-b-2 border-blue-600 px-4 py-2 text-white">
-            My details
+      {/* <div className="shadow-lgs mt-5 h-[80vh] w-[100%] rounded-lg bg-[#1E1F25] p-8 text-white"> */}
+      <div className="mb-6 flex items-center justify-between">
+        <h2 className="text-3xl font-bold">Settings</h2>
+        <div>
+          <button
+            onClick={() => setMode("task-view")}
+            className="mr-4 rounded bg-gray-700 px-4 py-2 font-bold text-white hover:bg-gray-600"
+          >
+            Cancel
           </button>
-          <button className="px-4 py-2 text-gray-400">Password</button>
+          <button
+            className="rounded bg-[#5051F9] px-4 py-2 font-bold text-white hover:bg-[#6d6dfc]"
+            onClick={() => {
+              handleSave();
+            }}
+          >
+            Save
+          </button>
         </div>
-        <Details
-          firstName={firstName}
-          lastName={lastName}
-          username={username}
-          email={email}
-          setFirstName={setFirstName}
-          setLastName={setLastName}
-          setUsername={setUsername}
-          setEmail={setEmail}
-        />
       </div>
+      <div className="mb-4 flex space-x-4">
+        <button className="border-b-2 border-[#5051F9] px-4 py-2 text-white">
+          My details
+        </button>
+        <button className="px-4 py-2 text-gray-400">Password</button>
+      </div>
+      <Details
+        firstName={firstName}
+        lastName={lastName}
+        username={username}
+        email={email}
+        setFirstName={setFirstName}
+        setLastName={setLastName}
+        setUsername={setUsername}
+        setEmail={setEmail}
+      />
+      {/* </div> */}
     </>
   );
 }
