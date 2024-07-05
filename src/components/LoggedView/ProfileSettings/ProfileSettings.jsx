@@ -63,7 +63,7 @@ export default function ProfileSettings({ setMode }) {
         setUsername(response.data.username);
       } catch (error) {
         if (error.response && error.response.status === 401) {
-          alert("You are not authorized to view this page. Please log in.");
+          alert("You are not authorized to view this page. Please log in");
           logout();
         }
       }
