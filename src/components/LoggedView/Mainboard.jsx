@@ -26,6 +26,7 @@ export default function Mainboard({ mode, setMode }) {
     <main className="flex h-[100vh] w-[100vw] bg-[#131517]">
       <Sidebar setMode={setMode} />
       <div className="flex h-[100%] w-[100%] flex-1 flex-col items-center justify-start pt-[7%] ">
+        {/*Treba da vratis nazad p-8 u div dole*/}
         <div className="scrollbar shadow-lgs mt-5 h-[80vh] w-[90vw] overflow-x-auto overflow-y-clip rounded-lg bg-[#1E1F25] p-8 text-white">
           {form}
         </div>

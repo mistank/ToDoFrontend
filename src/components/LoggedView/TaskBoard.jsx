@@ -13,20 +13,28 @@ export default function TaskBoard() {
 
   useEffect(() => {
     axios
+      .get(`${apiURL}/statuses_from_project/${projectId}`, {
+        headers: {
+          Authorization: `Bearer ${getAccessToken()}`,
+        },
+      })
+      .then((response) => {
+        setStatuses(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []); // Uklonjena je zavisnost od isStatusesLoaded jer se koristi samo jednom za inicijalno učitavanje
+
+  useEffect(() => {
+    axios
       .get(`${apiURL}/tasks_from_project/${projectId}`, {
         headers: {
           Authorization: `Bearer ${getAccessToken()}`,
         },
       })
       .then((response) => {
-        console.log("Tasks: " + response.data);
         setTasks(response.data);
-        // Izvlačenje svih različitih statusa iz taskova
-        const uniqueStatuses = [
-          ...new Set(response.data.map((task) => task.status.name)),
-        ];
-        console.log("Unique statuses: " + uniqueStatuses);
-        setStatuses(uniqueStatuses);
       })
       .catch((error) => {
         console.error(error);
@@ -34,12 +42,17 @@ export default function TaskBoard() {
   }, []); // Uklonjena je zavisnost od isTasksLoaded jer se koristi samo jednom za inicijalno učitavanje
 
   return (
-    <div className="flex h-[100%] gap-4 text-white">
+    <div className="flex h-[100%] flex-row gap-4 p-8 text-white">
       {statuses.map((status) => (
         <Column
-          key={status}
-          title={status}
-          tasks={tasks.filter((task) => task.status.name === status)}
+          key={status.id}
+          status={status}
+          tasks={
+            tasks.length != 0
+              ? tasks.filter((task) => task.status.name === status.name)
+              : []
+          }
+          setTasks={setTasks}
         />
       ))}
       <EmptyColumn />

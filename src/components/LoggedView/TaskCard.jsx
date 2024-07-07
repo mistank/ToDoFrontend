@@ -1,7 +1,16 @@
 /* eslint-disable react/prop-types */
 export default function TaskCard({ task }) {
+  const handleDragStart = (e) => {
+    e.dataTransfer.setData("task", JSON.stringify(task));
+    e.dataTransfer.effectAllowed = "move";
+  };
+
   return (
-    <div draggable className="flex flex-col gap-2 rounded-lg bg-gray-700 p-4">
+    <div
+      draggable
+      className="flex flex-col gap-2 rounded-lg bg-gray-700 p-4"
+      onDragStart={handleDragStart}
+    >
       <div className="flex justify-between">
         <span className={"rounded px-2 py-1 text-sm font-semibold"}>
           {task.tag}

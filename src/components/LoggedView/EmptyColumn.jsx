@@ -16,19 +16,17 @@ export default function EmptyColumn() {
   };
 
   return (
-    <div className="relative mr-4 min-w-[20%] flex-1 rounded-lg">
+    <div className="relative flex min-w-[25%] max-w-[30%] rounded-lg">
       <div
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
-        className="flex h-[100%] cursor-pointer flex-col items-center justify-center gap-4 rounded-lg hover:border-2 hover:border-gray-400 hover:border-opacity-50"
+        className="flex h-[100%] w-full cursor-pointer flex-col items-center justify-center rounded-lg hover:border-2 hover:border-gray-400 hover:border-opacity-50"
       >
-        <div className="rounded-lg align-middle">
-          <img
-            src={add_cross}
-            className="w-24 "
-            style={isHovered ? hoverStyle : defaultStyle}
-          />
-        </div>
+        <img
+          src={add_cross}
+          className="w-24 "
+          style={isHovered ? hoverStyle : defaultStyle}
+        />
       </div>
     </div>
   );
