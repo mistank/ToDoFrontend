@@ -1,7 +1,8 @@
 /* eslint-disable react/prop-types */
 export default function TaskCard({ task }) {
   const handleDragStart = (e) => {
-    e.dataTransfer.setData("task", JSON.stringify(task));
+    const taskJson = JSON.stringify(task); // Convert the task object to a JSON string
+    e.dataTransfer.setData("task", taskJson);
     e.dataTransfer.effectAllowed = "move";
   };
 

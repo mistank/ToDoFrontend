@@ -1,17 +1,52 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import TaskCard from "./TaskCard.jsx";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import add_cross from "../../assets/icons/add_plus.svg";
 import axios from "axios";
 import { getAccessToken } from "../../utils/access_token.js";
+import delete_column from "../../assets/icons/delete_column.svg";
 
 const apiURL = "http://localhost:8000";
 
-export default function Column({ status, tasks, setTasks }) {
+export default function Column({
+  status,
+  tasks,
+  setTasks,
+  statuses,
+  setStatuses,
+  projectId,
+}) {
   const [isDragOver, setIsDragOver] = useState(false);
+  const [isTasksEmpty, setIsTasksEmpty] = useState(false); // State za praćenje da li su taskovi prazni
+
+  async function deleteColumn() {
+    console.log("Deleting column with id:", status.id);
+    try {
+      const response = await axios.delete(
+        `${apiURL}/delete_project_status/${projectId}`,
+        { data: status }, // Axios DELETE zahtevi zahtevaju da se telo zahteva šalje kao `data` svojstvo
+        {
+          headers: {
+            Authorization: `Bearer ${getAccessToken()}`,
+          },
+        },
+      );
+      setStatuses(statuses.filter((s) => s.id !== status.id));
+    } catch (error) {
+      console.error("Failed to delete column:", error);
+    }
+  }
+
+  useEffect(() => {
+    if (tasks.length === 0) {
+      setIsTasksEmpty(true);
+    } else {
+      setIsTasksEmpty(false);
+    }
+  }, [tasks]);
 
   async function updateTaskStatus(taskId, newStatus) {
-    console.log("Updating task status to:", newStatus);
     try {
       const response = await axios.patch(
         `${apiURL}/change_task_status/${taskId}`,
@@ -38,7 +73,7 @@ export default function Column({ status, tasks, setTasks }) {
     setIsDragOver(true);
   };
 
-  const handleDragLeave = (e) => {
+  const handleDragLeave = () => {
     setIsDragOver(false);
   };
 
@@ -63,9 +98,16 @@ export default function Column({ status, tasks, setTasks }) {
 
   return (
     <div className="h-[100%] min-w-[20%] max-w-[25%] flex-1 rounded-lg">
-      <h2 className="mb-4 text-xl font-bold">
-        {status.name} ({tasks.length})
-      </h2>
+      <div className="mb-4 flex justify-between rounded-lg bg-gray-500 p-4 align-middle">
+        <h2 className="text-xl font-bold">
+          {status.name} ({tasks.length})
+        </h2>
+        {isTasksEmpty ? (
+          <button className="w-6" onClick={() => deleteColumn()}>
+            <img src={delete_column} />
+          </button>
+        ) : null}
+      </div>
       <div
         className="no-scrollbar flex h-[80vh] flex-col gap-4 overflow-scroll pb-32"
         onDragOver={handleDragOver}

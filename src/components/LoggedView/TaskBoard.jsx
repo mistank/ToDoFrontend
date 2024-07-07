@@ -42,11 +42,14 @@ export default function TaskBoard() {
   }, []); // Uklonjena je zavisnost od isTasksLoaded jer se koristi samo jednom za inicijalno učitavanje
 
   return (
-    <div className="flex h-[100%] flex-row gap-4 p-8 text-white">
+    <div className="flex h-[100%] flex-row gap-6 text-white">
       {statuses.map((status) => (
         <Column
           key={status.id}
           status={status}
+          statuses={statuses}
+          setStatuses={setStatuses}
+          projectId={projectId}
           tasks={
             tasks.length != 0
               ? tasks.filter((task) => task.status.name === status.name)
@@ -55,7 +58,11 @@ export default function TaskBoard() {
           setTasks={setTasks}
         />
       ))}
-      <EmptyColumn />
+      <EmptyColumn
+        statuses={statuses}
+        setStatuses={setStatuses}
+        projectId={projectId}
+      />
     </div>
   );
 }
