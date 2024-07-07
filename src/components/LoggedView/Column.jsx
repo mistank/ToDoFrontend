@@ -25,11 +25,13 @@ export default function Column({ title, tasks, onTaskDrop }) {
     setIsDragOver(false); // Resetujemo stanje kada se zadatak ispusti
   };
 
+  console.log("Tasks: " + tasks);
+
   return (
-    <div className="flex-1 rounded-lg">
+    <div className="h-[100%] min-w-[20%] flex-1 rounded-lg">
       <h2 className="mb-4 text-xl font-bold">{title}</h2>
       <div
-        className="flex h-[100%] flex-col gap-4"
+        className="no-scrollbar flex h-[80vh] flex-col gap-4 overflow-scroll pb-32"
         onDragOver={handleDragOver}
         onDragEnter={handleDragEnter}
         onDragLeave={handleDragLeave}

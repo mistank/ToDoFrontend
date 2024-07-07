@@ -1,100 +1,48 @@
+import { useEffect, useState } from "react";
+import axios from "axios";
 import Column from "./Column";
+import EmptyColumn from "./EmptyColumn";
+import { getAccessToken } from "../../utils/access_token.js";
 
-const backlogTasks = [
-  {
-    id: 1,
-    tag: "Design",
-    title: "Create styleguide foundation",
-    description: "Create content for peceland App",
-    date: "Aug 20, 2021",
-    avatars: ["/path/to/avatar1.png", "/path/to/avatar2.png"],
-  },
-  // Dodaj još taskova...
-];
+const apiURL = "http://localhost:8000";
+const projectId = 1;
 
-const todoTasks = [
-  {
-    id: 2,
-    tag: "Research",
-    title: "Auditing information architecture",
-    description: "Create content for peceland App",
-    date: "Aug 20, 2021",
-    avatars: ["/path/to/avatar3.png"],
-  },
-  // Dodaj još taskova...
-];
-
-const inProgressTasks = [
-  {
-    id: 3,
-    tag: "Planning",
-    title: "Listing deliverables checklist",
-    description: "Create content for peceland App",
-    date: "Sep 20, 2021",
-    avatars: ["/path/to/avatar4.png"],
-  },
-  // Dodaj još taskova...
-];
-
-const reviewTasks = [
-  {
-    id: 4,
-    tag: "Content",
-    title: "Design System",
-    description: "Create content for peceland App",
-    date: "Aug 16, 2021",
-    avatars: ["/path/to/avatar5.png"],
-  },
-  {
-    id: 5,
-    tag: "Content",
-    title: "Design System",
-    description: "Create content for peceland App",
-    date: "Aug 16, 2021",
-    avatars: ["/path/to/avatar6"],
-  },
-  {
-    id: 5,
-    tag: "Content",
-    title: "Design System",
-    description: "Create content for peceland App",
-    date: "Aug 16, 2021",
-    avatars: ["/path/to/avatar6"],
-  },
-  {
-    id: 5,
-    tag: "Content",
-    title: "Design System",
-    description: "Create content for peceland App",
-    date: "Aug 16, 2021",
-    avatars: ["/path/to/avatar6"],
-  },
-  {
-    id: 5,
-    tag: "Content",
-    title: "Design System",
-    description: "Create content for peceland App",
-    date: "Aug 16, 2021",
-    avatars: ["/path/to/avatar6"],
-  },
-  {
-    id: 5,
-    tag: "Content",
-    title: "Design System",
-    description: "Create content for peceland App",
-    date: "Aug 16, 2021",
-    avatars: ["/path/to/avatar6"],
-  },
-
-  // Dodaj još taskova...
-];
 export default function TaskBoard() {
+  const [tasks, setTasks] = useState([]);
+  const [statuses, setStatuses] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get(`${apiURL}/tasks_from_project/${projectId}`, {
+        headers: {
+          Authorization: `Bearer ${getAccessToken()}`,
+        },
+      })
+      .then((response) => {
+        console.log("Tasks: " + response.data);
+        setTasks(response.data);
+        // Izvlačenje svih različitih statusa iz taskova
+        const uniqueStatuses = [
+          ...new Set(response.data.map((task) => task.status.name)),
+        ];
+        console.log("Unique statuses: " + uniqueStatuses);
+        setStatuses(uniqueStatuses);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []); // Uklonjena je zavisnost od isTasksLoaded jer se koristi samo jednom za inicijalno učitavanje
+
   return (
-    <div className="flex gap-4 text-white">
-      <Column title="Backlog" tasks={backlogTasks} />
-      <Column title="To Do" tasks={todoTasks} />
-      <Column title="In Progress" tasks={inProgressTasks} />
-      <Column title="Review" tasks={reviewTasks} />
+    <div className="flex h-[100%] gap-4 text-white">
+      {statuses.map((status) => (
+        <Column
+          key={status}
+          title={status}
+          tasks={tasks.filter((task) => task.status.name === status)}
+        />
+      ))}
+      <EmptyColumn />
     </div>
   );
 }

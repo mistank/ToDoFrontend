@@ -7,11 +7,11 @@ export default function TaskCard({ task }) {
           {task.tag}
         </span>
       </div>
-      <h3 className="text-lg font-bold">{task.title}</h3>
+      <h3 className="text-lg font-bold">{task.name}</h3>
       <p className="text-gray-400">{task.description}</p>
       <div className="flex items-center justify-between">
-        <span>{task.date}</span>
-        <div className="flex -space-x-2">
+        <span>{task.deadline}</span>
+        {/* <div className="flex -space-x-2">
           {task.avatars.map((avatar, index) => (
             <img
               key={index}
@@ -20,7 +20,7 @@ export default function TaskCard({ task }) {
               className="h-6 w-6 rounded-full border-2 border-gray-900"
             />
           ))}
-        </div>
+        </div> */}
       </div>
     </div>
   );

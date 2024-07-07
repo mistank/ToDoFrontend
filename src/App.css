@@ -31,6 +31,24 @@ body {
   }
 }
 
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(90deg);
+  }
+}
+
+@keyframes rotate2 {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(-90deg);
+  }
+}
+
 /* Kod za fadein i fadeout animacije. Ovo se mora podesiti jer inace fadeout animacija ne moze da radi jer se element odmah uklanja iz DOM-a */
 .fade-enter {
   opacity: 0;
@@ -52,4 +70,12 @@ body {
 
 .no-scrollbar::-webkit-scrollbar {
   display: none; /* Safari and Chrome */
+}
+
+.scrollbar::-webkit-scrollbar {
+  background: #1e1f25;
+}
+.scrollbar::-webkit-scrollbar-thumb {
+  background: #2f3037;
+  border-radius: 10px;
 }

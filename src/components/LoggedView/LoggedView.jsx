@@ -8,7 +8,7 @@ import { AuthContext } from "../AuthProvider.jsx";
 export default function LoggedView() {
   const navigate = useNavigate();
   const { isAuthenticated } = useContext(AuthContext);
-  const [mode, setMode] = useState("profile-settings");
+  const [mode, setMode] = useState("task-view");
 
   useEffect(() => {
     if (!isAuthenticated) {
