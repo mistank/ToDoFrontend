@@ -31,6 +31,44 @@ export default function Column({
     taskCategory_id: 1,
   });
 
+  async function deleteTask(taskId) {
+    console.log("Deleting task with id:", taskId);
+    try {
+      const response = await axios.delete(`${apiURL}/tasks/${taskId}`, {
+        headers: {
+          Authorization: `Bearer ${getAccessToken()}`,
+        },
+      });
+      setTasks(tasks.filter((t) => t.id !== taskId));
+    } catch (error) {
+      console.error("Failed to delete task:", error);
+    }
+  }
+
+  async function editTask(task) {
+    try {
+      const response = await axios.put(
+        `${apiURL}/tasks/${task.id}`,
+        {
+          name: task.name,
+          description: task.description,
+          deadline: task.deadline,
+          project_id: task.project.id,
+          taskCategory_id: task.taskCategory.id,
+          status_id: task.status.id,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${getAccessToken()}`,
+          },
+        },
+      );
+      setTasks(tasks.map((t) => (t.id === task.id ? response.data : t)));
+    } catch (error) {
+      console.error("Failed to edit task:", error);
+    }
+  }
+
   async function deleteColumn() {
     console.log("Deleting column with id:", status.id);
     try {
@@ -50,12 +88,12 @@ export default function Column({
   }
 
   useEffect(() => {
-    if (tasks.length === 0) {
+    if (columnTasks.length === 0) {
       setIsTasksEmpty(true);
     } else {
       setIsTasksEmpty(false);
     }
-  }, [tasks]);
+  }, [columnTasks]);
 
   async function updateTaskStatus(taskId, newStatus) {
     try {
@@ -142,7 +180,6 @@ export default function Column({
     document.body.style.overflow = "hidden"; // Sprečava skrolovanje dok je popup aktivan
   };
 
-  // Funkcija za skrivanje popup forme
   const hidePopupForm = () => {
     setIsPopupVisible(false);
     document.body.style.overflow = "auto"; // Dozvoljava skrolovanje kada se popup zatvori
@@ -168,7 +205,13 @@ export default function Column({
         onDrop={handleDrop}
       >
         {columnTasks.map((task) => (
-          <TaskCard key={task.id} task={task} />
+          <TaskCard
+            key={task.id}
+            task={task}
+            deleteTask={deleteTask}
+            editTask={editTask}
+            tasks={tasks}
+          />
         ))}
         {!isDragOver && (
           <button

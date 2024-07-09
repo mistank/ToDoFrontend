@@ -79,3 +79,60 @@ body {
   background: #2f3037;
   border-radius: 10px;
 }
+
+/* Prilagođavanje osnovne boje pickera */
+.react-datepicker {
+  background-color: #2a2e35; /* Tamno siva */
+  color: white; /* Bela boja teksta */
+  border: none;
+  border-radius: 10px;
+}
+
+/* Prilagođavanje boje za selektovani datum */
+.react-datepicker__day--selected {
+  background-color: #5051f9 !important; /* Plava */
+  color: white !important; /* Bela boja teksta */
+}
+
+.react-datepicker__day--enabled {
+  background-color: #5051f9 !important; /* Plava */
+  color: white !important; /* Bela boja teksta */
+}
+
+.react-datepicker__day {
+  color: #9ca3af !important; /* Bela boja teksta */
+}
+
+.react-datepicker__day--disabled {
+  color: black !important; /* Bela boja teksta */
+}
+/* Opciono: Prilagođavanje boje za dan na koji se prelazi mišem */
+.react-datepicker__day:hover {
+  background-color: #657786 !important; /* Svetlo siva */
+}
+
+/* Stilizovanje header-a date pickera */
+.react-datepicker__header {
+  background-color: #2a2e35; /* Tamno siva */
+  border-bottom: none; /* Uklanjanje donje linije ako postoji */
+}
+
+/* Stilizovanje teksta trenutnog meseca */
+.react-datepicker__current-month {
+  color: white; /* Bela boja teksta */
+}
+
+.react-datepicker__day-name {
+  color: #9ca3af; /* Svetlo siva */
+}
+
+/* Stilizovanje navigacionih dugmadi */
+.react-datepicker__navigation {
+  top: 20px; /* Primer prilagođavanja pozicije */
+  color: white; /* Bela boja ikonica */
+}
+
+/* Stilizovanje navigacionih dugmadi kada se prelazi mišem */
+.react-datepicker__navigation:hover {
+  color: #5051f9; /* Plava */
+}

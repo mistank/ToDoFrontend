@@ -11,17 +11,35 @@ import "../../index.css";
 
 const apiURL = "http://localhost:8000";
 
-export default function CreateTaskPopup({
+export default function EditTaskPopup({
+  task,
   onClose,
-  addTask,
-  setNewTask,
   newTask,
   tasks,
+  editTask,
 }) {
-  const [newTaskDescription, setNewTaskDescription] = useState("");
-  const [newTaskDeadline, setNewTaskDeadline] = useState("");
-  const [newTaskCategory, setNewTaskCategory] = useState(1);
+  const [newTaskName, setNewTaskName] = useState(task.name);
+  const [newTaskDescription, setNewTaskDescription] = useState(
+    task.description,
+  );
+  const [newTaskDeadline, setNewTaskDeadline] = useState(
+    new Date(task.deadline),
+  );
+  const [newTaskCategory, setNewTaskCategory] = useState(task.taskCategory);
   const [categories, setCategories] = useState([]);
+
+  function handleSave() {
+    if (tasks.some((task) => task.name === newTask)) {
+      return;
+    }
+    task.name = newTaskName;
+    task.description = newTaskDescription;
+    task.deadline = new Date(newTaskDeadline);
+    task.taskCategory = newTaskCategory;
+    console.log("Task edited:", task);
+    editTask(task);
+    onClose();
+  }
 
   useEffect(() => {
     async function fetchCategories() {
@@ -45,27 +63,34 @@ export default function CreateTaskPopup({
       <div className="w-[90vw] max-w-md rounded-lg bg-[#1E1F25] p-8 text-white shadow-2xl">
         <h2 className="mb-4 text-lg font-semibold">Add new Task</h2>
         <input
+          value={newTaskName}
           type="text"
           placeholder="Task name"
           className="mb-4 w-full rounded-lg bg-[#131517] p-2 focus:outline-none"
-          onChange={(e) => setNewTask(e.target.value)}
+          onChange={(e) => {
+            setNewTaskName(e.target.value);
+          }}
         />
         {tasks.some((task) => task.name === newTask) && (
           <p className="mb-4 text-[#D8000C]">Task already exists</p>
         )}
         <textarea
+          value={newTaskDescription}
           placeholder="Task description"
-          onChange={(e) => setNewTaskDescription(e.target.value)}
+          onChange={(e) => {
+            setNewTaskDescription(e.target.value);
+          }}
           className="mb-4 max-h-48 w-full rounded-lg bg-[#131517] p-2 focus:outline-none"
           rows="3" // Adjust the number of rows as needed
         />
         <Select
-          value={categories.find(
-            (category) => category.value === newTaskCategory,
-          )}
-          onChange={(selectedOption) =>
-            setNewTaskCategory(selectedOption.value)
-          }
+          value={{
+            value: newTaskCategory,
+            label: newTaskCategory.name,
+          }}
+          onChange={(selectedOption) => {
+            setNewTaskCategory(selectedOption.value);
+          }}
           options={categories.map((category) => ({
             value: category,
             label: category.name,
@@ -103,15 +128,12 @@ export default function CreateTaskPopup({
             }),
           }}
         />
-        {/* <input
-            type="date"
-            placeholder="Task deadline"
-            onChange={(e) => setNewTaskDeadline(e.target.value)}
-            className="mb-4 w-full rounded-lg bg-[#131517] p-2  focus:outline-none"
-          /> */}
+
         <DatePicker
           selected={newTaskDeadline}
-          onChange={(date) => setNewTaskDeadline(date)}
+          onChange={(date) => {
+            setNewTaskDeadline(date);
+          }}
           className="mb-4 w-[100%] rounded-lg bg-[#131517] p-2 text-white focus:outline-none"
           placeholderText="Task deadline"
           calendarClassName=""
@@ -119,23 +141,10 @@ export default function CreateTaskPopup({
         />
         <div>
           <button
-            onClick={() => {
-              if (tasks.some((task) => task.name === newTask)) {
-                return;
-              }
-              console.log("Task deadline:", newTaskDeadline);
-              addTask(
-                newTask,
-                newTaskDescription,
-                newTaskDeadline,
-                newTaskCategory,
-              );
-              setNewTask("");
-              onClose();
-            }}
+            onClick={handleSave}
             className="rounded-lg bg-[#5051F9] px-4 py-2 hover:bg-[#4646f8] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
           >
-            Add Task
+            Save
           </button>
           <button
             onClick={onClose}
