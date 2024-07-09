@@ -1,5 +1,8 @@
 /* eslint-disable react/prop-types */
-export default function PopupForm({
+
+// bg-transparent border border-white border-solid rounded-3xl backdrop-filter backdrop-blur-md bg-opacity-10
+
+export default function CreateStatusPopup({
   onClose,
   addColumn,
   setNewStatus,
@@ -7,8 +10,8 @@ export default function PopupForm({
   statuses,
 }) {
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="w-[90vw] max-w-md rounded-lg bg-[#1E1F25] p-8 text-white shadow-lg">
+    <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 backdrop-blur-sm backdrop-filter">
+      <div className="w-[90vw] max-w-md rounded-lg bg-[#1E1F25] p-8 text-white shadow-2xl">
         <h2 className="mb-4 text-lg font-semibold">Add new Status</h2>
         <input
           type="text"

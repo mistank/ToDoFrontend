@@ -1,10 +1,10 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
-import PopupForm from "./PopupForm.jsx";
 import add_cross from "../../assets/icons/add_plus.svg";
 import "../../App.css";
 import axios from "axios";
 import { getAccessToken } from "../../utils/access_token.js";
+import CreateStatusPopup from "./CreateStatusPopup.jsx";
 
 const apiURL = "http://localhost:8000";
 
@@ -57,7 +57,7 @@ export default function EmptyColumn({ projectId, statuses, setStatuses }) {
 
   return (
     <>
-      <div className="relative flex min-w-[25%] max-w-[30%] rounded-lg pr-8">
+      <div className="flex min-w-[25%] max-w-[30%] rounded-lg pr-8">
         <button
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
@@ -66,13 +66,13 @@ export default function EmptyColumn({ projectId, statuses, setStatuses }) {
         >
           <img
             src={add_cross}
-            className="w-24 "
+            className="w-24"
             style={isHovered ? hoverStyle : defaultStyle}
           />
         </button>
       </div>
       {isPopupVisible && (
-        <PopupForm
+        <CreateStatusPopup
           newStatus={newStatus}
           statuses={statuses}
           addColumn={addColumn}

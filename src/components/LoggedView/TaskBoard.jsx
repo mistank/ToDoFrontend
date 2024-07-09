@@ -50,11 +50,12 @@ export default function TaskBoard() {
           statuses={statuses}
           setStatuses={setStatuses}
           projectId={projectId}
-          tasks={
+          columnTasks={
             tasks.length != 0
               ? tasks.filter((task) => task.status.name === status.name)
               : []
           }
+          tasks={tasks}
           setTasks={setTasks}
         />
       ))}

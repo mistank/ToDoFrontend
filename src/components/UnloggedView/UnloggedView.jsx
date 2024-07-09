@@ -1,21 +1,21 @@
 /* eslint-disable react/prop-types */
-import { useState } from 'react';
-import LoginForm from './LoginForm.jsx';
-import ForgotPasswordForm from './ForgotPasswordForm.jsx';
-import SignUpForm from './SignupForm.jsx';
+import { useState } from "react";
+import LoginForm from "./LoginForm.jsx";
+import ForgotPasswordForm from "./ForgotPasswordForm.jsx";
+import SignUpForm from "./SignupForm.jsx";
 
 export default function UnloggedView() {
-  const [mode, setMode] = useState('login');
+  const [mode, setMode] = useState("login");
 
   let form;
   switch (mode) {
-    case 'login':
+    case "login":
       form = <LoginForm setMode={setMode} />;
       break;
-    case 'signup':
+    case "signup":
       form = <SignUpForm setMode={setMode} />;
       break;
-    case 'forgot-pass':
+    case "forgot-pass":
       form = <ForgotPasswordForm setMode={setMode} />;
       break;
     default:
@@ -23,15 +23,29 @@ export default function UnloggedView() {
   }
 
   return (
-    <main className="flex items-center justify-center h-[100vh] bg-[#131517]">
-      <div style={{ boxShadow: '0px 0px 30px rgba(0, 0, 0, 0.3)' }} className="relative w-[30%] xs:w-2/3 sm:w-3/4 md:w-1/2 lg:w-1/3 xl:w-1/4 h-[80vh] flex items-center justify-center">
-        <div className="z-0 absolute top-0 left-0" style={{ animation: 'slowfloat 5s ease-in-out infinite' }}>
-          <div className="transform translate-x-[-30%] translate-y-[-30%] w-48 h-48 bg-[#5051F9] rounded-full"></div>
+    <main className="flex h-[100vh] items-center justify-center bg-[#131517]">
+      <div
+        style={{ boxShadow: "0px 0px 30px rgba(0, 0, 0, 0.3)" }}
+        className="relative flex h-[80vh] w-[30%] items-center justify-center xs:w-2/3 sm:w-3/4 md:w-1/2 lg:w-1/3 xl:w-1/4"
+      >
+        <div
+          className="absolute left-0 top-0 z-0"
+          style={{ animation: "slowfloat 5s ease-in-out infinite" }}
+        >
+          <div className="h-48 w-48 translate-x-[-30%] translate-y-[-30%] transform rounded-full bg-[#5051F9]"></div>
         </div>
-        <div className="z-0 absolute bottom-0 right-0" style={{ animation: 'slowfloat 5s ease-in-out infinite', animationDelay: '2s' }}>
-          <div className="transform translate-x-[30%] translate-y-[40%] w-48 h-48 bg-[#5051F9] rounded-full"></div>
+        <div
+          className="absolute bottom-0 right-0 z-0"
+          style={{
+            animation: "slowfloat 5s ease-in-out infinite",
+            animationDelay: "2s",
+          }}
+        >
+          <div className="h-48 w-48 translate-x-[30%] translate-y-[40%] transform rounded-full bg-[#5051F9]"></div>
         </div>
-        <div className="w-[100%] h-[80vh] bg-transparent border border-white border-solid rounded-3xl backdrop-filter backdrop-blur-md bg-opacity-10 flex items-center justify-center">{form}</div>
+        <div className="flex h-[80vh] w-[100%] items-center justify-center rounded-3xl border border-solid border-white bg-transparent bg-opacity-10 backdrop-blur-md backdrop-filter">
+          {form}
+        </div>
       </div>
     </main>
   );
