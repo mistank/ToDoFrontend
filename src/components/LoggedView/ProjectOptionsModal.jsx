@@ -17,19 +17,18 @@ export default function TaskOptionsModal({
   onClose,
   editProject,
   deleteProject,
+  setEditProjectPopupVisible,
+  editProjectPopupVisible,
 }) {
   const modalRef = useRef();
-  const [editProjectPopupVisible, setEditProjectPopupVisible] = useState(false);
-  const [deleteProjectPopupVisible, setDeleteProjectPopupVisible] =
-    useState(false);
 
   useEffect(() => {
     function handleClickOutside(event) {
       if (
-        (modalRef.current &&
-          !modalRef.current.contains(event.target) &&
-          !editProjectPopupVisible) ||
-        event.target.closest(".three-dots-button")
+        modalRef.current &&
+        !modalRef.current.contains(event.target) &&
+        !editProjectPopupVisible &&
+        event.target.className != "three-dots-button"
       ) {
         onClose();
       }
@@ -51,7 +50,7 @@ export default function TaskOptionsModal({
           transition: "transform 0.3s ease-out",
           boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.3)",
         }}
-        className="absolute w-56 rounded-lg bg-gray-700"
+        className="absolute right-[16px] top-[40px] w-56 rounded-lg bg-gray-700"
       >
         <div className="flex flex-col rounded-lg p-4">
           <span className="mb-2 pl-2 text-xs text-gray-400">
@@ -59,11 +58,12 @@ export default function TaskOptionsModal({
           </span>
           <button
             className="flex items-center justify-start gap-5 rounded-lg p-2 text-left hover:bg-gray-600 hover:bg-opacity-50"
-            onClick={() =>
-              setDeleteProjectPopupVisible(
-                (deleteProjectPopupVisible) => !deleteProjectPopupVisible,
-              )
-            }
+            onClick={() => {
+              deleteProject(project.id).then(() =>
+                setProjects(projects.filter((p) => p.id !== project.id)),
+              );
+              onClose();
+            }}
           >
             <img className="h-5 w-5" src={delete_icon} />
             Delete
@@ -92,18 +92,6 @@ export default function TaskOptionsModal({
           </button>
         </div>
       </div>
-      {editProjectPopupVisible && (
-        <EditProjectPopup
-          project={project}
-          projects={projects}
-          setProjects={setProjects}
-          onClose={() => {
-            setEditProjectPopupVisible(false);
-            setProjectOptionsVisible(false);
-          }}
-          editProject={editProject}
-        />
-      )}
     </>
   );
 }

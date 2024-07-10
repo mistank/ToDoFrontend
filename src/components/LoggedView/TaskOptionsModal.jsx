@@ -52,9 +52,9 @@ export default function TaskOptionsModal({
           <button
             className="flex items-center justify-start gap-5 rounded-lg p-2 text-left hover:bg-gray-600 hover:bg-opacity-50"
             onClick={() => {
-              setDeleteTaskPopupVisible(
-                (deleteTaskPopupVisible) => !deleteTaskPopupVisible,
-              );
+              deleteTask(task.id);
+              setTasks(tasks.filter((t) => t.id !== task.id));
+              onClose();
             }}
           >
             <img className="h-5 w-5" src={delete_icon} />

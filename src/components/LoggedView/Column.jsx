@@ -229,6 +229,15 @@ export default function Column({
           </div>
         )}
       </div>
+      {isPopupVisible && (
+        <CreateTaskPopup
+          onClose={hidePopupForm}
+          addTask={addTask}
+          setNewTask={setNewTask}
+          newTask={newTask}
+          tasks={tasks}
+        />
+      )}
     </div>
   );
 }

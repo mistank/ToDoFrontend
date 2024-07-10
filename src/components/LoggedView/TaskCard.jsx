@@ -13,7 +13,6 @@ export default function TaskCard({
 }) {
   const [taskOptionsVisible, setTaskOptionsVisible] = useState(false);
   const [editTaskPopupVisible, setEditTaskPopupVisible] = useState(false);
-  const [deleteTaskPopupVisible, setDeleteTaskPopupVisible] = useState(false);
 
   const handleDragStart = (e) => {
     const taskJson = JSON.stringify(task); // Convert the task object to a JSON string
@@ -45,7 +44,7 @@ export default function TaskCard({
         className="relative flex flex-col gap-2 overflow-visible rounded-lg bg-gray-700 p-4"
         onDragStart={handleDragStart}
       >
-        <div className="flex justify-between">
+        <div className="flex h-[35px] items-center justify-between">
           <span className="rounded bg-[#5051F9] px-2 py-1 text-sm font-semibold text-white">
             {task.taskCategory.name}
           </span>
@@ -86,7 +85,6 @@ export default function TaskCard({
             tasks={tasks}
             setTasks={setTasks}
             setEditTaskPopupVisible={setEditTaskPopupVisible} // Prosleđujemo ovde
-            setDeleteTaskPopupVisible={setDeleteTaskPopupVisible}
           />
         )}
       </div>

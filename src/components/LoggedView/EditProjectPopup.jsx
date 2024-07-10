@@ -11,134 +11,74 @@ import "../../index.css";
 
 const apiURL = "http://localhost:8000";
 
-export default function EditTaskPopup({
-  task,
+export default function EditProjectPopup({
+  project,
   onClose,
-  newTask,
-  tasks,
-  editTask,
+  newProject,
+  projects,
+  editProject,
 }) {
-  const [newTaskName, setNewTaskName] = useState(task.name);
-  const [newTaskDescription, setNewTaskDescription] = useState(
-    task.description,
+  const [newProjectName, setNewProjectName] = useState(project.name);
+  const [newProjectDescription, setNewProjectDescription] = useState(
+    project.description,
   );
-  const [newTaskDeadline, setNewTaskDeadline] = useState(
-    new Date(task.deadline),
+  const [newProjectDeadline, setNewProjectDeadline] = useState(
+    new Date(project.deadline),
   );
-  const [newTaskCategory, setNewTaskCategory] = useState(task.taskCategory);
-  const [categories, setCategories] = useState([]);
 
   function handleSave() {
-    if (tasks.some((task) => task.name === newTask)) {
+    if (projects.some((project) => project.name === newProject)) {
       return;
     }
-    task.name = newTaskName;
-    task.description = newTaskDescription;
-    task.deadline = new Date(newTaskDeadline);
-    task.taskCategory = newTaskCategory;
-    console.log("Task edited:", task);
-    editTask(task);
+    project.name = newProjectName;
+    project.description = newProjectDescription;
+    project.deadline = new Date(newProjectDeadline);
+    project.creation_date = new Date(project.creation_date);
+    console.log("Project edited:", project);
+    editProject(project);
     onClose();
   }
 
-  useEffect(() => {
-    async function fetchCategories() {
-      try {
-        const response = await axios.get(`${apiURL}/taskCategories/`, {
-          headers: {
-            Authorization: `Bearer ${getAccessToken()}`,
-          },
-        });
-        setCategories(response.data);
-        console.log("Fetched categories:", response.data);
-      } catch (error) {
-        console.error("Failed to fetch categories:", error);
-      }
-    }
-    fetchCategories();
-  }, []);
-
   return (
-    <div className="z-100 absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 backdrop-blur-sm backdrop-filter">
+    <div
+      style={{ zIndex: 1001 }}
+      className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 backdrop-blur-sm backdrop-filter"
+    >
       <div className="w-[90vw] max-w-md rounded-lg bg-[#1E1F25] p-8 text-white shadow-2xl">
         <h2 className="mb-4 text-lg font-semibold">Add new Task</h2>
         <input
-          value={newTaskName}
+          value={newProjectName}
           type="text"
           placeholder="Task name"
           className="mb-4 w-full rounded-lg bg-[#131517] p-2 focus:outline-none"
           onChange={(e) => {
-            setNewTaskName(e.target.value);
+            setNewProjectName(e.target.value);
           }}
         />
-        {tasks.some((task) => task.name === newTask) && (
+        {projects.some((project) => project.name === newProjectName) && (
           <p className="mb-4 text-[#D8000C]">Task already exists</p>
         )}
         <textarea
-          value={newTaskDescription}
+          value={newProjectDescription}
           placeholder="Task description"
           onChange={(e) => {
-            setNewTaskDescription(e.target.value);
+            setNewProjectDescription(e.target.value);
           }}
           className="mb-4 max-h-48 w-full rounded-lg bg-[#131517] p-2 focus:outline-none"
           rows="3" // Adjust the number of rows as needed
         />
-        <Select
-          value={{
-            value: newTaskCategory,
-            label: newTaskCategory.name,
-          }}
-          onChange={(selectedOption) => {
-            setNewTaskCategory(selectedOption.value);
-          }}
-          options={categories.map((category) => ({
-            value: category,
-            label: category.name,
-          }))}
-          styles={{
-            placeholder: (provided) => ({
-              ...provided,
-              color: "#9CA3AF",
-            }),
-            control: (provided) => ({
-              ...provided,
-              backgroundColor: "#131517",
-              borderColor: "transparent",
-              boxShadow: "none",
-              "&:hover": {
-                borderColor: "transparent",
-              },
-              marginBottom: "1rem",
-            }),
-            option: (provided, state) => ({
-              ...provided,
-              backgroundColor: state.isSelected ? "#565656" : "transparent",
-              color: "#9CA3AF",
-              "&:hover": {
-                backgroundColor: "#333333",
-              },
-            }),
-            singleValue: (provided) => ({
-              ...provided,
-              color: "#FFF",
-            }),
-            menu: (provided) => ({
-              ...provided,
-              backgroundColor: "#131517",
-            }),
-          }}
-        />
 
         <DatePicker
-          selected={newTaskDeadline}
+          selected={newProjectDeadline}
           onChange={(date) => {
-            setNewTaskDeadline(date);
+            setNewProjectDeadline(date);
           }}
           className="mb-4 w-[100%] rounded-lg bg-[#131517] p-2 text-white focus:outline-none"
           placeholderText="Task deadline"
           calendarClassName=""
           minDate={new Date()}
         />
+
         <div>
           <button
             onClick={handleSave}

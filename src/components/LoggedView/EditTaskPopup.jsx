@@ -32,7 +32,7 @@ export default function EditTaskPopup({
   const [categories, setCategories] = useState([]);
 
   function handleSave() {
-    if (tasks.some((task) => task.name === newTask)) {
+    if (tasks.some((task) => task.name === newTaskName)) {
       return;
     }
     task.name = newTaskName;
