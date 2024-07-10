@@ -118,7 +118,6 @@ export default function Column({
     newTaskDeadline,
     newTaskCategory,
   ) {
-    console.log("Adding task to column with id:", status.id);
     try {
       const response = await axios.post(
         `${apiURL}/tasks/`,
@@ -211,6 +210,7 @@ export default function Column({
             deleteTask={deleteTask}
             editTask={editTask}
             tasks={tasks}
+            setTasks={setTasks}
           />
         ))}
         {!isDragOver && (
@@ -227,16 +227,6 @@ export default function Column({
           <div className="flex h-36 w-[100%] justify-center border-4 border-dashed border-[#5F6388] align-middle">
             <img src={add_cross} alt="" />
           </div>
-        )}
-
-        {isPopupVisible && (
-          <CreateTaskPopup
-            newTask={newTask}
-            tasks={tasks}
-            addTask={addTask}
-            onClose={hidePopupForm}
-            setNewTask={setNewTask}
-          />
         )}
       </div>
     </div>
