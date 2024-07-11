@@ -1,12 +1,16 @@
+/* eslint-disable react/prop-types */
 import DatePicker from "react-datepicker";
 import { useState } from "react";
-export default function CreateProjectPopup({ onClose, createProjecw }) {
+export default function CreateProjectPopup({ onClose, addProject }) {
   const [newProjectName, setNewProjectName] = useState("");
   const [newProjectDescription, setNewProjectDescription] = useState("");
   const [newProjectDeadline, setNewProjectDeadline] = useState(null);
 
   return (
-    <div className="z-100 absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 backdrop-blur-sm backdrop-filter">
+    <div
+      style={{ zIndex: 1001 }}
+      className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 backdrop-blur-sm backdrop-filter"
+    >
       <div className="w-[90vw] max-w-md rounded-lg bg-[#1E1F25] p-8 text-white shadow-2xl">
         <h2 className="mb-4 text-lg font-semibold">Add new Project</h2>
         <input
@@ -18,7 +22,7 @@ export default function CreateProjectPopup({ onClose, createProjecw }) {
         <textarea
           placeholder="Project description"
           onChange={(e) => setNewProjectDescription(e.target.value)}
-          className="mb-4 max-h-48 w-full rounded-lg bg-[#131517] p-2 focus:outline-none"
+          className="mb-4 max-h-48 min-h-20 w-full rounded-lg bg-[#131517] p-2 focus:outline-none"
           rows="3"
         />
         <DatePicker
@@ -31,11 +35,14 @@ export default function CreateProjectPopup({ onClose, createProjecw }) {
         <div>
           <button
             onClick={() => {
-              addProject(
-                newProjectName,
-                newProjectDescription,
-                newProjectDeadline,
-              );
+              addProject({
+                name: newProjectName,
+                description: newProjectDescription,
+                deadline:
+                  newProjectDeadline instanceof Date
+                    ? newProjectDeadline.toISOString()
+                    : newProjectDeadline,
+              });
               setNewProjectName("");
               setNewProjectDescription("");
               setNewProjectDeadline(null);

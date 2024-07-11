@@ -14,18 +14,17 @@ export default function Icons({ setMode }) {
     // <div className="w-full h-auto space-y-10 flex flex-col">
     <>
       <SidebarButton
-        icon={projects_icon}
-        onClick={() => {
-          setMode("projects-view");
-        }}
-      />
-      <SidebarButton
         icon={kanban}
         onClick={() => {
           setMode("task-view");
         }}
       />
-
+      <SidebarButton
+        icon={projects_icon}
+        onClick={() => {
+          setMode("projects-view");
+        }}
+      />
       <SidebarButton
         icon={add_person}
         onClick={() => {

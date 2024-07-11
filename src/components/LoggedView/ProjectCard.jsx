@@ -10,6 +10,8 @@ export default function ProjectCard({
   setProjects,
   editProject,
   deleteProject,
+  setCurrentProject,
+  currentProject,
 }) {
   const [projectOptionsVisible, setProjectOptionsVisible] = useState(false);
   const [editProjectPopupVisible, setEditProjectPopupVisible] = useState(false);
@@ -24,7 +26,7 @@ export default function ProjectCard({
 
   return (
     <>
-      <div className="relative flex w-[32%] flex-col gap-3 rounded-lg border-2 border-[#5F6388] p-5 shadow-xl">
+      <div className="relative flex h-56 min-w-[30vh] flex-col gap-3 rounded-lg border-2 border-[#5F6388] p-5 shadow-xl">
         <div className="flex justify-end">
           <div className="h-[35px]">
             <button
@@ -43,7 +45,7 @@ export default function ProjectCard({
         <div className="flex items-center justify-between">
           <span>{formatDate(project.deadline)}</span>
         </div>
-        <div className="flex  justify-end">
+        <div className="flex justify-end">
           <button>Details</button>
         </div>
         {projectOptionsVisible && (
@@ -55,7 +57,9 @@ export default function ProjectCard({
             deleteProject={deleteProject}
             projects={projects}
             setProjects={setProjects}
-            setEditProjectPopupVisible={setEditProjectPopupVisible} // Prosleđujemo ovde
+            setEditProjectPopupVisible={setEditProjectPopupVisible}
+            setCurrentProject={setCurrentProject}
+            currentProject={currentProject}
           />
         )}
       </div>

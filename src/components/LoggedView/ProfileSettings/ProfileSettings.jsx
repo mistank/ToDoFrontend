@@ -82,7 +82,7 @@ export default function ProfileSettings({ setMode }) {
         <h2 className="text-3xl font-bold">Settings</h2>
         <div>
           <button
-            onClick={() => setMode("task-view")}
+            onClick={() => localStorage.setItem("mode", "projects-view")}
             className="mr-4 rounded bg-gray-700 px-4 py-2 font-bold text-white hover:bg-gray-600"
           >
             Cancel

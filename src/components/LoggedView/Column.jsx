@@ -1,12 +1,13 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import TaskCard from "./TaskCard.jsx";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import add_cross from "../../assets/icons/add_plus.svg";
 import axios from "axios";
 import { getAccessToken } from "../../utils/access_token.js";
 import delete_column from "../../assets/icons/delete_column.svg";
 import CreateTaskPopup from "./CreateTaskPopup.jsx";
+import { AuthContext } from "../AuthProvider.jsx";
 
 const apiURL = "http://localhost:8000";
 
@@ -19,6 +20,7 @@ export default function Column({
   setStatuses,
   projectId,
 }) {
+  const { userInfo, setUserInfo, logout } = useContext(AuthContext);
   const [isDragOver, setIsDragOver] = useState(false);
   const [isTasksEmpty, setIsTasksEmpty] = useState(false); // State za praćenje da li su taskovi prazni
   const [isPopupVisible, setIsPopupVisible] = useState(false);
@@ -41,6 +43,10 @@ export default function Column({
       });
       setTasks(tasks.filter((t) => t.id !== taskId));
     } catch (error) {
+      if (error.response && error.response.status === 401) {
+        alert("You are not authorized to view this page. Please log in");
+        logout();
+      }
       console.error("Failed to delete task:", error);
     }
   }
@@ -65,6 +71,10 @@ export default function Column({
       );
       setTasks(tasks.map((t) => (t.id === task.id ? response.data : t)));
     } catch (error) {
+      if (error.response && error.response.status === 401) {
+        alert("You are not authorized to view this page. Please log in");
+        logout();
+      }
       console.error("Failed to edit task:", error);
     }
   }
@@ -108,6 +118,10 @@ export default function Column({
       );
       return response.data;
     } catch (error) {
+      if (error.response && error.response.status === 401) {
+        alert("You are not authorized to view this page. Please log in");
+        logout();
+      }
       console.error("Failed to update task status:", error);
     }
   }
@@ -137,6 +151,10 @@ export default function Column({
       );
       setTasks([...tasks, response.data]);
     } catch (error) {
+      if (error.response && error.response.status === 401) {
+        alert("You are not authorized to view this page. Please log in");
+        logout();
+      }
       console.error("Failed to add task:", error);
     }
   }

@@ -55,6 +55,7 @@ export function AuthProvider({ children }) {
     setIsAuthenticated(false);
     localStorage.setItem("isAuthenticated", "false");
     localStorage.removeItem("GoogleLogin");
+    localStorage.clear();
     setUserInfo(null);
   };
 

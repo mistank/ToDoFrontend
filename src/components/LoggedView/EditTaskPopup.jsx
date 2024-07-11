@@ -32,9 +32,6 @@ export default function EditTaskPopup({
   const [categories, setCategories] = useState([]);
 
   function handleSave() {
-    if (tasks.some((task) => task.name === newTaskName)) {
-      return;
-    }
     task.name = newTaskName;
     task.description = newTaskDescription;
     task.deadline = new Date(newTaskDeadline);
@@ -69,7 +66,7 @@ export default function EditTaskPopup({
       className="z-100 absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 backdrop-blur-sm backdrop-filter"
     >
       <div className="w-[90vw] max-w-md rounded-lg bg-[#1E1F25] p-8 text-white shadow-2xl">
-        <h2 className="mb-4 text-lg font-semibold">Add new Task</h2>
+        <h2 className="mb-4 text-lg font-semibold">Edit Task</h2>
         <input
           value={newTaskName}
           type="text"

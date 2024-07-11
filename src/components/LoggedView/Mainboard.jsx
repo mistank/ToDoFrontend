@@ -4,18 +4,36 @@ import ProfileSettings from "./ProfileSettings/ProfileSettings.jsx";
 import Projects from "./Projects.jsx";
 import TaskView from "./TaskView.jsx";
 import AddPeople from "./AddPeople.jsx";
+import { useState, useEffect } from "react";
 
 export default function Mainboard({ mode, setMode }) {
   let form;
+  const [currentProject, setCurrentProject] = useState(
+    JSON.parse(localStorage.getItem("currentProject")),
+  );
+
+  // Osluškujte promene na currentProject i ažurirajte localStorage
+  useEffect(() => {
+    console.log("Current project: ", currentProject);
+    // Sačuvajte currentProject u localStorage
+    localStorage.setItem("currentProject", JSON.stringify(currentProject));
+  }, [currentProject]); // Ovaj useEffect reaguje samo na promene currentProject
+
   switch (mode) {
     case "profile-settings":
       form = <ProfileSettings setMode={setMode} />;
       break;
     case "projects-view":
-      form = <Projects setMode={setMode} />;
+      form = (
+        <Projects
+          setMode={setMode}
+          currentProject={currentProject}
+          setCurrentProject={setCurrentProject}
+        />
+      );
       break;
     case "task-view":
-      form = <TaskView setMode={setMode} />;
+      form = <TaskView setMode={setMode} currentProject={currentProject} />;
       break;
     case "add-people":
       form = <AddPeople setMode={setMode} />;

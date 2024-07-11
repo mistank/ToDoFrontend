@@ -8,7 +8,7 @@ import edit_icon from "../../assets/icons/edit_icon.svg";
 import star_icon from "../../assets/icons/star_icon.svg";
 import EditProjectPopup from "./EditProjectPopup.jsx";
 
-export default function TaskOptionsModal({
+export default function ProjectOptionsModal({
   projectOptionsVisible,
   setProjectOptionsVisible,
   projects,
@@ -19,6 +19,8 @@ export default function TaskOptionsModal({
   deleteProject,
   setEditProjectPopupVisible,
   editProjectPopupVisible,
+  setCurrentProject,
+  currentProject,
 }) {
   const modalRef = useRef();
 
@@ -41,6 +43,15 @@ export default function TaskOptionsModal({
     };
   }, [onClose, editProjectPopupVisible]);
 
+  // useEffect(() => {
+  //   console.log("Current project: ", currentProject);
+  //   if (currentProject) {
+  //     localStorage.setItem("currentProject", JSON.stringify(currentProject));
+  //   } else {
+  //     localStorage.removeItem("currentProject");
+  //   }
+  // }, [currentProject]);
+
   return (
     <>
       <div
@@ -59,6 +70,10 @@ export default function TaskOptionsModal({
           <button
             className="flex items-center justify-start gap-5 rounded-lg p-2 text-left hover:bg-gray-600 hover:bg-opacity-50"
             onClick={() => {
+              if (currentProject?.id === project.id) {
+                setCurrentProject(null); // Update state
+              }
+              console.log("Deleting project with id: ", project.id);
               deleteProject(project.id).then(() =>
                 setProjects(projects.filter((p) => p.id !== project.id)),
               );
@@ -79,17 +94,30 @@ export default function TaskOptionsModal({
             <img className="h-5 w-5" src={edit_icon} />
             Edit
           </button>
-          <button
-            className="flex items-center justify-start gap-5 rounded-lg p-2 text-left hover:bg-gray-600 hover:bg-opacity-50"
-            onClick={() =>
-              setDeleteProjectPopupVisible(
-                (deleteProjectPopupVisible) => !deleteProjectPopupVisible,
-              )
-            }
-          >
-            <img className="h-5 w-5" src={star_icon} />
-            Choose as current
-          </button>
+          {currentProject === null || currentProject === undefined ? (
+            <button
+              className="flex items-center justify-start gap-5 rounded-lg p-2 text-left hover:bg-gray-600 hover:bg-opacity-50"
+              onClick={() => {
+                setCurrentProject(project);
+
+                onClose();
+              }}
+            >
+              <img className="h-5 w-5" src={star_icon} />
+              Choose as current
+            </button>
+          ) : project.id != currentProject.id ? (
+            <button
+              className="flex items-center justify-start gap-5 rounded-lg p-2 text-left hover:bg-gray-600 hover:bg-opacity-50"
+              onClick={() => {
+                setCurrentProject(project);
+                onClose();
+              }}
+            >
+              <img className="h-5 w-5" src={star_icon} />
+              Choose as current
+            </button>
+          ) : null}
         </div>
       </div>
     </>
