@@ -13,7 +13,6 @@ import ChangePasswordForm from "../UnloggedView/ChangePasswordForm.jsx";
 function AppRoutes() {
   const { isAuthenticated } = useContext(AuthContext);
 
-  console.log("isAuthenticated from app routes: ", isAuthenticated);
   return (
     <Router>
       <Routes>

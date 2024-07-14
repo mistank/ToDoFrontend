@@ -7,7 +7,7 @@ import { getAccessToken } from "../../utils/access_token.js";
 
 const apiURL = "http://localhost:8000";
 
-export default function TaskBoard({ currentProject }) {
+export default function TaskBoard({ currentProject, setMode }) {
   const [tasks, setTasks] = useState([]);
   const [statuses, setStatuses] = useState([]);
 
@@ -45,31 +45,38 @@ export default function TaskBoard({ currentProject }) {
     }
   }, []); // Uklonjena je zavisnost od isTasksLoaded jer se koristi samo jednom za inicijalno učitavanje
 
-  return (
-    currentProject && ( // Dodata provera da li je currentProject postavljen
-      <div className="flex h-[100%] flex-row gap-6 text-white">
-        {statuses.map((status) => (
-          <Column
-            key={status.id}
-            status={status}
-            statuses={statuses}
-            setStatuses={setStatuses}
-            projectId={currentProject.id}
-            columnTasks={
-              tasks.length != 0
-                ? tasks.filter((task) => task.status.name === status.name)
-                : []
-            }
-            tasks={tasks}
-            setTasks={setTasks}
-          />
-        ))}
-        <EmptyColumn
+  return currentProject != null || currentProject != undefined ? ( // Dodata provera da li je currentProject postavljen
+    <div className="flex h-[100%] flex-row gap-6 text-white">
+      {statuses.map((status) => (
+        <Column
+          key={status.id}
+          status={status}
           statuses={statuses}
           setStatuses={setStatuses}
           projectId={currentProject.id}
+          columnTasks={
+            tasks.length != 0
+              ? tasks.filter((task) => task.status.name === status.name)
+              : []
+          }
+          tasks={tasks}
+          setTasks={setTasks}
         />
-      </div>
-    )
+      ))}
+      <EmptyColumn
+        statuses={statuses}
+        setStatuses={setStatuses}
+        projectId={currentProject.id}
+      />
+    </div>
+  ) : (
+    <div className="flex h-[100%] items-center justify-center">
+      <button
+        className="h-16 rounded-lg bg-[#5051F9] p-4 text-white"
+        onClick={() => setMode("projects-view")}
+      >
+        Select a Project
+      </button>
+    </div>
   );
 }

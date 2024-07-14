@@ -26,7 +26,7 @@ export default function useRegularLogin() {
       //setUserInfo(response.data.user); // Pretpostavka da setUserInfo funkcija postavlja korisničke podatke u kontekst autentifikacije
       login(navigate); // Pretpostavka da login funkcija prima neke podatke iz odgovora
     } catch (error) {
-      console.error("Failed to log in", error);
+      alert(("Error:", error.response.data.detail));
     }
   };
 

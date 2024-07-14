@@ -3,6 +3,8 @@ import axios from "axios";
 import googleIcon from "../../assets/icons/google_icon.svg";
 import { useState } from "react";
 import useRegularLogin from "../hooks/useRegularLogin.jsx";
+import { useGoogleLogin } from "@react-oauth/google";
+import useGoogleSignupHook from "../hooks/useGoogleSignup.jsx";
 
 const apiURL = "http://localhost:8000";
 export default function SignUpForm({ setMode }) {
@@ -14,13 +16,13 @@ export default function SignUpForm({ setMode }) {
   const [lastName, setLastName] = useState("");
 
   const initiateRegularLogin = useRegularLogin();
+  const initiateGoogleSignup = useGoogleSignupHook();
 
   const handleSubmit = (e) => {
     if (password !== confirmPass) {
       alert("Passwords do not match");
       return;
     }
-
     e.preventDefault();
     axios
       .post(`${apiURL}/signup/`, {
@@ -104,7 +106,13 @@ export default function SignUpForm({ setMode }) {
         <span className="px-2 text-[#4D4D4D]">Or</span>
         <hr style={{ borderColor: "#4D4D4D" }} className="flex-grow border-t" />
       </div>
-      <button className="w-[15%] rounded-md p-2 text-white">
+      <button
+        className="w-[15%] rounded-md p-2 text-white"
+        onClick={(e) => {
+          e.preventDefault();
+          initiateGoogleSignup();
+        }}
+      >
         <img className="w-[100%]" src={googleIcon} alt="" />
       </button>
       <p className="text-center">

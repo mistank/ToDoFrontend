@@ -7,11 +7,11 @@ import { getUserInfo } from "../../api_calls/user_info.js";
 import axios from "axios";
 
 const apiURL = "http://localhost:8000";
-export default function useGoogleLoginHook() {
+export default function useGoogleSignupHook() {
   const { login, setUserInfo, userInfo } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const initiateGoogleLogin = useGoogleLogin({
+  const initiateGoogleSignup = useGoogleLogin({
     onSuccess: async (response) => {
       console.log("Google Login Successful:", response);
 
@@ -22,14 +22,27 @@ export default function useGoogleLoginHook() {
       console.log("User Info:", userInfoResponse.data);
       setUserInfo(userInfoResponse.data);
       const serverResponse = await axios
-        .post(apiURL + "/google-login/" + userInfoResponse.data.email)
+        .post(
+          apiURL + "/google-signup/",
+          JSON.stringify({
+            firstName: userInfoResponse.data.given_name,
+            lastName: userInfoResponse.data.family_name,
+            username: userInfoResponse.data.name,
+            email: userInfoResponse.data.email,
+          }),
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          },
+        )
         .then((response) => {
           console.log("Server Response:", response);
           const accessToken = response.data.access_token;
           document.cookie = `accessToken=${accessToken}; path=/; max-age=3600; Secure; SameSite=Strict`;
           login(navigate);
         })
-        .catch((error) => console.log("Error:", error));
+        .catch((error) => alert(("Error:", error.response.data.detail)));
       // const accessToken = serverResponse.access_token;
 
       // document.cookie = `accessToken=${accessToken}; path=/; max-age=3600; Secure; SameSite=Strict`;
@@ -39,5 +52,5 @@ export default function useGoogleLoginHook() {
     onError: (error) => console.log("Login Failed:", error),
   });
 
-  return initiateGoogleLogin;
+  return initiateGoogleSignup;
 }

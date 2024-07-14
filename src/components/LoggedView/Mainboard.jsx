@@ -14,7 +14,6 @@ export default function Mainboard({ mode, setMode }) {
 
   // Osluškujte promene na currentProject i ažurirajte localStorage
   useEffect(() => {
-    console.log("Current project: ", currentProject);
     // Sačuvajte currentProject u localStorage
     localStorage.setItem("currentProject", JSON.stringify(currentProject));
   }, [currentProject]); // Ovaj useEffect reaguje samo na promene currentProject
