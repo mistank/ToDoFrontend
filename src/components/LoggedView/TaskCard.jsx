@@ -1,24 +1,51 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import three_dots from "../../assets/icons/three_dots.svg";
 import TaskOptionsModal from "./TaskOptionsModal.jsx";
 import EditTaskPopup from "./EditTaskPopup.jsx";
+import axios from "axios";
+import { getAccessToken } from "../../utils/access_token.js";
 
+const apiURL = "http://localhost:8000";
 export default function TaskCard({
   task,
   editTask,
   deleteTask,
   tasks,
   setTasks,
+  projectId,
 }) {
   const [taskOptionsVisible, setTaskOptionsVisible] = useState(false);
   const [editTaskPopupVisible, setEditTaskPopupVisible] = useState(false);
+  const [people, setPeople] = useState([]);
 
   const handleDragStart = (e) => {
     const taskJson = JSON.stringify(task); // Convert the task object to a JSON string
     e.dataTransfer.setData("task", taskJson);
     console.log("Task dragged:", taskJson);
     e.dataTransfer.effectAllowed = "move";
+  };
+
+  useEffect(() => {
+    fetchPeopleForTask();
+  }, []);
+
+  const fetchPeopleForTask = async () => {
+    console.log("Project ID FROM TASK CARD:", projectId);
+
+    try {
+      const response = await axios.get(
+        `${apiURL}/people_assigned_to_task/${task.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${getAccessToken()}`,
+          },
+        },
+      );
+      setPeople(response.data);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   // Funkcija za skraćivanje teksta
@@ -64,16 +91,21 @@ export default function TaskCard({
         <p className="text-gray-400">{truncateText(task.description, 20)}</p>
         <div className="flex items-center justify-between">
           <span>{formatDate(task.deadline)}</span>
-          {/* <div className="flex -space-x-2">
-          {task.avatars.map((avatar, index) => (
-            <img
-              key={index}
-              src={avatar}
-              alt="avatar"
-              className="h-6 w-6 rounded-full border-2 border-gray-900"
-            />
-          ))}
-        </div> */}
+          {people?.length === 0 ? (
+            <span>No one assigned</span>
+          ) : (
+            <div className="flex -space-x-2">
+              {people.slice(0, 3).map((person) => (
+                <img
+                  key={person.email}
+                  src={`https://api.dicebear.com/9.x/personas/svg?seed=${person.email}`}
+                  alt="avatar"
+                  className="h-6 w-6 rounded-full border-2 border-gray-900"
+                />
+              ))}
+              +{people.length - 3}
+            </div>
+          )}
         </div>
         {taskOptionsVisible && (
           <TaskOptionsModal
@@ -100,6 +132,9 @@ export default function TaskCard({
           setEditTaskPopupVisible={setEditTaskPopupVisible}
           setTaskOptionsVisible={setTaskOptionsVisible}
           editTask={editTask}
+          people={people}
+          setPeople={setPeople}
+          projectId={projectId}
         />
       )}
     </>

@@ -24,6 +24,8 @@ export default function Column({
   const [isDragOver, setIsDragOver] = useState(false);
   const [isTasksEmpty, setIsTasksEmpty] = useState(false); // State za praćenje da li su taskovi prazni
   const [isPopupVisible, setIsPopupVisible] = useState(false);
+  const [people, setPeople] = useState([]);
+
   const [newTask, setNewTask] = useState({
     name: "",
     description: "",
@@ -104,6 +106,22 @@ export default function Column({
       setIsTasksEmpty(false);
     }
   }, [columnTasks]);
+
+  // const fetchPeopleForTask = async () => {
+  //   try {
+  //     const response = await axios.get(
+  //       `${apiURL}/people_assigned_to_task/${task.id}`,
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${getAccessToken()}`,
+  //         },
+  //       },
+  //     );
+  //     setPeople(response.data);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   async function updateTaskStatus(taskId, newStatus) {
     try {
@@ -193,6 +211,7 @@ export default function Column({
   };
 
   const showPopupForm = () => {
+    console.log("Project ID:", projectId);
     setIsPopupVisible(true);
     document.body.style.overflow = "hidden"; // Sprečava skrolovanje dok je popup aktivan
   };
@@ -229,6 +248,7 @@ export default function Column({
             editTask={editTask}
             tasks={tasks}
             setTasks={setTasks}
+            projectId={projectId}
           />
         ))}
         {!isDragOver && (

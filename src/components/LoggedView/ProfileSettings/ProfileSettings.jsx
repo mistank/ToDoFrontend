@@ -7,6 +7,7 @@ import { AuthContext } from "../../AuthProvider.jsx";
 import { getAccessToken } from "../../../utils/access_token.js";
 import { getCsrfToken } from "../../../utils/csrf_token.js";
 import Details from "./Details.jsx";
+import ChangePasswordForm from "./ChangePassword.jsx";
 
 const apiUrl = "http://localhost:8000";
 
@@ -17,6 +18,7 @@ export default function ProfileSettings({ setMode }) {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
+  const [detailsVisible, setDetailsVisible] = useState(true);
 
   const handleSave = async () => {
     // const csrfToken = getCsrfToken(); // Pretpostavka da imate ovu funkciju
@@ -98,22 +100,33 @@ export default function ProfileSettings({ setMode }) {
         </div>
       </div>
       <div className="mb-4 flex space-x-4">
-        <button className="border-b-2 border-[#5051F9] px-4 py-2 text-white">
+        <button
+          className={`${detailsVisible && "border-b-2 border-[#5051F9]"}  px-4 py-2 text-white`}
+          onClick={() => setDetailsVisible(true)}
+        >
           My details
         </button>
-        <button className="px-4 py-2 text-gray-400">Password</button>
+        <button
+          className={`${!detailsVisible && "border-b-2 border-[#5051F9]"} px-4 py-2 text-gray-400`}
+          onClick={() => setDetailsVisible(false)}
+        >
+          Password
+        </button>
       </div>
-      <Details
-        firstName={firstName}
-        lastName={lastName}
-        username={username}
-        email={email}
-        setFirstName={setFirstName}
-        setLastName={setLastName}
-        setUsername={setUsername}
-        setEmail={setEmail}
-      />
-      {/* </div> */}
+      {detailsVisible ? (
+        <Details
+          firstName={firstName}
+          lastName={lastName}
+          username={username}
+          email={email}
+          setFirstName={setFirstName}
+          setLastName={setLastName}
+          setUsername={setUsername}
+          setEmail={setEmail}
+        />
+      ) : (
+        <ChangePasswordForm />
+      )}
     </>
   );
 }

@@ -18,7 +18,7 @@ export default function ForgotPasswordForm({ setMode }) {
       alert("Please check your email to reset your password.");
     } catch (error) {
       console.error("Error sending forgot password request:", error);
-      alert("Error sending request. Please try again.");
+      alert(error.response.data.detail);
     } finally {
       setIsLoading(false); // Postavljanje na false nakon završetka zahteva
     }

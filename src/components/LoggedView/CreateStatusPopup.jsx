@@ -32,6 +32,7 @@ export default function CreateStatusPopup({
                 return;
               }
               addColumn();
+              setNewStatus("");
               onClose();
             }}
             className="rounded-lg bg-[#5051F9] px-4 py-2 hover:bg-[#4646f8] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
