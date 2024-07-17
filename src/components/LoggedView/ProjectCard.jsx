@@ -45,9 +45,6 @@ export default function ProjectCard({
         <div className="flex items-center justify-between">
           <span>{formatDate(project.deadline)}</span>
         </div>
-        <div className="flex justify-end">
-          <button>Details</button>
-        </div>
         {projectOptionsVisible && (
           <ProjectOptionsModal
             project={project}

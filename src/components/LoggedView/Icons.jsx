@@ -25,12 +25,12 @@ export default function Icons({ setMode }) {
           setMode("projects-view");
         }}
       />
-      <SidebarButton
+      {/* <SidebarButton
         icon={add_person}
         onClick={() => {
           setMode("add-people");
         }}
-      />
+      /> */}
       <SidebarButton
         icon={setting_icon}
         onClick={() => {

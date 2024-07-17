@@ -107,22 +107,6 @@ export default function Column({
     }
   }, [columnTasks]);
 
-  // const fetchPeopleForTask = async () => {
-  //   try {
-  //     const response = await axios.get(
-  //       `${apiURL}/people_assigned_to_task/${task.id}`,
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${getAccessToken()}`,
-  //         },
-  //       },
-  //     );
-  //     setPeople(response.data);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-
   async function updateTaskStatus(taskId, newStatus) {
     try {
       const response = await axios.patch(

@@ -8,7 +8,7 @@ export default function UserLog({ setMode }) {
   const [notificationModalIsOpen, setNotificationModalIsOpen] = useState(false);
   return (
     <div className="relative flex w-auto justify-between gap-5">
-      <button
+      {/* <button
         className="notif-btn"
         onClick={() => {
           setNotificationModalIsOpen(
@@ -24,7 +24,7 @@ export default function UserLog({ setMode }) {
           src={`${notificationModalIsOpen ? "/src/assets/icons/notification_bell_fill.png" : "/src/assets/icons/notification_bell.png"}`}
           alt="notifications"
         />
-      </button>
+      </button> */}
       <div className="relative flex h-auto flex-col">
         <button
           onClick={() => {

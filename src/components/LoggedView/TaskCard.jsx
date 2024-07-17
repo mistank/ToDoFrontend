@@ -31,8 +31,6 @@ export default function TaskCard({
   }, []);
 
   const fetchPeopleForTask = async () => {
-    console.log("Project ID FROM TASK CARD:", projectId);
-
     try {
       const response = await axios.get(
         `${apiURL}/people_assigned_to_task/${task.id}`,

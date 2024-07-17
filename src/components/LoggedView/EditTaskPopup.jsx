@@ -120,25 +120,6 @@ export default function EditTaskPopup({
     setNewMemberName(e.target.value);
   };
 
-  // const handleNewMemberSubmit = (e) => {
-  //   if (e.key === "Enter") {
-  //     // Ovde pozovi Axios post metodu sa newMemberName kao podatkom
-  //     // Na primer: axios.post('/api/task/addMember', { name: newMemberName, taskId: task.id })
-  //     try {
-  //       axios.post(`${apiURL}/projects/add_user/`, {
-  //         headers: {
-  //           Authorization: `Bearer ${getAccessToken()}`,
-  //         },
-  //       });
-  //     } catch (error) {
-  //       console.error("Failed to add new member to task:", error);
-  //     }
-  //     console.log("Submitting new member:", newMemberName); // Zameni ovo pravim pozivom
-  //     setIsAddingNewMember(false);
-  //     setNewMemberName("");
-  //   }
-  // };
-
   function handleSave() {
     task.name = newTaskName;
     task.description = newTaskDescription;
