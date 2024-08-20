@@ -2,7 +2,7 @@
 import Icons from "./Icons";
 import { useState } from "react";
 
-export default function Sidebar({ setMode }) {
+export default function Sidebar({ setMode, currentProject }) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -32,7 +32,7 @@ export default function Sidebar({ setMode }) {
         </button>
       </div>
       <section className=" z-10 flex h-[100vh] w-20 flex-col items-center justify-center gap-10 bg-[#1E1F25] xs:hidden">
-        <Icons setMode={setMode}></Icons>
+        <Icons setMode={setMode} currentProject={currentProject}></Icons>
       </section>
     </>
   );

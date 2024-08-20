@@ -66,7 +66,8 @@ export default function Projects({ currentProject, setCurrentProject }) {
 
   const fetchProjects = async () => {
     try {
-      const response = await axios.get(`${apiURL}/projects/owned/`, {
+      //izvlacenje svih projekata na kojima radi ulogovani korisnik, kao vlasnik ili kao neka druga uloga (npr. developer)
+      const response = await axios.get(`${apiURL}/projects/related/`, {
         headers: {
           Authorization: `Bearer ${getAccessToken()}`,
         },

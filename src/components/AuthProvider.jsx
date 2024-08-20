@@ -31,6 +31,7 @@ export function AuthProvider({ children }) {
           Authorization: `Bearer ${accessToken}`,
         },
       });
+      console.log("Korisnicki podaci su: ", response.data);
       setUserInfo(response.data);
     } catch (error) {
       if (error.response && error.response.status === 401) {
