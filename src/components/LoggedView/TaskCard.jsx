@@ -101,7 +101,11 @@ export default function TaskCard({
                   className="h-6 w-6 rounded-full border-2 border-gray-900"
                 />
               ))}
-              +{people.length - 3}
+              {people.length > 3 && (
+                <div className="flex h-6 w-6 items-center justify-center rounded-full border-2 border-gray-900 bg-gray-900">
+                  +{people.length - 3}
+                </div>
+              )}
             </div>
           )}
         </div>

@@ -34,7 +34,7 @@ export default function Mainboard({ mode, setMode }) {
       form = <TaskView setMode={setMode} currentProject={currentProject} />;
       break;
     case "add-people":
-      form = <AddPeople setMode={setMode} />;
+      form = <AddPeople setMode={setMode} currentProject={currentProject} />;
       break;
   }
 

@@ -53,7 +53,7 @@ export default function EditTaskPopup({
   useEffect(() => {
     try {
       axios
-        .get(`${apiURL}/users/${projectId}/`, {
+        .get(`${apiURL}/users-from-project/${projectId}/`, {
           headers: {
             Authorization: `Bearer ${getAccessToken()}`,
           },

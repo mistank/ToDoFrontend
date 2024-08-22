@@ -2,37 +2,43 @@
 import SidebarButton from "./SidebarButton.jsx";
 
 import add_person from "../../assets/icons/menu-icons/add_person.svg";
+import add_person_white from "../../assets/icons/menu-icons/add_person_white.svg";
 import kanban from "../../assets/icons/menu-icons/kanban.svg";
-import files_icon from "../../assets/icons/menu-icons/files_icon.svg";
-import message_icon from "../../assets/icons/menu-icons/message_icon.svg";
+import kanban_white from "../../assets/icons/menu-icons/kanban_white.svg";
 import projects_icon from "../../assets/icons/menu-icons/projects_icon.svg";
+import projects_icon_white from "../../assets/icons/menu-icons/projects_icon_white.svg";
 import setting_icon from "../../assets/icons/menu-icons/setting_icon.svg";
-import tasks_icon from "../../assets/icons/menu-icons/tasks_icon.svg";
+import setting_icon_white from "../../assets/icons/menu-icons/setting_icon_white.svg";
+import { useContext } from "react";
 
-export default function Icons({ setMode }) {
+export default function Icons({ setMode, currentProject }) {
   return (
     // <div className="w-full h-auto space-y-10 flex flex-col">
     <>
       <SidebarButton
         icon={kanban}
+        whiteIcon={kanban_white}
         onClick={() => {
           setMode("task-view");
         }}
       />
       <SidebarButton
         icon={projects_icon}
+        whiteIcon={projects_icon_white}
         onClick={() => {
           setMode("projects-view");
         }}
       />
-      {/* <SidebarButton
+      <SidebarButton
         icon={add_person}
+        whiteIcon={add_person_white}
         onClick={() => {
           setMode("add-people");
         }}
-      /> */}
+      />
       <SidebarButton
         icon={setting_icon}
+        whiteIcon={setting_icon_white}
         onClick={() => {
           setMode("profile-settings");
         }}
