@@ -16,6 +16,25 @@ export default function UsersTable({
   const [role, setRole] = useState(null);
 
   const handleSave = (row) => {
+    axios
+      .patch(`${apiURL}/projects/update_user_role/`, {
+        pid: currentProject.id,
+        uid: row.original.id,
+        rid: roles.find((roleItem) => roleItem.name === role).id,
+      })
+      .then((response) => {
+        console.log(response.data);
+        setPeople((prevPeople) =>
+          prevPeople.map((person) =>
+            person.id === row.original.id
+              ? { ...person, role_name: role }
+              : person,
+          ),
+        );
+      })
+      .catch((error) => {
+        console.error("Error updating user role:", error);
+      });
     setEditingRowIndex(null);
   };
 
@@ -72,22 +91,24 @@ export default function UsersTable({
         </button>
       </>
     ) : (
-      <>
-        <button
-          className="w-20 rounded bg-[#5051F9] px-2 py-1 text-white hover:bg-[#4646f8]"
-          onClick={() => {
-            handleEdit(row);
-          }}
-        >
-          Edit
-        </button>
-        <button
-          className="w-20 rounded bg-[#5051F9] px-2 py-1 text-white hover:bg-[#4646f8]"
-          onClick={() => handleRemove(row)}
-        >
-          Remove
-        </button>
-      </>
+      row.original.role_name === "Project Owner" || (
+        <>
+          <button
+            className="w-20 rounded bg-[#5051F9] px-2 py-1 text-white hover:bg-[#4646f8]"
+            onClick={() => {
+              handleEdit(row);
+            }}
+          >
+            Edit
+          </button>
+          <button
+            className="w-20 rounded bg-[#5051F9] px-2 py-1 text-white hover:bg-[#4646f8]"
+            onClick={() => handleRemove(row)}
+          >
+            Remove
+          </button>
+        </>
+      )
     );
   };
 

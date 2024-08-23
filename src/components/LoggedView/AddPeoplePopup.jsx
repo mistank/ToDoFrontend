@@ -32,6 +32,41 @@ export default function AddPeoplePopup({
       .then((response) => setUsersNotOnProject(response.data));
   }, [currentProject]);
 
+  const handleAdd = async () => {
+    const user = usersNotOnProject.find(
+      (user) => user.firstName + " " + user.lastName === searchTerm,
+    );
+    if (user) {
+      const response = await axios.post(
+        `${apiURL}/projects/add_user/`,
+        JSON.stringify({
+          pid: currentProject.id,
+          uid: user.id,
+          rid: 2,
+        }),
+        {
+          headers: {
+            Authorization: `Bearer ${getAccessToken()}`,
+            "Content-Type": "application/json",
+          },
+        },
+      );
+      setPeople((prevPeople) => [
+        ...prevPeople,
+        {
+          id: user.id,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          email: user.email,
+          role_name: selectedRole,
+        },
+      ]);
+      onClose();
+    } else {
+      console.error("User not found");
+    }
+  };
+
   const handleInputChange = (e) => {
     setSearchTerm(e.target.value);
   };
@@ -47,38 +82,7 @@ export default function AddPeoplePopup({
         return;
       }
       try {
-        const user = usersNotOnProject.find(
-          (user) => user.firstName + " " + user.lastName === searchTerm,
-        );
-        if (user) {
-          const response = await axios.post(
-            `${apiURL}/projects/add_user/`,
-            JSON.stringify({
-              pid: currentProject.id,
-              uid: user.id,
-              rid: 2,
-            }),
-            {
-              headers: {
-                Authorization: `Bearer ${getAccessToken()}`,
-                "Content-Type": "application/json",
-              },
-            },
-          );
-          setPeople((prevPeople) => [
-            ...prevPeople,
-            {
-              id: user.id,
-              firstName: user.firstName,
-              lastName: user.lastName,
-              email: user.email,
-              role_name: selectedRole,
-            },
-          ]);
-          onClose();
-        } else {
-          console.error("User not found");
-        }
+        handleAdd();
       } catch (error) {
         console.error("Failed to add new member to project:", error);
       }
@@ -135,6 +139,12 @@ export default function AddPeoplePopup({
               </RadioGroup>
             </div>
             <div className="flex justify-end">
+              <button
+                onClick={handleAdd}
+                className="rounded-lg bg-[#5051F9] px-4 py-2 hover:bg-[#4646f8] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+              >
+                Add
+              </button>
               <button
                 onClick={onClose}
                 className="ml-4 rounded-lg bg-[#5051F9] px-4 py-2 hover:bg-[#4646f8] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
