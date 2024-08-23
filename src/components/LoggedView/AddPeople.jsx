@@ -9,6 +9,14 @@ const apiURL = "http://localhost:8000";
 export default function AddPeople({ currentProject, setMode }) {
   const [people, setPeople] = useState([]);
   const [addPeoplePopup, setAddPeoplePopup] = useState(false);
+  const [roles, setRoles] = useState([]);
+
+  useEffect(() => {
+    axios.get(`${apiURL}/roles/`).then((response) => {
+      console.log(response.data);
+      setRoles(response.data);
+    });
+  }, []);
 
   useEffect(() => {
     // Fetch data from backend using axios
@@ -30,10 +38,16 @@ export default function AddPeople({ currentProject, setMode }) {
           Add
         </button>
       </div>
-      <UsersTable people={people} />
+      <UsersTable
+        people={people}
+        roles={roles}
+        setPeople={setPeople}
+        currentProject={currentProject}
+      />
       {addPeoplePopup && (
         <AddPeoplePopup
           currentProject={currentProject}
+          roles={roles}
           setAddPeoplePopup={setAddPeoplePopup}
           people={people}
           setPeople={setPeople}

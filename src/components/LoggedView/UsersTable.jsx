@@ -1,55 +1,157 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import React from "react";
+import { useState, useMemo } from "react";
 import { useTable } from "react-table";
+import axios from "axios";
+import { getAccessToken } from "../../utils/access_token.js";
 
-export default function UsersTable({ people }) {
-  const data = React.useMemo(() => people, [people]);
+const apiURL = "http://localhost:8000";
+export default function UsersTable({
+  people,
+  setPeople,
+  roles,
+  currentProject,
+}) {
+  const [editingRowIndex, setEditingRowIndex] = useState(null);
+  const [role, setRole] = useState(null);
 
-  const columns = React.useMemo(
+  const handleSave = (row) => {
+    setEditingRowIndex(null);
+  };
+
+  const handleEdit = (row) => {
+    console.log("Edit", row);
+    setRole(row.original.role_name);
+    setEditingRowIndex(row.index);
+  };
+
+  const handleRemove = async (row) => {
+    console.log("Remove", row);
+    console.log(
+      JSON.stringify({
+        pid: currentProject.id,
+        uid: row.original.id,
+        //nije bitno koji rid stoji, moze bilo koji, to je samo da bih ispunio schemu iz backenda
+      }),
+    );
+    const payload = {
+      pid: currentProject.id,
+      uid: row.original.id,
+    };
+    try {
+      const response = await axios.delete(`${apiURL}/projects/remove_user/`, {
+        headers: {
+          Authorization: `Bearer ${getAccessToken()}`,
+          "Content-Type": "application/json",
+        },
+        data: payload,
+      });
+      //delete row
+      setPeople((prevPeople) =>
+        prevPeople.filter((person) => person.id !== row.original.id),
+      );
+    } catch (error) {
+      console.error("Error removing user:", error);
+    }
+  };
+
+  const renderActions = (row) => {
+    return editingRowIndex == row.index ? (
+      <>
+        <button
+          className="w-20 rounded bg-[#5051F9] px-2 py-1 text-white hover:bg-[#4646f8]"
+          onClick={() => handleSave(row)}
+        >
+          Save
+        </button>
+        <button
+          className="w-20 rounded bg-[#5051F9] px-2 py-1 text-white hover:bg-[#4646f8]"
+          onClick={() => setEditingRowIndex(null)}
+        >
+          Cancel
+        </button>
+      </>
+    ) : (
+      <>
+        <button
+          className="w-20 rounded bg-[#5051F9] px-2 py-1 text-white hover:bg-[#4646f8]"
+          onClick={() => {
+            handleEdit(row);
+          }}
+        >
+          Edit
+        </button>
+        <button
+          className="w-20 rounded bg-[#5051F9] px-2 py-1 text-white hover:bg-[#4646f8]"
+          onClick={() => handleRemove(row)}
+        >
+          Remove
+        </button>
+      </>
+    );
+  };
+
+  const renderRoleSelect = (row) => {
+    if (!row.original) {
+      return null;
+    }
+    return editingRowIndex === row.index ? (
+      <select
+        value={roles.find((roleItem) => roleItem.name === role).id}
+        onChange={(e) =>
+          setRole(e.target.options[e.target.options.selectedIndex].text)
+        }
+        className="w-36 rounded bg-[#5F6388] px-2 py-1 text-white"
+      >
+        {roles.map((role) => (
+          <option key={role.id} value={role.id}>
+            {role.name}
+          </option>
+        ))}
+      </select>
+    ) : (
+      row.original.role_name
+    );
+  };
+
+  const data = useMemo(() => people, [people]);
+
+  const columns = useMemo(
     () => [
       {
         Header: "First Name",
         accessor: "firstName",
-        width: 100,
+        width: 200,
       },
       {
         Header: "Last Name",
         accessor: "lastName",
-        width: 100,
+        width: 200,
       },
       {
         Header: "Email",
         accessor: "email",
-        width: 100,
+        width: 200,
       },
       {
         Header: "Role",
         accessor: "role_name",
-        width: 100,
+        width: 200,
+        Cell: ({ row }) =>
+          editingRowIndex == row.index
+            ? renderRoleSelect(role)
+            : row.original.role_name,
       },
       {
         Header: "Actions",
         accessor: "actions",
-        width: 150,
+        width: 200,
         Cell: ({ row }) => (
-          <div className="flex space-x-2">
-            <button
-              onClick={() => handleEdit(row.original)}
-              className="w-20 rounded bg-[#5051F9] px-2 py-1 text-white hover:bg-[#4646f8]"
-            >
-              Edit
-            </button>
-            <button
-              onClick={() => handleRemove(row.original)}
-              className="w-20 rounded bg-[#5051F9] px-2 py-1 text-white hover:bg-[#4646f8]"
-            >
-              Remove
-            </button>
-          </div>
+          <div className="flex space-x-2">{renderActions(row)}</div>
         ),
       },
     ],
-    [],
+    [editingRowIndex, role],
   );
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
@@ -90,7 +192,10 @@ export default function UsersTable({ people }) {
                         style={{ width: cell.column.width }} // Primena širine kolone
                         className="whitespace-nowrap px-6 py-4 text-sm text-gray-400"
                       >
-                        {cell.render("Cell")}
+                        {editingRowIndex === row.index &&
+                        cell.column.id === "role_name"
+                          ? renderRoleSelect(row)
+                          : cell.render("Cell")}
                       </td>
                     ))}
                   </tr>

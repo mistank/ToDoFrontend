@@ -12,6 +12,7 @@ import {
 const apiURL = "http://localhost:8000";
 export default function AddPeoplePopup({
   currentProject,
+  roles,
   onClose,
   setPeople,
   people,
@@ -19,17 +20,11 @@ export default function AddPeoplePopup({
   const [isAddingNewMember, setIsAddingNewMember] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [usersNotOnProject, setUsersNotOnProject] = useState([]);
-  const [roles, setRoles] = useState([]);
   const [selectedRole, setSelectedRole] = useState(null);
   const [notifText, setNotifText] = useState(
     "Press Enter to add user to project",
   );
   const inputRef = useRef(null);
-
-  useEffect(() => {
-    axios.get(`${apiURL}/roles/`).then((response) => setRoles(response.data));
-    console.log(roles);
-  }, []);
 
   useEffect(() => {
     axios
