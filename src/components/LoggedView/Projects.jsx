@@ -87,19 +87,21 @@ export default function Projects({ currentProject, setCurrentProject }) {
       name: project.name,
       description: project.description,
       deadline: project.deadline,
+      owner: userInfo.id,
     };
     try {
       console.log("Creating project:", newProject);
       const response = await axios.post(`${apiURL}/projects/`, newProject, {
         headers: {
           Authorization: `Bearer ${getAccessToken()}`,
+          "Content-Type": "application/json",
         },
       });
       setProjects([...projects, response.data]);
     } catch (error) {
       if (error.response && error.response.status === 401) {
         alert("You are not authorized to view this page. Please log in");
-        logout();
+        //logout();
       }
       console.error("Failed to create project:", error);
     }

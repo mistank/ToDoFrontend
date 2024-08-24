@@ -23,7 +23,6 @@ export default function useRegularLogin() {
       });
       const accessToken = response.data.access_token;
       document.cookie = `accessToken=${accessToken}; path=/; max-age=3600; Secure; SameSite=Strict`;
-      //setUserInfo(response.data.user); // Pretpostavka da setUserInfo funkcija postavlja korisničke podatke u kontekst autentifikacije
       login(navigate); // Pretpostavka da login funkcija prima neke podatke iz odgovora
     } catch (error) {
       alert(("Error:", error.response.data.detail));
