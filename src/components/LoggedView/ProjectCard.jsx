@@ -45,6 +45,11 @@ export default function ProjectCard({
         <div className="flex items-center justify-between">
           <span>{formatDate(project.deadline)}</span>
         </div>
+        <div>
+          <span className="text-sm text-gray-400">
+            Project Owner: {project.user.firstName} {project.user.lastName}
+          </span>
+        </div>
         {projectOptionsVisible && (
           <ProjectOptionsModal
             project={project}

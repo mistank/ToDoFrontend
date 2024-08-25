@@ -14,6 +14,7 @@ export default function TaskCard({
   tasks,
   setTasks,
   projectId,
+  currentProject,
 }) {
   const [taskOptionsVisible, setTaskOptionsVisible] = useState(false);
   const [editTaskPopupVisible, setEditTaskPopupVisible] = useState(false);
@@ -119,6 +120,7 @@ export default function TaskCard({
             tasks={tasks}
             setTasks={setTasks}
             setEditTaskPopupVisible={setEditTaskPopupVisible} // Prosleđujemo ovde
+            currentProject={currentProject}
           />
         )}
       </div>

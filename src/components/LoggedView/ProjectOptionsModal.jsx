@@ -7,6 +7,8 @@ import delete_icon from "../../assets/icons/delete_icon.svg";
 import edit_icon from "../../assets/icons/edit_icon.svg";
 import star_icon from "../../assets/icons/star_icon.svg";
 import EditProjectPopup from "./EditProjectPopup.jsx";
+import { useContext } from "react";
+import { AuthContext } from "../AuthProvider.jsx";
 
 export default function ProjectOptionsModal({
   projectOptionsVisible,
@@ -23,7 +25,8 @@ export default function ProjectOptionsModal({
   currentProject,
 }) {
   const modalRef = useRef();
-
+  const { userInfo } = useContext(AuthContext);
+  const isOwner = userInfo.id === project.user.id;
   useEffect(() => {
     function handleClickOutside(event) {
       if (
@@ -68,7 +71,7 @@ export default function ProjectOptionsModal({
             Project options
           </span>
           <button
-            className="flex items-center justify-start gap-5 rounded-lg p-2 text-left hover:bg-gray-600 hover:bg-opacity-50"
+            className={`flex items-center justify-start gap-5 rounded-lg p-2 text-left hover:bg-gray-600 hover:bg-opacity-50 ${isOwner ? "" : "disabled-button"} `}
             onClick={() => {
               if (currentProject?.id === project.id) {
                 setCurrentProject(null); // Update state
@@ -79,17 +82,19 @@ export default function ProjectOptionsModal({
               );
               onClose();
             }}
+            disabled={!isOwner}
           >
             <img className="h-5 w-5" src={delete_icon} />
             Delete
           </button>
           <button
-            className="flex items-center justify-start gap-5 rounded-lg p-2 text-left hover:bg-gray-600 hover:bg-opacity-50"
+            className={`flex items-center justify-start gap-5 rounded-lg p-2 text-left hover:bg-gray-600 hover:bg-opacity-50 ${isOwner ? "" : "disabled-button"}`}
             onClick={() =>
               setEditProjectPopupVisible(
                 (editProjectPopupVisible) => !editProjectPopupVisible,
               )
             }
+            disabled={!isOwner}
           >
             <img className="h-5 w-5" src={edit_icon} />
             Edit

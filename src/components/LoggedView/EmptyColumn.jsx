@@ -1,18 +1,25 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
+import { useState, useContext } from "react";
 import add_cross from "../../assets/icons/add_plus.svg";
 import "../../App.css";
 import axios from "axios";
 import { getAccessToken } from "../../utils/access_token.js";
 import CreateStatusPopup from "./CreateStatusPopup.jsx";
+import { AuthContext } from "../AuthProvider.jsx";
 
 const apiURL = "http://localhost:8000";
 
-export default function EmptyColumn({ projectId, statuses, setStatuses }) {
+export default function EmptyColumn({
+  projectId,
+  statuses,
+  setStatuses,
+  currentProject,
+}) {
   const [isHovered, setIsHovered] = useState(false); // State za praćenje hover stanja
   const [isPopupVisible, setIsPopupVisible] = useState(false); // State za praćenje vidljivosti popup forme
   const [newStatus, setNewStatus] = useState(""); // State za praćenje unetog statusa
-
+  const { userInfo } = useContext(AuthContext);
+  const isOwner = userInfo.id === currentProject?.user.id;
   const addColumn = () => {
     axios
       .post(
@@ -57,12 +64,13 @@ export default function EmptyColumn({ projectId, statuses, setStatuses }) {
 
   return (
     <>
-      <div className="flex min-w-[25%] max-w-[30%] rounded-lg pr-8">
+      <div className="flex h-[90%] min-w-[25%] max-w-[30%] rounded-lg pr-8">
         <button
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
           onClick={showPopupForm}
-          className="flex h-[100%] w-full cursor-pointer flex-col items-center justify-center rounded-lg hover:border-2 hover:border-gray-400 hover:border-opacity-50"
+          className={`flex w-full cursor-pointer flex-col items-center justify-center rounded-lg hover:border-2 hover:border-gray-400 hover:border-opacity-50 ${isOwner ? "" : "disabled-button"}`}
+          disabled={!isOwner}
         >
           <img
             src={add_cross}

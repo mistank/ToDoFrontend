@@ -11,6 +11,7 @@ export default function UsersTable({
   setPeople,
   roles,
   currentProject,
+  isOwner,
 }) {
   const [editingRowIndex, setEditingRowIndex] = useState(null);
   const [role, setRole] = useState(null);
@@ -94,16 +95,18 @@ export default function UsersTable({
       row.original.role_name === "Project Owner" || (
         <>
           <button
-            className="w-20 rounded bg-[#5051F9] px-2 py-1 text-white hover:bg-[#4646f8]"
+            className={`w-20 rounded bg-[#5051F9] px-2 py-1 text-white hover:bg-[#4646f8] ${!isOwner ? "disabled-button" : ""}`}
             onClick={() => {
               handleEdit(row);
             }}
+            disabled={!isOwner}
           >
             Edit
           </button>
           <button
-            className="w-20 rounded bg-[#5051F9] px-2 py-1 text-white hover:bg-[#4646f8]"
+            className={`w-20 rounded bg-[#5051F9] px-2 py-1 text-white hover:bg-[#4646f8] ${!isOwner ? "disabled-button" : ""} `}
             onClick={() => handleRemove(row)}
+            disabled={!isOwner}
           >
             Remove
           </button>
@@ -180,11 +183,8 @@ export default function UsersTable({
 
   return (
     <>
-      <div className="shadow-lgs mt-5 h-[80vh] w-[100%] rounded-lg bg-[#1E1F25] p-8 text-white">
-        <table
-          {...getTableProps()}
-          className="min-w-full divide-y divide-[#5F6388]"
-        >
+      <div className="shadow-lgs scrollbar mt-5 h-[80vh] w-[100%] overflow-scroll rounded-lg bg-[#1E1F25] p-8 text-white">
+        <table {...getTableProps()} className="min-w-full">
           <thead>
             {headerGroups.map((headerGroup) => (
               <tr key={headerGroup.id} {...headerGroup.getHeaderGroupProps()}>
@@ -192,7 +192,7 @@ export default function UsersTable({
                   <th
                     key={column.id}
                     {...column.getHeaderProps()}
-                    className=" px-6 py-3 text-left text-sm font-medium uppercase tracking-wider text-gray-500"
+                    className="sticky top-0 bg-[#1E1F25] px-6 py-3 text-left text-sm font-medium uppercase tracking-wider text-gray-500"
                   >
                     {column.render("Header")}
                   </th>

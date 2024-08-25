@@ -45,38 +45,55 @@ export default function TaskBoard({ currentProject, setMode }) {
     }
   }, []); // Uklonjena je zavisnost od isTasksLoaded jer se koristi samo jednom za inicijalno učitavanje
 
-  return currentProject != null || currentProject != undefined ? ( // Dodata provera da li je currentProject postavljen
-    <div className="flex h-[100%] flex-row gap-6 text-white">
-      {statuses.map((status) => (
-        <Column
-          key={status.id}
-          status={status}
-          statuses={statuses}
-          setStatuses={setStatuses}
-          projectId={currentProject.id}
-          columnTasks={
-            tasks.length != 0
-              ? tasks.filter((task) => task.status.name === status.name)
-              : []
-          }
-          tasks={tasks}
-          setTasks={setTasks}
-        />
-      ))}
-      <EmptyColumn
-        statuses={statuses}
-        setStatuses={setStatuses}
-        projectId={currentProject.id}
-      />
-    </div>
-  ) : (
-    <div className="flex h-[100%] items-center justify-center">
-      <button
-        className="h-16 rounded-lg bg-[#5051F9] p-4 text-white"
-        onClick={() => setMode("projects-view")}
-      >
-        Select a Project
-      </button>
-    </div>
+  return (
+    <>
+      <div className="mb-6 flex items-center justify-between pr-8">
+        <h2 className="text-3xl font-bold">
+          Task Board - {currentProject?.name}
+        </h2>
+        <button
+          className="flex h-10 w-36 items-center justify-center rounded-lg bg-[#5051F9] p-4 text-white hover:bg-[#4646f8]"
+          onClick={() => setMode("projects-view")}
+        >
+          Change Project
+        </button>
+      </div>
+      {currentProject != null || currentProject != undefined ? ( // Dodata provera da li je currentProject postavljen
+        <div className="flex h-[100%]  flex-row gap-6 overflow-x-auto overflow-y-clip text-white">
+          {statuses.map((status) => (
+            <Column
+              key={status.id}
+              status={status}
+              statuses={statuses}
+              setStatuses={setStatuses}
+              projectId={currentProject.id}
+              columnTasks={
+                tasks.length != 0
+                  ? tasks.filter((task) => task.status.name === status.name)
+                  : []
+              }
+              tasks={tasks}
+              setTasks={setTasks}
+              currentProject={currentProject}
+            />
+          ))}
+          <EmptyColumn
+            statuses={statuses}
+            setStatuses={setStatuses}
+            projectId={currentProject.id}
+            currentProject={currentProject}
+          />
+        </div>
+      ) : (
+        <div className="flex h-[100%] items-center justify-center">
+          <button
+            className="h-16 rounded-lg bg-[#5051F9] p-4 text-white"
+            onClick={() => setMode("projects-view")}
+          >
+            Select a Project
+          </button>
+        </div>
+      )}
+    </>
   );
 }

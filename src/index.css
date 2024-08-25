@@ -8,3 +8,10 @@
   background: linear-gradient(to bottom, transparent, #1e1f25);
   pointer-events: none; /* Ovo osigurava da gradient ne ometa interakciju sa elementima ispod njega. */
 }
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}

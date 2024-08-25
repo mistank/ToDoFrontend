@@ -122,7 +122,6 @@ export default function Projects({ currentProject, setCurrentProject }) {
   };
 
   return (
-    // <div className="shadow-lgs mt-5 h-[80vh] w-[100%] rounded-lg bg-[#1E1F25] p-8 text-white">
     <div>
       <div className="mb-4 flex items-center justify-between">
         <h2 className="text-3xl font-bold">Projects</h2>

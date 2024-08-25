@@ -1,8 +1,9 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import UsersTable from "./UsersTable.jsx";
 import AddPeoplePopup from "./AddPeoplePopup.jsx";
+import { AuthContext } from "../AuthProvider.jsx";
 
 const apiURL = "http://localhost:8000";
 
@@ -10,6 +11,7 @@ export default function AddPeople({ currentProject, setMode }) {
   const [people, setPeople] = useState([]);
   const [addPeoplePopup, setAddPeoplePopup] = useState(false);
   const [roles, setRoles] = useState([]);
+  const auth = useContext(AuthContext);
 
   useEffect(() => {
     axios.get(`${apiURL}/roles/`).then((response) => {
@@ -19,21 +21,25 @@ export default function AddPeople({ currentProject, setMode }) {
   }, []);
 
   useEffect(() => {
-    // Fetch data from backend using axios
     if (!currentProject) return;
+    console.log("Current project", currentProject);
+    console.log("User info: ", auth.userInfo);
     axios
       .get(`${apiURL}/users-from-project/${currentProject.id}`)
       .then((response) => setPeople(response.data))
       .catch((error) => console.error("Error fetching data:", error));
   }, []);
 
+  const isOwner = auth.userInfo.id === currentProject?.user.id;
+
   return currentProject != null || currentProject != undefined ? (
     <>
-      <div className="mb-6 flex items-center justify-between">
+      <div className="mb-6 flex items-center justify-between pr-8">
         <h2 className="text-3xl font-bold">Add People</h2>
         <button
-          className="flex h-10 w-36 items-center justify-center rounded-lg bg-[#5051F9] p-4 text-white hover:bg-[#4646f8]"
+          className={`flex h-10 w-36 items-center justify-center rounded-lg bg-[#5051F9] p-4 text-white hover:bg-[#4646f8] ${!isOwner ? "disabled-button" : ""}`}
           onClick={() => setAddPeoplePopup(true)}
+          disabled={!isOwner}
         >
           Add
         </button>
@@ -43,6 +49,7 @@ export default function AddPeople({ currentProject, setMode }) {
         roles={roles}
         setPeople={setPeople}
         currentProject={currentProject}
+        isOwner={isOwner}
       />
       {addPeoplePopup && (
         <AddPeoplePopup

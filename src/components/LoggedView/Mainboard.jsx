@@ -39,10 +39,11 @@ export default function Mainboard({ mode, setMode }) {
   }
 
   return (
-    <main className="flex h-[100vh] w-[100vw] bg-[#131517]">
+    <main className="flex h-full w-full bg-[#131517]">
       <Sidebar setMode={setMode} currentProject={currentProject} />
-      <div className="flex h-[100%] w-[100%] flex-1 flex-col items-center justify-start pt-[7%] ">
-        <div className="scrollbar shadow-lgs mt-5 h-[80vh] w-[90vw] overflow-x-auto overflow-y-clip rounded-lg bg-[#1E1F25] p-8 text-white">
+      <div className="flex w-[100%] flex-col items-center justify-start">
+        {/* overflow-x-auto overflow-y-clip */}
+        <div className="scrollbar shadow-lgs mt-5 h-[85vh] w-[90vw] overflow-hidden rounded-lg bg-[#1E1F25] p-8 text-white">
           {form}
         </div>
       </div>

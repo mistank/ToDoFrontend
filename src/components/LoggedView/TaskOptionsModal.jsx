@@ -3,6 +3,8 @@
 import { useRef, useEffect } from "react";
 import delete_icon from "../../assets/icons/delete_icon.svg";
 import edit_icon from "../../assets/icons/edit_icon.svg";
+import { useContext } from "react";
+import { AuthContext } from "../AuthProvider.jsx";
 
 export default function TaskOptionsModal({
   taskOptionsVisible,
@@ -16,9 +18,12 @@ export default function TaskOptionsModal({
   editTask,
   deleteTask,
   setEditTaskPopupVisible, // Dodajemo ovde
+  currentProject,
 }) {
   const modalRef = useRef();
 
+  const auth = useContext(AuthContext);
+  const isOwner = auth.userInfo.id === currentProject.user.id;
   useEffect(() => {
     function handleClickOutside(event) {
       if (
@@ -50,23 +55,25 @@ export default function TaskOptionsModal({
         <div className="flex flex-col rounded-lg p-4">
           <span className="mb-2 pl-2 text-xs text-gray-400">Task options</span>
           <button
-            className="flex items-center justify-start gap-5 rounded-lg p-2 text-left hover:bg-gray-600 hover:bg-opacity-50"
+            className={`flex items-center justify-start gap-5 rounded-lg p-2 text-left hover:bg-gray-600 hover:bg-opacity-50 ${!isOwner ? "disabled-button" : ""}`}
             onClick={() => {
               deleteTask(task.id);
               setTasks(tasks.filter((t) => t.id !== task.id));
               onClose();
             }}
+            disabled={!isOwner}
           >
             <img className="h-5 w-5" src={delete_icon} />
             Delete
           </button>
           <button
-            className="flex items-center justify-start gap-5 rounded-lg p-2 text-left hover:bg-gray-600 hover:bg-opacity-50"
+            className={`flex items-center justify-start gap-5 rounded-lg p-2 text-left hover:bg-gray-600 hover:bg-opacity-50 ${!isOwner ? "disabled-button" : ""} `}
             onClick={() => {
               setEditTaskPopupVisible(
                 (editTaskPopupVisible) => !editTaskPopupVisible,
               );
             }}
+            disabled={!isOwner}
           >
             <img className="h-5 w-5" src={edit_icon} />
             Edit

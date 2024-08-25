@@ -19,13 +19,14 @@ export default function Column({
   statuses,
   setStatuses,
   projectId,
+  currentProject,
 }) {
   const { userInfo, setUserInfo, logout } = useContext(AuthContext);
   const [isDragOver, setIsDragOver] = useState(false);
   const [isTasksEmpty, setIsTasksEmpty] = useState(false); // State za praćenje da li su taskovi prazni
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const [people, setPeople] = useState([]);
-
+  const isOwner = userInfo.id === currentProject.user.id;
   const [newTask, setNewTask] = useState({
     name: "",
     description: "",
@@ -206,19 +207,22 @@ export default function Column({
   };
 
   return (
-    <div className="h-[100%] min-w-[20%] max-w-[25%] flex-1 rounded-lg">
-      <div className="mb-4 flex justify-between rounded-lg bg-gray-500 p-4 align-middle">
+    <div className="h-[100%] min-w-[20%] max-w-[25%] flex-1 overflow-x-visible rounded-lg">
+      <div className="mb-4 flex min-w-full justify-between rounded-lg bg-gray-500 p-4 align-middle">
         <h2 className="text-xl font-bold">
           {status.name} ({columnTasks.length})
         </h2>
         {isTasksEmpty ? (
-          <button className="w-6" onClick={() => deleteColumn()}>
+          <button
+            className={`w-6 ${isOwner ? "" : "hidden"}`}
+            onClick={() => deleteColumn()}
+          >
             <img src={delete_column} />
           </button>
         ) : null}
       </div>
       <div
-        className="no-scrollbar flex h-[80vh] flex-col gap-4 overflow-scroll pb-32"
+        className="no-scrollbar flex h-[80vh] flex-col gap-4 overflow-x-hidden pb-48"
         onDragOver={handleDragOver}
         onDragEnter={handleDragEnter}
         onDragLeave={handleDragLeave}
@@ -233,12 +237,14 @@ export default function Column({
             tasks={tasks}
             setTasks={setTasks}
             projectId={projectId}
+            currentProject={currentProject}
           />
         ))}
         {!isDragOver && (
           <button
-            className="flex w-full items-center gap-2 rounded-lg p-2 text-[#5F6388] hover:bg-black hover:bg-opacity-10"
+            className={`flex w-full items-center gap-2 rounded-lg p-2 text-[#5F6388] hover:bg-black hover:bg-opacity-10 ${isOwner ? "" : "hidden"}`}
             onClick={() => showPopupForm()}
+            disabled={!isOwner}
           >
             <img src={add_cross} className="h-5 w-5" />
             Add Task
