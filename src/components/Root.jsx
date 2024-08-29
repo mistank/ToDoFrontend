@@ -1,10 +1,13 @@
-import { AuthProvider } from './AuthProvider.jsx';
-import App from '../App.jsx';
+import { AuthProvider } from "./AuthProvider.jsx";
+import App from "../App.jsx";
+import { ThemeProvider } from "../ThemeContext.jsx";
 
 function Root() {
   return (
     <AuthProvider>
-      <App />
+      <ThemeProvider>
+        <App />
+      </ThemeProvider>
     </AuthProvider>
   );
 }

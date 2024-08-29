@@ -27,6 +27,7 @@ export default function Projects({ currentProject, setCurrentProject }) {
           deadline: project.deadline,
           creation_date: project.creation_date,
           id: project.id,
+          user: project.user,
         },
         {
           headers: {

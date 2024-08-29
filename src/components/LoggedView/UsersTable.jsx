@@ -1,9 +1,10 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import { useState, useMemo } from "react";
+import { useState, useMemo, useContext } from "react";
 import { useTable } from "react-table";
 import axios from "axios";
 import { getAccessToken } from "../../utils/access_token.js";
+import { ThemeContext } from "../../ThemeContext.jsx";
 
 const apiURL = "http://localhost:8000";
 export default function UsersTable({
@@ -15,6 +16,10 @@ export default function UsersTable({
 }) {
   const [editingRowIndex, setEditingRowIndex] = useState(null);
   const [role, setRole] = useState(null);
+  const { darkTheme } = useContext(ThemeContext);
+  const darkerColor = darkTheme ? "#131517" : "#F3F4F8";
+  const lighterColor = darkTheme ? "#1E1F25" : "#FBFAFF";
+  const textColor = darkTheme ? "#FFFFFF" : "#000000";
 
   const handleSave = (row) => {
     axios
@@ -183,8 +188,14 @@ export default function UsersTable({
 
   return (
     <>
-      <div className="shadow-lgs scrollbar mt-5 h-[80vh] w-[100%] overflow-scroll rounded-lg bg-[#1E1F25] p-8 text-white">
-        <table {...getTableProps()} className="min-w-full">
+      <div
+        className={`${darkTheme ? "scrollbar" : ""} shadow-lgs mt-5 h-[80vh] w-[100%] overflow-scroll rounded-lg p-8 text-white`}
+      >
+        <table
+          {...getTableProps()}
+          className="min-w-full rounded-lg"
+          style={{ backgroundColor: darkerColor }}
+        >
           <thead>
             {headerGroups.map((headerGroup) => (
               <tr key={headerGroup.id} {...headerGroup.getHeaderGroupProps()}>
@@ -192,7 +203,8 @@ export default function UsersTable({
                   <th
                     key={column.id}
                     {...column.getHeaderProps()}
-                    className="sticky top-0 bg-[#1E1F25] px-6 py-3 text-left text-sm font-medium uppercase tracking-wider text-gray-500"
+                    style={{ backgroundColor: darkerColor }}
+                    className="sticky top-0 rounded-lg px-6 py-3 text-left text-sm font-medium uppercase tracking-wider text-gray-500"
                   >
                     {column.render("Header")}
                   </th>

@@ -1,10 +1,13 @@
 /* eslint-disable react/prop-types */
 import Icons from "./Icons";
 import { useState } from "react";
+import { useContext } from "react";
+import { ThemeContext } from "../../ThemeContext.jsx";
 
 export default function Sidebar({ setMode, currentProject }) {
   const [isOpen, setIsOpen] = useState(false);
-
+  const { darkTheme, toggleTheme } = useContext(ThemeContext);
+  const color = darkTheme ? "#1E1F25" : "#FBFAFF";
   return (
     <>
       <button
@@ -32,8 +35,15 @@ export default function Sidebar({ setMode, currentProject }) {
           />
         </button>
       </div>
-      <section className=" z-10 flex w-20 flex-col items-center justify-center gap-10 bg-[#1E1F25] xs:hidden">
+      <section
+        style={{ backgroundColor: color }}
+        className={`relative z-10 flex w-20 flex-col items-center justify-center gap-10  xs:hidden`}
+      >
         <Icons setMode={setMode} currentProject={currentProject}></Icons>
+        <button
+          onClick={toggleTheme}
+          className="fixed bottom-5 h-10 w-10 rounded-lg bg-gray-400"
+        ></button>
       </section>
     </>
   );

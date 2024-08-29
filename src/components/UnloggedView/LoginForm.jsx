@@ -47,7 +47,7 @@ export default function LoginForm({ setMode }) {
           handleRegularLogin(event);
         }}
         type="submit"
-        className="w-[100%] rounded-md bg-blue-500 p-2 text-white"
+        className="w-[100%] rounded-md bg-[#5051F9] p-2 text-white"
       >
         Login
       </button>

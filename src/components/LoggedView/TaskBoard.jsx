@@ -59,7 +59,7 @@ export default function TaskBoard({ currentProject, setMode }) {
         </button>
       </div>
       {currentProject != null || currentProject != undefined ? ( // Dodata provera da li je currentProject postavljen
-        <div className="flex h-[100%]  flex-row gap-6 overflow-x-auto overflow-y-clip text-white">
+        <div className="flex h-[100%] flex-row gap-6 overflow-x-auto overflow-y-clip text-white">
           {statuses.map((status) => (
             <Column
               key={status.id}

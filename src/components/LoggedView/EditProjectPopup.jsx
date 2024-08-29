@@ -3,6 +3,8 @@ import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "../../index.css";
+import { useContext, useEffect } from "react";
+import { ThemeContext } from "../../ThemeContext.jsx";
 
 // bg-transparent border border-white border-solid rounded-3xl backdrop-filter backdrop-blur-md bg-opacity-10
 
@@ -14,6 +16,18 @@ export default function EditProjectPopup({ project, onClose, editProject }) {
   const [newProjectDeadline, setNewProjectDeadline] = useState(
     new Date(project.deadline),
   );
+  const { darkTheme } = useContext(ThemeContext);
+  const darkerColor = darkTheme ? "#131517" : "#F3F4F8";
+  const lighterColor = darkTheme ? "#1E1F25" : "#FBFAFF";
+  const textColor = darkTheme ? "#FFFFFF" : "#000000";
+
+  useEffect(() => {
+    document.documentElement.style.setProperty(
+      "--background-color",
+      darkerColor,
+    );
+    document.documentElement.style.setProperty("--text-color", textColor);
+  }, [darkerColor, textColor]);
 
   function handleSave() {
     project.name = newProjectName;
@@ -29,11 +43,18 @@ export default function EditProjectPopup({ project, onClose, editProject }) {
       style={{ zIndex: 1001 }}
       className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 backdrop-blur-sm backdrop-filter"
     >
-      <div className="flex w-[90vw] max-w-md flex-col rounded-lg bg-[#1E1F25] p-8 text-white shadow-2xl">
+      <div
+        style={{
+          backgroundColor: lighterColor,
+          color: textColor,
+        }}
+        className="flex w-[90vw] max-w-md flex-col rounded-lg p-8 shadow-2xl"
+      >
         <h2 className="mb-4 text-lg font-semibold">Edit project</h2>
         <label className="mx-2">Project Name</label>
         <input
           value={newProjectName}
+          style={{ backgroundColor: darkerColor }}
           type="text"
           placeholder="Task name"
           className="mb-4 w-full rounded-lg bg-[#131517] p-2 focus:outline-none"
@@ -43,6 +64,7 @@ export default function EditProjectPopup({ project, onClose, editProject }) {
         />
         <label className="mx-2">Project Description</label>
         <textarea
+          style={{ backgroundColor: darkerColor }}
           value={newProjectDescription}
           placeholder="Task description"
           onChange={(e) => {
@@ -53,11 +75,15 @@ export default function EditProjectPopup({ project, onClose, editProject }) {
         />
         <label className="mx-2">Project Deadline</label>
         <DatePicker
+          style={{
+            backgroundColor: darkerColor,
+            color: textColor,
+          }}
           selected={newProjectDeadline}
           onChange={(date) => {
             setNewProjectDeadline(date);
           }}
-          className="mb-4 w-[100%] rounded-lg bg-[#131517] p-2 text-white focus:outline-none"
+          className="custom-datepicker mb-4 w-[100%] rounded-lg bg-[#131517] p-2 text-white focus:outline-none"
           placeholderText="Task deadline"
           calendarClassName=""
           minDate={new Date()}

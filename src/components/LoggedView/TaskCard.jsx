@@ -5,6 +5,8 @@ import TaskOptionsModal from "./TaskOptionsModal.jsx";
 import EditTaskPopup from "./EditTaskPopup.jsx";
 import axios from "axios";
 import { getAccessToken } from "../../utils/access_token.js";
+import { useContext } from "react";
+import { ThemeContext } from "../../ThemeContext.jsx";
 
 const apiURL = "http://localhost:8000";
 export default function TaskCard({
@@ -19,6 +21,11 @@ export default function TaskCard({
   const [taskOptionsVisible, setTaskOptionsVisible] = useState(false);
   const [editTaskPopupVisible, setEditTaskPopupVisible] = useState(false);
   const [people, setPeople] = useState([]);
+
+  const { darkTheme } = useContext(ThemeContext);
+  const darkerColor = darkTheme ? "#131517" : "#F3F4F8";
+  const lighterColor = darkTheme ? "#1E1F25" : "#FBFAFF";
+  const textColor = darkTheme ? "#FFFFFF" : "#000000";
 
   const handleDragStart = (e) => {
     const taskJson = JSON.stringify(task); // Convert the task object to a JSON string
@@ -67,7 +74,8 @@ export default function TaskCard({
     <>
       <div
         draggable
-        className="relative flex flex-col gap-2 overflow-visible rounded-lg bg-gray-700 p-4"
+        style={{ border: `2px solid #5F6388`, color: textColor }}
+        className="relative flex flex-col gap-2 overflow-visible rounded-lg p-4"
         onDragStart={handleDragStart}
       >
         <div className="flex h-[35px] items-center justify-between">

@@ -2,11 +2,15 @@
 import { useContext, useEffect, useRef } from "react";
 import { AuthContext } from "../AuthProvider.jsx";
 import useGoogleLogout from "../hooks/useGoogleLogout.jsx";
+import { ThemeContext } from "../../ThemeContext.jsx";
 
 export default function UserModal({ isOpen, onClose, setMode }) {
   const modalRef = useRef();
   const { userInfo, logout } = useContext(AuthContext);
   const initiateGoogleLogout = useGoogleLogout();
+  const { darkTheme } = useContext(ThemeContext);
+  const color = darkTheme ? "#1E1F25" : "#FBFAFF";
+  const textColor = darkTheme ? "#FFFFFF" : "#000000";
 
   // Close modal when clicked outside
   useEffect(() => {
@@ -48,22 +52,40 @@ export default function UserModal({ isOpen, onClose, setMode }) {
         transition: "transform 0.3s ease-out",
         transform: "scale(1)",
         boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.3)",
+        backgroundColor: color,
+        textDecorationColor: textColor,
       }}
-      className="absolute right-0 top-[150%] z-50  min-h-48 min-w-48 rounded-md bg-[#1E1F25] text-[#D8DCF0] "
+      className="absolute right-0 top-[150%] z-50  min-h-48 min-w-48 rounded-md "
     >
       <div className="p-4">
         <img
           className="mx-auto h-16 w-16 rounded-full object-cover"
-          src="src/assets/icons/user.png"
+          src={`${darkTheme ? "/src/assets/icons/user.svg" : "/src/assets/icons/user-light.svg"}`}
           alt="Profile"
         />
-        <h2 className="mt-2 text-center text-lg font-semibold">
+        <h2
+          style={{
+            color: textColor,
+          }}
+          className="mt-2 text-center text-lg font-semibold"
+        >
           {userInfo.firstName + " " + userInfo.lastName}
         </h2>
-        <p className="mt-1 text-center text-sm">{userInfo.email}</p>
+        <p
+          style={{
+            color: textColor,
+          }}
+          className="mt-1 text-center text-sm"
+        >
+          {userInfo.email}
+        </p>
       </div>
       <button
-        className="w-full rounded px-4 py-2 text-[#D8DCF0]"
+        className="w-full rounded px-4 py-2"
+        style={{
+          backgroundColor: color,
+          color: textColor,
+        }}
         onClick={() => setMode("profile-settings")}
       >
         Edit Profile
@@ -73,7 +95,11 @@ export default function UserModal({ isOpen, onClose, setMode }) {
           handleLogout();
           onClose();
         }}
-        className="w-full rounded px-4 py-2 text-[#D8DCF0]"
+        className="w-full rounded px-4 py-2"
+        style={{
+          backgroundColor: color,
+          color: textColor,
+        }}
       >
         Logout
       </button>

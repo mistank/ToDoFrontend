@@ -82,8 +82,8 @@ body {
 
 /* Prilagođavanje osnovne boje pickera */
 .react-datepicker {
-  background-color: #2a2e35; /* Tamno siva */
-  color: white; /* Bela boja teksta */
+  background-color: var(--background-color);
+  color: var(--text-color);
   border: none;
   border-radius: 10px;
 }
@@ -113,17 +113,18 @@ body {
 
 /* Stilizovanje header-a date pickera */
 .react-datepicker__header {
-  background-color: #2a2e35; /* Tamno siva */
+  background-color: var(--background-color);
+  color: var(--text-color);
   border-bottom: none; /* Uklanjanje donje linije ako postoji */
 }
 
 /* Stilizovanje teksta trenutnog meseca */
 .react-datepicker__current-month {
-  color: white; /* Bela boja teksta */
+  color: var(--text-color);
 }
 
 .react-datepicker__day-name {
-  color: #9ca3af; /* Svetlo siva */
+  color: var(--text-color);
 }
 
 /* Stilizovanje navigacionih dugmadi */
@@ -140,6 +141,17 @@ body {
 .disabled-button {
   cursor: not-allowed;
   position: relative;
+}
+
+.custom-datepicker {
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+.custom-datepicker .react-datepicker__day--selected,
+.custom-datepicker .react-datepicker__day--keyboard-selected {
+  background-color: var(--background-color);
+  color: var(--text-color);
 }
 
 .disabled-button:hover::after {

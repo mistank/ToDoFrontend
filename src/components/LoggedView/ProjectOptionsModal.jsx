@@ -9,6 +9,7 @@ import star_icon from "../../assets/icons/star_icon.svg";
 import EditProjectPopup from "./EditProjectPopup.jsx";
 import { useContext } from "react";
 import { AuthContext } from "../AuthProvider.jsx";
+import { ThemeContext } from "../../ThemeContext.jsx";
 
 export default function ProjectOptionsModal({
   projectOptionsVisible,
@@ -27,6 +28,10 @@ export default function ProjectOptionsModal({
   const modalRef = useRef();
   const { userInfo } = useContext(AuthContext);
   const isOwner = userInfo.id === project.user.id;
+  const { darkTheme } = useContext(ThemeContext);
+  const darkerColor = darkTheme ? "#131517" : "#F3F4F8";
+  const lighterColor = darkTheme ? "#1E1F25" : "#FBFAFF";
+
   useEffect(() => {
     function handleClickOutside(event) {
       if (
@@ -63,8 +68,9 @@ export default function ProjectOptionsModal({
           animation: `${projectOptionsVisible ? "fadein 0.25s" : ""}`,
           transition: "transform 0.3s ease-out",
           boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.3)",
+          backgroundColor: lighterColor,
         }}
-        className="absolute right-[16px] top-[40px] w-56 rounded-lg bg-gray-700"
+        className="absolute right-[16px] top-[40px] w-56 rounded-lg"
       >
         <div className="flex flex-col rounded-lg p-4">
           <span className="mb-2 pl-2 text-xs text-gray-400">
@@ -104,7 +110,6 @@ export default function ProjectOptionsModal({
               className="flex items-center justify-start gap-5 rounded-lg p-2 text-left hover:bg-gray-600 hover:bg-opacity-50"
               onClick={() => {
                 setCurrentProject(project);
-
                 onClose();
               }}
             >

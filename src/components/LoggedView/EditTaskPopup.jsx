@@ -8,6 +8,8 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "../../index.css";
 import close from "../../assets/icons/close.png";
+import { useContext } from "react";
+import { ThemeContext } from "../../ThemeContext.jsx";
 
 // bg-transparent border border-white border-solid rounded-3xl backdrop-filter backdrop-blur-md bg-opacity-10
 
@@ -40,8 +42,20 @@ export default function EditTaskPopup({
   const [searchResults, setSearchResults] = useState([]);
   const [usersOnProject, setUsersOnProject] = useState([]);
   const [suggestedCompletion, setSuggestedCompletion] = useState("");
+  const { darkTheme } = useContext(ThemeContext);
+  const darkerColor = darkTheme ? "#131517" : "#F3F4F8";
+  const lighterColor = darkTheme ? "#1E1F25" : "#FBFAFF";
+  const textColor = darkTheme ? "#FFFFFF" : "#000000";
 
   const inputRef = useRef(null);
+
+  useEffect(() => {
+    document.documentElement.style.setProperty(
+      "--background-color",
+      darkerColor,
+    );
+    document.documentElement.style.setProperty("--text-color", textColor);
+  }, [darkerColor, textColor]);
 
   useEffect(() => {
     // Ako postoji potreba da se postavi fokus, možete to uraditi ovako
@@ -171,12 +185,21 @@ export default function EditTaskPopup({
       }}
       className="z-100 absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 backdrop-blur-sm backdrop-filter"
     >
-      <div className="w-[90vw] max-w-md rounded-lg bg-[#1E1F25] p-8 text-white shadow-2xl">
+      <div
+        className="w-[90vw] max-w-md rounded-lg p-8 text-white shadow-2xl"
+        style={{
+          backgroundColor: lighterColor,
+        }}
+      >
         <h2 className="mb-4 text-lg font-semibold">Edit Task</h2>
         <input
           value={newTaskName}
           type="text"
           placeholder="Task name"
+          style={{
+            backgroundColor: darkerColor,
+            color: textColor,
+          }}
           className="mb-4 w-full rounded-lg bg-[#131517] p-2 focus:outline-none"
           onChange={(e) => {
             setNewTaskName(e.target.value);
@@ -190,6 +213,10 @@ export default function EditTaskPopup({
           placeholder="Task description"
           onChange={(e) => {
             setNewTaskDescription(e.target.value);
+          }}
+          style={{
+            backgroundColor: darkerColor,
+            color: textColor,
           }}
           className="mb-4 max-h-48 w-full rounded-lg bg-[#131517] p-2 focus:outline-none"
           rows="3" // Adjust the number of rows as needed
@@ -209,33 +236,33 @@ export default function EditTaskPopup({
           styles={{
             placeholder: (provided) => ({
               ...provided,
-              color: "#9CA3AF",
             }),
             control: (provided) => ({
               ...provided,
-              backgroundColor: "#131517",
+              backgroundColor: darkerColor,
               borderColor: "transparent",
               boxShadow: "none",
               "&:hover": {
                 borderColor: "transparent",
               },
+
               marginBottom: "1rem",
             }),
             option: (provided, state) => ({
               ...provided,
-              backgroundColor: state.isSelected ? "#565656" : "transparent",
-              color: "#9CA3AF",
+              backgroundColor: state.isSelected ? darkerColor : "transparent",
+              color: textColor,
               "&:hover": {
-                backgroundColor: "#333333",
+                backgroundColor: lighterColor,
               },
             }),
             singleValue: (provided) => ({
               ...provided,
-              color: "#FFF",
+              color: textColor,
             }),
             menu: (provided) => ({
               ...provided,
-              backgroundColor: "#131517",
+              backgroundColor: darkerColor,
             }),
           }}
         />
@@ -245,14 +272,30 @@ export default function EditTaskPopup({
           onChange={(date) => {
             setNewTaskDeadline(date);
           }}
-          className="w-[100%] rounded-lg bg-[#131517] p-2 text-white focus:outline-none"
+          style={{
+            backgroundColor: darkerColor,
+            color: textColor,
+          }}
+          className="custom-datepicker w-[200%] rounded-lg p-2 text-white focus:outline-none"
           placeholderText="Task deadline"
           calendarClassName=""
           minDate={new Date()}
+          dateFormat="dd.MM.yyyy." //ovo mozda pokvari ubacivanje datuma u bazu pa obrati paznju
         />
         <div className="">
-          <div className="scrollbar my-4 flex h-36 flex-wrap overflow-y-scroll rounded-lg bg-[#131517] p-2">
-            <div className="mr-2 h-10 rounded-lg bg-gray-700 p-2">
+          <div
+            style={{
+              backgroundColor: darkerColor,
+              color: textColor,
+            }}
+            className={`${darkTheme ? "scrollbar" : ""} my-4 flex h-36 flex-wrap overflow-y-scroll rounded-lg p-2`}
+          >
+            <div
+              style={{
+                color: textColor,
+              }}
+              className="mr-2 h-10 rounded-lg p-2"
+            >
               Assigned to:{" "}
             </div>
             {people.length > 0 &&

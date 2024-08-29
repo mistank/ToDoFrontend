@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { getAccessToken } from "../../utils/access_token.js";
+import { useContext } from "react";
+import { ThemeContext } from "../../ThemeContext.jsx";
 import {
   RadioGroup,
   RadioButton,
@@ -25,6 +27,10 @@ export default function AddPeoplePopup({
     "Press Enter to add user to project",
   );
   const inputRef = useRef(null);
+  const { darkTheme } = useContext(ThemeContext);
+  const darkerColor = darkTheme ? "#131517" : "#F3F4F8";
+  const lighterColor = darkTheme ? "#1E1F25" : "#FBFAFF";
+  const textColor = darkTheme ? "#FFFFFF" : "#000000";
 
   useEffect(() => {
     axios
@@ -33,6 +39,10 @@ export default function AddPeoplePopup({
   }, [currentProject]);
 
   const handleAdd = async () => {
+    if (selectedRole == null) {
+      setNotifText("You must select the role before adding");
+      return;
+    }
     const user = usersNotOnProject.find(
       (user) => user.firstName + " " + user.lastName === searchTerm,
     );
@@ -77,10 +87,6 @@ export default function AddPeoplePopup({
 
   const handleKeyDown = async (e) => {
     if (e.key === "Enter") {
-      if (selectedRole == null) {
-        setNotifText("You must select the role before adding");
-        return;
-      }
       try {
         handleAdd();
       } catch (error) {
@@ -97,12 +103,19 @@ export default function AddPeoplePopup({
         }}
         className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 backdrop-blur-sm backdrop-filter"
       >
-        <div className="w-[90vw] max-w-md rounded-lg bg-[#1E1F25] p-8 text-white shadow-2xl">
+        <div
+          style={{
+            backgroundColor: lighterColor,
+            color: textColor,
+          }}
+          className="w-[90vw] max-w-md rounded-lg p-8 text-white shadow-2xl"
+        >
           <div>
             <div className="mb-10">
               <input
                 type="text"
                 value={searchTerm}
+                style={{ backgroundColor: darkerColor }}
                 onChange={handleInputChange}
                 onKeyDown={handleKeyDown}
                 className="mr-2 flex h-10 w-full items-center justify-between gap-3 rounded-lg bg-gray-400 p-2 focus:outline-none"
@@ -129,7 +142,9 @@ export default function AddPeoplePopup({
               </p>
             </div>
 
-            <div className="scrollbar mb-10 h-48 overflow-y-scroll">
+            <div
+              className={`${darkTheme ? "scrollbar" : ""} mb-10 h-48 overflow-y-scroll`}
+            >
               <RadioGroup onChange={handleRoleChange}>
                 {roles.map((role) => (
                   <RadioButton key={role.id} value={role.name}>
