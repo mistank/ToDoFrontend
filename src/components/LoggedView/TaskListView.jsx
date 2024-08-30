@@ -14,6 +14,9 @@ export default function TaskListView() {
   const [tasks, setTasks] = useState([]);
   const [activeButton, setActiveButton] = useState("Date");
   const [activeSubOption, setActiveSubOption] = useState("Today");
+  const [filterBy, setFilterBy] = useState("Today");
+  const [sortBy, setSortBy] = useState("date");
+
   const { darkTheme } = useContext(ThemeContext);
   const darkerColor = darkTheme ? "#131517" : "#F3F4F8";
   const lighterColor = darkTheme ? "#1E1F25" : "#FBFAFF";
@@ -61,9 +64,57 @@ export default function TaskListView() {
     margin: "5px", // Dodajte margin za razmak između dugmadi
   });
 
-  const sortedTasks = tasks.sort(
-    (a, b) => new Date(a.dueDate) - new Date(b.dueDate),
-  );
+  const filterTasks = (tasks) => {
+    if (filterBy === "Today") {
+      const today = new Date().toISOString().split("T")[0];
+      console.log("Danas je: ", today);
+      return tasks.filter((task) => task.deadline.split("T")[0] === today);
+    } else if (filterBy === "This week") {
+      const now = new Date();
+      const startOfWeek = new Date(now.setDate(now.getDate() - now.getDay()));
+      const endOfWeek = new Date(now.setDate(now.getDate() - now.getDay() + 6));
+      return tasks.filter(
+        (task) =>
+          new Date(task.deadline) >= startOfWeek &&
+          new Date(task.deadline) <= endOfWeek,
+      );
+    } else if (filterBy === "Next week") {
+      const now = new Date();
+      const startOfNextWeek = new Date(
+        now.setDate(now.getDate() - now.getDay() + 7 + 1),
+      );
+      const endOfNextWeek = new Date(
+        now.setDate(now.getDate() - now.getDay() + 13),
+      );
+      return tasks.filter(
+        (task) =>
+          new Date(task.deadline) >= startOfNextWeek &&
+          new Date(task.deadline) <= endOfNextWeek,
+      );
+    } else if (filterBy === "High") {
+      return tasks.filter((task) => task.priority === "High");
+    } else if (filterBy === "Medium") {
+      return tasks.filter((task) => task.priority === "Medium");
+    } else if (filterBy === "Low") {
+      return tasks.filter((task) => task.priority === "Low");
+    }
+    return tasks;
+  };
+
+  const sortTasks = (tasks) => {
+    if (sortBy === "date") {
+      return tasks.sort((a, b) => new Date(a.date) - new Date(b.date));
+    } else if (sortBy === "priority") {
+      const priorityOrder = ["High", "Medium", "Low"];
+      return tasks.sort(
+        (a, b) =>
+          priorityOrder.indexOf(a.priority) - priorityOrder.indexOf(b.priority),
+      );
+    }
+    return tasks;
+  };
+
+  const sortedAndFilteredTasks = sortTasks(filterTasks(tasks));
 
   const handleToggle = (button) => {
     setActiveButton(button);
@@ -71,6 +122,16 @@ export default function TaskListView() {
 
   const handleSubToggle = (option) => {
     setActiveSubOption(option);
+    if (["High", "Medium", "Low"].includes(option)) {
+      setSortBy("priority");
+      setFilterBy(option);
+    } else if (["Today", "This week", "Next week"].includes(option)) {
+      setSortBy("date");
+      setFilterBy(option);
+    } else {
+      setSortBy(null);
+      setFilterBy(null);
+    }
   };
 
   return (
@@ -146,7 +207,7 @@ export default function TaskListView() {
           </ButtonGroup>
         </ButtonToolbar>
       </div>
-      <TasksTable tasks={tasks} setTasks={setTasks} />
+      <TasksTable tasks={sortedAndFilteredTasks} setTasks={setTasks} />
     </>
   );
 }

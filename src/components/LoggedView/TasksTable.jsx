@@ -19,7 +19,7 @@ export default function TasksTable({ tasks, setTasks }) {
     const taskDeadline = moment(deadline).startOf("day");
     return taskDeadline.isSame(today)
       ? "Today"
-      : taskDeadline.format("DD-MM-YYYY");
+      : taskDeadline.format("DD.MM.YYYY.");
   };
 
   const data = useMemo(() => tasks, [tasks]);
@@ -46,6 +46,16 @@ export default function TasksTable({ tasks, setTasks }) {
         accessor: "deadline",
         width: 200,
         Cell: ({ value }) => renderDeadline(value),
+      },
+      {
+        Header: "Status",
+        accessor: "status.name",
+        width: 200,
+      },
+      {
+        Header: "Priority",
+        accessor: "priority",
+        width: 200,
       },
     ],
     [],
