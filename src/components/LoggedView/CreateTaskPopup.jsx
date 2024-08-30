@@ -6,6 +6,8 @@ import { getAccessToken } from "../../utils/access_token.js";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "../../index.css";
+import { useContext } from "react";
+import { ThemeContext } from "../../ThemeContext.jsx";
 
 // bg-transparent border border-white border-solid rounded-3xl backdrop-filter backdrop-blur-md bg-opacity-10
 
@@ -22,6 +24,18 @@ export default function CreateTaskPopup({
   const [newTaskDeadline, setNewTaskDeadline] = useState("");
   const [newTaskCategory, setNewTaskCategory] = useState(1);
   const [categories, setCategories] = useState([]);
+  const { darkTheme } = useContext(ThemeContext);
+  const darkerColor = darkTheme ? "#131517" : "#F3F4F8";
+  const lighterColor = darkTheme ? "#1E1F25" : "#FBFAFF";
+  const textColor = darkTheme ? "#FFFFFF" : "#000000";
+
+  useEffect(() => {
+    document.documentElement.style.setProperty(
+      "--background-color",
+      darkerColor,
+    );
+    document.documentElement.style.setProperty("--text-color", textColor);
+  }, [darkerColor, textColor]);
 
   useEffect(() => {
     async function fetchCategories() {
@@ -45,12 +59,16 @@ export default function CreateTaskPopup({
       style={{ zIndex: 1001 }}
       className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 backdrop-blur-sm backdrop-filter"
     >
-      <div className="w-[90vw] max-w-md rounded-lg bg-[#1E1F25] p-8 text-white shadow-2xl">
+      <div
+        style={{ backgroundColor: lighterColor, color: textColor }}
+        className="w-[90vw] max-w-md rounded-lg p-8 text-white shadow-2xl"
+      >
         <h2 className="mb-4 text-lg font-semibold">Add new Task</h2>
         <input
           type="text"
           placeholder="Task name"
-          className="mb-4 w-full rounded-lg bg-[#131517] p-2 focus:outline-none"
+          style={{ backgroundColor: darkerColor }}
+          className="mb-4 w-full rounded-lg p-2 focus:outline-none"
           onChange={(e) => setNewTask(e.target.value)}
         />
         {tasks.some((task) => task.name === newTask) && (
@@ -59,7 +77,8 @@ export default function CreateTaskPopup({
         <textarea
           placeholder="Task description"
           onChange={(e) => setNewTaskDescription(e.target.value)}
-          className="mb-4 max-h-48 w-full rounded-lg bg-[#131517] p-2 focus:outline-none"
+          style={{ backgroundColor: darkerColor }}
+          className="mb-4 max-h-48 w-full rounded-lg p-2 focus:outline-none"
           rows="3" // Adjust the number of rows as needed
         />
         <Select
@@ -80,7 +99,7 @@ export default function CreateTaskPopup({
             }),
             control: (provided) => ({
               ...provided,
-              backgroundColor: "#131517",
+              backgroundColor: darkerColor,
               borderColor: "transparent",
               boxShadow: "none",
               "&:hover": {
@@ -90,19 +109,19 @@ export default function CreateTaskPopup({
             }),
             option: (provided, state) => ({
               ...provided,
-              backgroundColor: state.isSelected ? "#565656" : "transparent",
-              color: "#9CA3AF",
+              backgroundColor: state.isSelected ? darkerColor : "transparent",
+              color: textColor,
               "&:hover": {
-                backgroundColor: "#333333",
+                backgroundColor: lighterColor,
               },
             }),
             singleValue: (provided) => ({
               ...provided,
-              color: "#FFF",
+              color: textColor,
             }),
             menu: (provided) => ({
               ...provided,
-              backgroundColor: "#131517",
+              backgroundColor: darkerColor,
             }),
           }}
         />
@@ -115,7 +134,8 @@ export default function CreateTaskPopup({
         <DatePicker
           selected={newTaskDeadline}
           onChange={(date) => setNewTaskDeadline(date)}
-          className="mb-4 w-[100%] rounded-lg bg-[#131517] p-2 text-white focus:outline-none"
+          style={{ backgroundColor: darkerColor }}
+          className="mb-4 w-[100%] rounded-lg  p-2 text-white focus:outline-none"
           placeholderText="Task deadline"
           calendarClassName=""
           minDate={new Date()}
@@ -136,13 +156,13 @@ export default function CreateTaskPopup({
               setNewTask("");
               onClose();
             }}
-            className="rounded-lg bg-[#5051F9] px-4 py-2 hover:bg-[#4646f8] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+            className="rounded-lg bg-[#5051F9] px-4 py-2 font-bold text-white hover:bg-[#4646f8] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
           >
             Add Task
           </button>
           <button
             onClick={onClose}
-            className="ml-4 rounded-lg bg-[#5051F9] px-4 py-2 hover:bg-[#4646f8] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+            className="ml-4 rounded-lg bg-[#5051F9] px-4 py-2 font-bold text-white hover:bg-[#4646f8] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
           >
             Cancel
           </button>

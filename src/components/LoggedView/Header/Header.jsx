@@ -19,7 +19,6 @@ export default function Header({ setMode }) {
           alt="logo"
         />
       </button>
-      {/* <SearchBar></SearchBar> */}
       <UserLog setMode={setMode}></UserLog>
     </header>
   );

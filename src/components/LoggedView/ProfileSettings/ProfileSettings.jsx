@@ -8,6 +8,7 @@ import { getAccessToken } from "../../../utils/access_token.js";
 import { getCsrfToken } from "../../../utils/csrf_token.js";
 import Details from "./Details.jsx";
 import ChangePasswordForm from "./ChangePassword.jsx";
+import { ThemeContext } from "../../../ThemeContext.jsx";
 
 const apiUrl = "http://localhost:8000";
 
@@ -19,6 +20,10 @@ export default function ProfileSettings({ setMode }) {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [detailsVisible, setDetailsVisible] = useState(true);
+  const { darkTheme } = useContext(ThemeContext);
+  const darkerColor = darkTheme ? "#131517" : "#F3F4F8";
+  const lighterColor = darkTheme ? "#1E1F25" : "#FBFAFF";
+  const textColor = darkTheme ? "#FFFFFF" : "#000000";
 
   const handleSave = async () => {
     // const csrfToken = getCsrfToken(); // Pretpostavka da imate ovu funkciju
@@ -85,7 +90,7 @@ export default function ProfileSettings({ setMode }) {
         <div>
           <button
             onClick={() => localStorage.setItem("mode", "projects-view")}
-            className="mr-4 rounded bg-gray-700 px-4 py-2 font-bold text-white hover:bg-gray-600"
+            className="mr-4 rounded bg-[#5051F9] px-4 py-2 font-bold text-white hover:bg-gray-600"
           >
             Cancel
           </button>
@@ -99,15 +104,15 @@ export default function ProfileSettings({ setMode }) {
           </button>
         </div>
       </div>
-      <div className="mb-4 flex space-x-4">
+      <div className="mb-4 flex space-x-4" style={{ color: textColor }}>
         <button
-          className={`${detailsVisible && "border-b-2 border-[#5051F9]"}  px-4 py-2 text-white`}
+          className={`${detailsVisible && "border-b-2 border-[#5051F9]"}  px-4 py-2`}
           onClick={() => setDetailsVisible(true)}
         >
           My details
         </button>
         <button
-          className={`${!detailsVisible && "border-b-2 border-[#5051F9]"} px-4 py-2 text-gray-400`}
+          className={`${!detailsVisible && "border-b-2 border-[#5051F9]"} px-4 py-2`}
           onClick={() => setDetailsVisible(false)}
         >
           Password

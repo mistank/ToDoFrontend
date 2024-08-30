@@ -189,54 +189,58 @@ export default function UsersTable({
   return (
     <>
       <div
-        className={`${darkTheme ? "scrollbar" : ""} shadow-lgs mt-5 h-[80vh] w-[100%] overflow-scroll rounded-lg p-8 text-white`}
+        className={`shadow-lgs flex h-[80vh] w-[100%] flex-col rounded-lg text-white`}
       >
-        <table
-          {...getTableProps()}
-          className="min-w-full rounded-lg"
-          style={{ backgroundColor: darkerColor }}
+        <div
+          className={`${darkTheme ? "scrollbar" : ""} h-[85%] w-[100%] overflow-y-scroll rounded-lg pt-8 text-white`}
         >
-          <thead>
-            {headerGroups.map((headerGroup) => (
-              <tr key={headerGroup.id} {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column) => (
-                  <th
-                    key={column.id}
-                    {...column.getHeaderProps()}
-                    style={{ backgroundColor: darkerColor }}
-                    className="sticky top-0 rounded-lg px-6 py-3 text-left text-sm font-medium uppercase tracking-wider text-gray-500"
-                  >
-                    {column.render("Header")}
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody {...getTableBodyProps()}>
-            {rows.map((row, i) => {
-              prepareRow(row);
-              return (
-                <>
-                  <tr key={i} {...row.getRowProps()}>
-                    {row.cells.map((cell) => (
-                      <td
-                        key={cell.column.id}
-                        {...cell.getCellProps()}
-                        style={{ width: cell.column.width }} // Primena širine kolone
-                        className="whitespace-nowrap px-6 py-4 text-sm text-gray-400"
-                      >
-                        {editingRowIndex === row.index &&
-                        cell.column.id === "role_name"
-                          ? renderRoleSelect(row)
-                          : cell.render("Cell")}
-                      </td>
-                    ))}
-                  </tr>
-                </>
-              );
-            })}
-          </tbody>
-        </table>
+          <table
+            {...getTableProps()}
+            className="min-w-full rounded-lg"
+            style={{ backgroundColor: lighterColor }}
+          >
+            <thead>
+              {headerGroups.map((headerGroup) => (
+                <tr key={headerGroup.id} {...headerGroup.getHeaderGroupProps()}>
+                  {headerGroup.headers.map((column) => (
+                    <th
+                      key={column.id}
+                      {...column.getHeaderProps()}
+                      style={{ backgroundColor: darkerColor }}
+                      className="sticky top-0 translate-y-[-50%] px-6 py-3 text-left text-sm font-medium uppercase tracking-wider text-gray-500"
+                    >
+                      {column.render("Header")}
+                    </th>
+                  ))}
+                </tr>
+              ))}
+            </thead>
+            <tbody {...getTableBodyProps()}>
+              {rows.map((row, i) => {
+                prepareRow(row);
+                return (
+                  <>
+                    <tr key={i} {...row.getRowProps()}>
+                      {row.cells.map((cell) => (
+                        <td
+                          key={cell.column.id}
+                          {...cell.getCellProps()}
+                          style={{ width: cell.column.width }} // Primena širine kolone
+                          className="whitespace-nowrap px-6 py-4 text-sm text-gray-400"
+                        >
+                          {editingRowIndex === row.index &&
+                          cell.column.id === "role_name"
+                            ? renderRoleSelect(row)
+                            : cell.render("Cell")}
+                        </td>
+                      ))}
+                    </tr>
+                  </>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
       </div>
     </>
   );

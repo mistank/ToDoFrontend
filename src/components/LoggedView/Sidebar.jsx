@@ -3,6 +3,8 @@ import Icons from "./Icons";
 import { useState } from "react";
 import { useContext } from "react";
 import { ThemeContext } from "../../ThemeContext.jsx";
+import "@theme-toggles/react/css/Classic.css";
+import { Classic } from "@theme-toggles/react";
 
 export default function Sidebar({ setMode, currentProject }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -37,13 +39,22 @@ export default function Sidebar({ setMode, currentProject }) {
       </div>
       <section
         style={{ backgroundColor: color }}
-        className={`relative z-10 flex w-20 flex-col items-center justify-center gap-10  xs:hidden`}
+        className={`relative z-10 flex w-20 flex-col items-center justify-center gap-5  xs:hidden`}
       >
         <Icons setMode={setMode} currentProject={currentProject}></Icons>
-        <button
-          onClick={toggleTheme}
-          className="fixed bottom-5 h-10 w-10 rounded-lg bg-gray-400"
-        ></button>
+        <Classic
+          duration={500}
+          toggle={toggleTheme}
+          toggled={darkTheme}
+          style={{
+            transform: "scale(2.5)",
+            color: "#5F6388",
+            width: "1rem",
+            height: "1rem",
+            position: "fixed",
+            bottom: "3rem",
+          }}
+        />
       </section>
     </>
   );

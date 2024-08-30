@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useContext } from "react";
+import { ThemeContext } from "../../../ThemeContext.jsx";
 
 export default function ChangePasswordForm() {
   const apiURL = "http://localhost:8000";
@@ -7,6 +9,10 @@ export default function ChangePasswordForm() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [token, setToken] = useState("");
+  const { darkTheme } = useContext(ThemeContext);
+  const darkerColor = darkTheme ? "#131517" : "#F3F4F8";
+  const lighterColor = darkTheme ? "#1E1F25" : "#FBFAFF";
+  const textColor = darkTheme ? "#FFFFFF" : "#000000";
 
   useEffect(() => {
     //get me an access token from cookies
@@ -46,13 +52,14 @@ export default function ChangePasswordForm() {
   }
 
   return (
-    <div className="flex h-full w-full flex-col">
-      <h2 className="text-2xl font-semibold text-white">Change Password</h2>
+    <div style={{ color: textColor }} className="flex h-full w-full flex-col">
+      <h2 className="text-2xl font-semibold">Change Password</h2>
       <div className="mt-5 flex w-full flex-col items-center justify-center">
         <input
           type="password"
           placeholder="Old Password"
-          className="w-full rounded-lg bg-[#131517] p-2 focus:outline-none"
+          style={{ backgroundColor: darkerColor }}
+          className="w-full rounded-lg p-2 focus:outline-none"
           onChange={(e) => {
             setPassword(e.target.value);
 
@@ -66,7 +73,8 @@ export default function ChangePasswordForm() {
         <input
           type="password"
           placeholder="New Password"
-          className="mt-4 w-full rounded-lg bg-[#131517] p-2 focus:outline-none"
+          style={{ backgroundColor: darkerColor }}
+          className="mt-4 w-full rounded-lg p-2 focus:outline-none"
           onChange={(e) => {
             setPassword(e.target.value);
           }}
@@ -74,7 +82,8 @@ export default function ChangePasswordForm() {
         <input
           type="password"
           placeholder="Confirm New Password"
-          className="mt-4 w-full rounded-lg bg-[#131517] p-2 focus:outline-none"
+          style={{ backgroundColor: darkerColor }}
+          className="mt-4 w-full rounded-lg p-2 focus:outline-none"
           onChange={(e) => {
             setConfirmPassword(e.target.value);
 
@@ -86,7 +95,7 @@ export default function ChangePasswordForm() {
           }}
         />
         <button
-          className="mt-5 rounded-lg bg-[#5051F9] px-4 py-2 hover:bg-[#4646f8] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+          className="bold mt-5 rounded-lg bg-[#5051F9] px-4 py-2 font-bold text-white hover:bg-[#4646f8] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
           onClick={(e) => {
             e.preventDefault();
             if (password !== confirmPassword) {

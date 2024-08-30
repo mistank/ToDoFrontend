@@ -9,7 +9,8 @@ import projects_icon from "../../assets/icons/menu-icons/projects_icon.svg";
 import projects_icon_white from "../../assets/icons/menu-icons/projects_icon_white.svg";
 import setting_icon from "../../assets/icons/menu-icons/setting_icon.svg";
 import setting_icon_white from "../../assets/icons/menu-icons/setting_icon_white.svg";
-import { useContext } from "react";
+import list_icon from "../../assets/icons/menu-icons/list_icon.svg";
+import list_icon_white from "../../assets/icons/menu-icons/list_icon_white.svg";
 
 export default function Icons({ setMode, currentProject }) {
   return (
@@ -20,6 +21,13 @@ export default function Icons({ setMode, currentProject }) {
         whiteIcon={projects_icon_white}
         onClick={() => {
           setMode("projects-view");
+        }}
+      />
+      <SidebarButton
+        icon={list_icon}
+        whiteIcon={list_icon_white}
+        onClick={() => {
+          setMode("task-list-view");
         }}
       />
       <SidebarButton

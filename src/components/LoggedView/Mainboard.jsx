@@ -7,6 +7,7 @@ import AddPeople from "./AddPeople.jsx";
 import { useState, useEffect } from "react";
 import { useContext } from "react";
 import { ThemeContext } from "../../ThemeContext.jsx";
+import TaskListView from "./TaskListView.jsx";
 
 export default function Mainboard({ mode, setMode }) {
   let form;
@@ -42,6 +43,9 @@ export default function Mainboard({ mode, setMode }) {
       break;
     case "add-people":
       form = <AddPeople setMode={setMode} currentProject={currentProject} />;
+      break;
+    case "task-list-view":
+      form = <TaskListView setMode={setMode} currentProject={currentProject} />;
       break;
   }
 
