@@ -146,23 +146,25 @@ export default function AddPeoplePopup({
               className={`${darkTheme ? "scrollbar" : ""} mb-10 h-48 overflow-y-scroll`}
             >
               <RadioGroup onChange={handleRoleChange}>
-                {roles.map((role) => (
-                  <RadioButton key={role.id} value={role.name}>
-                    {role.name}
-                  </RadioButton>
-                ))}
+                {roles
+                  .filter((role) => role.name != "Project Owner")
+                  .map((role) => (
+                    <RadioButton key={role.id} value={role.name}>
+                      {role.name}
+                    </RadioButton>
+                  ))}
               </RadioGroup>
             </div>
             <div className="flex justify-end">
               <button
                 onClick={handleAdd}
-                className="rounded-lg bg-[#5051F9] px-4 py-2 hover:bg-[#4646f8] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+                className="rounded-lg bg-[#5051F9] px-4 py-2 font-bold text-white hover:bg-[#4646f8] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
               >
                 Add
               </button>
               <button
                 onClick={onClose}
-                className="ml-4 rounded-lg bg-[#5051F9] px-4 py-2 hover:bg-[#4646f8] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+                className="ml-4 rounded-lg bg-[#5051F9] px-4 py-2 font-bold text-white hover:bg-[#4646f8] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
               >
                 Cancel
               </button>

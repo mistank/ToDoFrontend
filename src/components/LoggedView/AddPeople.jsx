@@ -4,14 +4,22 @@ import axios from "axios";
 import UsersTable from "./UsersTable.jsx";
 import AddPeoplePopup from "./AddPeoplePopup.jsx";
 import { AuthContext } from "../AuthProvider.jsx";
+import { ThemeContext } from "../../ThemeContext.jsx";
+import Select from "react-select";
 
 const apiURL = "http://localhost:8000";
 
 export default function AddPeople({ currentProject, setMode }) {
   const [people, setPeople] = useState([]);
+  const [fetchedPeople, setFetchedPeople] = useState([]);
   const [addPeoplePopup, setAddPeoplePopup] = useState(false);
   const [roles, setRoles] = useState([]);
+  const [roleFilter, setRoleFilter] = useState("");
   const auth = useContext(AuthContext);
+  const { darkTheme } = useContext(ThemeContext);
+  const darkerColor = darkTheme ? "#131517" : "#F3F4F8";
+  const lighterColor = darkTheme ? "#1E1F25" : "#FBFAFF";
+  const textColor = darkTheme ? "#FFFFFF" : "#000000";
 
   useEffect(() => {
     axios.get(`${apiURL}/roles/`).then((response) => {
@@ -21,28 +29,135 @@ export default function AddPeople({ currentProject, setMode }) {
   }, []);
 
   useEffect(() => {
+    console.log("Role filter", roleFilter);
+    if (roleFilter === "") {
+      setPeople(fetchedPeople);
+    } else {
+      setPeople(
+        fetchedPeople.filter((person) => person.role_name === roleFilter),
+      );
+    }
+  }, [roleFilter]);
+
+  useEffect(() => {
     if (!currentProject) return;
     console.log("Current project", currentProject);
     console.log("User info: ", auth.userInfo);
-    axios
-      .get(`${apiURL}/users-from-project/${currentProject.id}`)
-      .then((response) => setPeople(response.data))
-      .catch((error) => console.error("Error fetching data:", error));
+    fetchPeople();
   }, []);
 
+  const fetchPeople = () => {
+    axios
+      .get(`${apiURL}/users-from-project/${currentProject.id}`)
+      .then((response) => {
+        console.log("Fetched people:", response.data);
+        setFetchedPeople(response.data);
+        setPeople(response.data);
+      })
+      .catch((error) => console.error("Error fetching data:", error));
+  };
+
   const isOwner = auth.userInfo.id === currentProject?.user.id;
+
+  const handleSearch = (searchTerm) => {
+    if (searchTerm === "") {
+      fetchPeople();
+      return;
+    }
+    setPeople(
+      fetchedPeople.filter(
+        (person) =>
+          person.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          person.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          person.email.toLowerCase().includes(searchTerm.toLowerCase()),
+      ),
+    );
+  };
+
+  const handleSelectChange = (selectedOption, { action }) => {
+    if (
+      action === "clear" ||
+      action === "remove-value" ||
+      action === "deselect-option"
+    ) {
+      setRoleFilter("");
+    } else if (action === "select-option") {
+      setRoleFilter(selectedOption.value);
+    }
+  };
 
   return currentProject != null || currentProject != undefined ? (
     <>
       <div className="mb-6 flex items-center justify-between pr-8">
         <h2 className="text-3xl font-bold">Add People</h2>
-        <button
-          className={`flex h-10 w-36 items-center justify-center rounded-lg bg-[#5051F9] p-4 text-white hover:bg-[#4646f8] ${!isOwner ? "disabled-button" : ""}`}
-          onClick={() => setAddPeoplePopup(true)}
-          disabled={!isOwner}
-        >
-          Add
-        </button>
+        <div className="flex gap-10">
+          <input
+            style={{
+              backgroundColor: darkerColor,
+              color: textColor,
+            }}
+            className="h-10 w-64 rounded-lg p-4 focus:outline-none"
+            placeholder="Search by name, email.."
+            type="text"
+            onChange={(e) => handleSearch(e.target.value)}
+          />
+          {/* asdasdfa adsfasdf */}
+          <Select
+            onChange={handleSelectChange}
+            escapeClearsValue={true}
+            clearValue=""
+            isClearable={true}
+            defaultValue={roles.find((role) => role.value === roleFilter)}
+            options={roles.map((role) => ({
+              value: role.name,
+              label: role.name,
+            }))}
+            className="basic-single w-64 focus:outline-none"
+            classNamePrefix={"select"}
+            styles={{
+              focus: {
+                outline: "none",
+              },
+              placeholder: (provided) => ({
+                ...provided,
+                color: textColor,
+              }),
+              control: (provided) => ({
+                ...provided,
+                backgroundColor: darkerColor,
+                borderColor: darkerColor,
+                boxShadow: "none",
+                "&:hover": {
+                  borderColor: darkerColor,
+                },
+              }),
+              option: (provided, state) => ({
+                ...provided,
+                backgroundColor: state.isSelected ? darkerColor : "transparent",
+                color: textColor,
+                "&:hover": {
+                  backgroundColor: lighterColor,
+                },
+              }),
+              singleValue: (provided) => ({
+                ...provided,
+                color: textColor,
+              }),
+              menu: (provided) => ({
+                ...provided,
+                backgroundColor: darkerColor,
+                color: textColor,
+              }),
+            }}
+          />
+          <button
+            className={`flex h-10 w-36 items-center justify-center rounded-lg bg-[#5051F9] p-4 text-white hover:bg-[#4646f8] ${!isOwner ? "disabled-button" : ""}`}
+            onClick={() => setAddPeoplePopup(true)}
+            disabled={!isOwner}
+          >
+            Add
+          </button>
+        </div>
       </div>
       <UsersTable
         people={people}
@@ -50,6 +165,7 @@ export default function AddPeople({ currentProject, setMode }) {
         setPeople={setPeople}
         currentProject={currentProject}
         isOwner={isOwner}
+        setFetchedPeople={setFetchedPeople}
       />
       {addPeoplePopup && (
         <AddPeoplePopup

@@ -67,7 +67,7 @@ export default function TasksTable({ tasks, setTasks }) {
   return (
     <>
       <div
-        className={`shadow-lgs flex h-[80vh] w-[100%] flex-col rounded-lg text-white`}
+        className={`shadow-lgs flex h-[70vh] w-[100%] flex-col rounded-lg text-white`}
       >
         <div
           className={`${darkTheme ? "scrollbar" : ""} h-[85%] w-[100%] overflow-y-scroll rounded-lg pt-8 text-white`}
@@ -85,7 +85,7 @@ export default function TasksTable({ tasks, setTasks }) {
                       key={column.id}
                       {...column.getHeaderProps()}
                       style={{ backgroundColor: darkerColor }}
-                      className="sticky top-0 translate-y-[-50%] px-6 py-3 text-left text-sm font-medium uppercase tracking-wider text-gray-500"
+                      className="sticky top-0 h-16 translate-y-[-50%] px-6 py-3 text-left text-sm font-medium uppercase tracking-wider text-gray-500"
                     >
                       {column.render("Header")}
                     </th>

@@ -65,6 +65,7 @@ export default function Column({
           project_id: task.project.id,
           taskCategory_id: task.taskCategory.id,
           status_id: task.status.id,
+          priority: task.priority,
         },
         {
           headers: {
@@ -134,8 +135,10 @@ export default function Column({
     newTaskDescription,
     newTaskDeadline,
     newTaskCategory,
+    newTaskPriority,
   ) {
     try {
+      console.log("Deadline provera", newTaskDeadline);
       const response = await axios.post(
         `${apiURL}/tasks/`,
         {
@@ -145,6 +148,7 @@ export default function Column({
           project_id: projectId,
           deadline: newTaskDeadline,
           taskCategory_id: newTaskCategory.id,
+          priority: newTaskPriority,
         },
         {
           headers: {

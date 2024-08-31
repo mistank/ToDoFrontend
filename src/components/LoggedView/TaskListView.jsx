@@ -13,14 +13,18 @@ export default function TaskListView() {
   const { userInfo } = useContext(AuthContext);
   const [tasks, setTasks] = useState([]);
   const [activeButton, setActiveButton] = useState("Date");
-  const [activeSubOption, setActiveSubOption] = useState("Today");
-  const [filterBy, setFilterBy] = useState("Today");
+  const [activeSubOption, setActiveSubOption] = useState("");
+  const [filterBy, setFilterBy] = useState("");
   const [sortBy, setSortBy] = useState("date");
 
   const { darkTheme } = useContext(ThemeContext);
   const darkerColor = darkTheme ? "#131517" : "#F3F4F8";
   const lighterColor = darkTheme ? "#1E1F25" : "#FBFAFF";
   const textColor = darkTheme ? "#FFFFFF" : "#000000";
+
+  useEffect(() => {
+    setTasks((prevTasks) => sortTasks([...prevTasks], sortBy));
+  }, [sortBy]);
 
   const fetchUserTasks = (skip = 0, limit = 100) => {
     axios
@@ -65,6 +69,7 @@ export default function TaskListView() {
   });
 
   const filterTasks = (tasks) => {
+    console.log("Filter by: ", filterBy);
     if (filterBy === "Today") {
       const today = new Date().toISOString().split("T")[0];
       console.log("Danas je: ", today);
@@ -102,9 +107,12 @@ export default function TaskListView() {
   };
 
   const sortTasks = (tasks) => {
+    console.log("Sort by: ", sortBy);
     if (sortBy === "date") {
-      return tasks.sort((a, b) => new Date(a.date) - new Date(b.date));
+      console.log("Sortiram po datumu");
+      return tasks.sort((a, b) => new Date(a.deadline) - new Date(b.deadline));
     } else if (sortBy === "priority") {
+      console.log("Sortiram po prioritetu");
       const priorityOrder = ["High", "Medium", "Low"];
       return tasks.sort(
         (a, b) =>
@@ -118,15 +126,22 @@ export default function TaskListView() {
 
   const handleToggle = (button) => {
     setActiveButton(button);
+    setActiveSubOption(null);
+    setFilterBy("");
+    if (button === "Date") {
+      setSortBy("date");
+    } else if (button === "Priority") {
+      setSortBy("priority");
+    }
   };
 
   const handleSubToggle = (option) => {
     setActiveSubOption(option);
     if (["High", "Medium", "Low"].includes(option)) {
-      setSortBy("priority");
+      setSortBy("date");
       setFilterBy(option);
     } else if (["Today", "This week", "Next week"].includes(option)) {
-      setSortBy("date");
+      setSortBy("priority");
       setFilterBy(option);
     } else {
       setSortBy(null);

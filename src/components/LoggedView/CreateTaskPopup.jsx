@@ -23,11 +23,13 @@ export default function CreateTaskPopup({
   const [newTaskDescription, setNewTaskDescription] = useState("");
   const [newTaskDeadline, setNewTaskDeadline] = useState("");
   const [newTaskCategory, setNewTaskCategory] = useState(1);
+  const [newTaskPriority, setNewTaskPriority] = useState("");
   const [categories, setCategories] = useState([]);
   const { darkTheme } = useContext(ThemeContext);
   const darkerColor = darkTheme ? "#131517" : "#F3F4F8";
   const lighterColor = darkTheme ? "#1E1F25" : "#FBFAFF";
   const textColor = darkTheme ? "#FFFFFF" : "#000000";
+  const priorities = ["Low", "Medium", "High"];
 
   useEffect(() => {
     document.documentElement.style.setProperty(
@@ -133,12 +135,58 @@ export default function CreateTaskPopup({
           /> */}
         <DatePicker
           selected={newTaskDeadline}
-          onChange={(date) => setNewTaskDeadline(date)}
+          onChange={(date) =>
+            setNewTaskDeadline(date.setHours(23, 59, 58, 999))
+          }
           style={{ backgroundColor: darkerColor }}
-          className="mb-4 w-[100%] rounded-lg  p-2 text-white focus:outline-none"
+          className="custom-datepicker mb-4 w-[100%] rounded-lg  p-2 text-white focus:outline-none"
           placeholderText="Task deadline"
           calendarClassName=""
           minDate={new Date()}
+        />
+        <Select
+          value={priorities.find(
+            (priority) => priority.value === newTaskPriority,
+          )}
+          onChange={(selectedOption) =>
+            setNewTaskPriority(selectedOption.value)
+          }
+          options={priorities.map((priority) => ({
+            value: priority,
+            label: priority,
+          }))}
+          styles={{
+            placeholder: (provided) => ({
+              ...provided,
+              color: "#9CA3AF",
+            }),
+            control: (provided) => ({
+              ...provided,
+              backgroundColor: darkerColor,
+              borderColor: "transparent",
+              boxShadow: "none",
+              "&:hover": {
+                borderColor: "transparent",
+              },
+              marginBottom: "1rem",
+            }),
+            option: (provided, state) => ({
+              ...provided,
+              backgroundColor: state.isSelected ? darkerColor : "transparent",
+              color: textColor,
+              "&:hover": {
+                backgroundColor: lighterColor,
+              },
+            }),
+            singleValue: (provided) => ({
+              ...provided,
+              color: textColor,
+            }),
+            menu: (provided) => ({
+              ...provided,
+              backgroundColor: darkerColor,
+            }),
+          }}
         />
         <div>
           <button
@@ -152,6 +200,7 @@ export default function CreateTaskPopup({
                 newTaskDescription,
                 newTaskDeadline,
                 newTaskCategory,
+                newTaskPriority,
               );
               setNewTask("");
               onClose();

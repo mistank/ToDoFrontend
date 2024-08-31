@@ -35,6 +35,7 @@ export default function EditTaskPopup({
     new Date(task.deadline),
   );
   const [newTaskCategory, setNewTaskCategory] = useState(task.taskCategory);
+  const [newTaskPriority, setNewTaskPriority] = useState(task.priority);
   const [categories, setCategories] = useState([]);
   const [isAddingNewMember, setIsAddingNewMember] = useState(false);
   const [newMemberName, setNewMemberName] = useState("");
@@ -46,6 +47,7 @@ export default function EditTaskPopup({
   const darkerColor = darkTheme ? "#131517" : "#F3F4F8";
   const lighterColor = darkTheme ? "#1E1F25" : "#FBFAFF";
   const textColor = darkTheme ? "#FFFFFF" : "#000000";
+  const priorities = ["Low", "Medium", "High"];
 
   const inputRef = useRef(null);
 
@@ -139,6 +141,7 @@ export default function EditTaskPopup({
     task.description = newTaskDescription;
     task.deadline = new Date(newTaskDeadline);
     task.taskCategory = newTaskCategory;
+    task.priority = newTaskPriority;
     console.log("Task edited:", task);
     editTask(task);
     onClose();
@@ -270,17 +273,64 @@ export default function EditTaskPopup({
         <DatePicker
           selected={newTaskDeadline}
           onChange={(date) => {
-            setNewTaskDeadline(date);
+            setNewTaskDeadline(date.setHours(23, 59, 58, 999));
           }}
           style={{
             backgroundColor: darkerColor,
             color: textColor,
           }}
-          className="custom-datepicker w-[200%] rounded-lg p-2 text-white focus:outline-none"
+          className="custom-datepicker mb-4 w-[200%] rounded-lg p-2 text-white focus:outline-none"
           placeholderText="Task deadline"
           calendarClassName=""
           minDate={new Date()}
           dateFormat="dd.MM.yyyy." //ovo mozda pokvari ubacivanje datuma u bazu pa obrati paznju
+        />
+        <Select
+          value={
+            newTaskPriority && {
+              value: newTaskPriority,
+              label: newTaskPriority,
+            }
+          }
+          onChange={(selectedOption) =>
+            setNewTaskPriority(selectedOption.value)
+          }
+          options={priorities.map((priority) => ({
+            value: priority,
+            label: priority,
+          }))}
+          styles={{
+            placeholder: (provided) => ({
+              ...provided,
+              color: "#9CA3AF",
+            }),
+            control: (provided) => ({
+              ...provided,
+              backgroundColor: darkerColor,
+              borderColor: "transparent",
+              boxShadow: "none",
+              "&:hover": {
+                borderColor: "transparent",
+              },
+              marginBottom: "1rem",
+            }),
+            option: (provided, state) => ({
+              ...provided,
+              backgroundColor: state.isSelected ? darkerColor : "transparent",
+              color: textColor,
+              "&:hover": {
+                backgroundColor: lighterColor,
+              },
+            }),
+            singleValue: (provided) => ({
+              ...provided,
+              color: textColor,
+            }),
+            menu: (provided) => ({
+              ...provided,
+              backgroundColor: darkerColor,
+            }),
+          }}
         />
         <div className="">
           <div

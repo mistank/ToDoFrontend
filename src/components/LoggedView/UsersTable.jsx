@@ -13,6 +13,7 @@ export default function UsersTable({
   roles,
   currentProject,
   isOwner,
+  setFetchedPeople,
 }) {
   const [editingRowIndex, setEditingRowIndex] = useState(null);
   const [role, setRole] = useState(null);
@@ -30,6 +31,14 @@ export default function UsersTable({
       })
       .then((response) => {
         console.log(response.data);
+
+        setFetchedPeople((prevPeople) =>
+          prevPeople.map((person) =>
+            person.id === row.original.id
+              ? { ...person, role_name: role }
+              : person,
+          ),
+        );
         setPeople((prevPeople) =>
           prevPeople.map((person) =>
             person.id === row.original.id
@@ -132,11 +141,13 @@ export default function UsersTable({
         }
         className="w-36 rounded bg-[#5F6388] px-2 py-1 text-white"
       >
-        {roles.map((role) => (
-          <option key={role.id} value={role.id}>
-            {role.name}
-          </option>
-        ))}
+        {roles
+          .filter((role) => role.name != "Project Owner")
+          .map((role) => (
+            <option key={role.id} value={role.id}>
+              {role.name}
+            </option>
+          ))}
       </select>
     ) : (
       row.original.role_name
@@ -207,7 +218,7 @@ export default function UsersTable({
                       key={column.id}
                       {...column.getHeaderProps()}
                       style={{ backgroundColor: darkerColor }}
-                      className="sticky top-0 translate-y-[-50%] px-6 py-3 text-left text-sm font-medium uppercase tracking-wider text-gray-500"
+                      className="sticky top-0 h-16 translate-y-[-50%] px-6 py-3 text-left text-sm font-medium uppercase tracking-wider text-gray-500"
                     >
                       {column.render("Header")}
                     </th>
