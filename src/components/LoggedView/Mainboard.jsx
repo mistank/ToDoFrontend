@@ -55,11 +55,14 @@ export default function Mainboard({ mode, setMode }) {
       style={{ backgroundColor: darkerColor }}
     >
       <Sidebar setMode={setMode} currentProject={currentProject} />
-      <div className="flex w-[100%] flex-col items-center justify-start">
-        {/* overflow-x-auto overflow-y-clip */}
+      <div className="flex w-[100%] flex-col items-center justify-start px-5">
         <div
-          style={{ backgroundColor: lighterColor, color: textColor }}
-          className="scrollbar shadow-lgs mt-5 h-[85vh] w-[90vw] overflow-hidden rounded-lg p-8"
+          style={{
+            backgroundColor: lighterColor,
+            color: textColor,
+            flex: "1 1 0",
+          }}
+          className="scrollbar shadow-lgs mb-5 mt-5 w-full overflow-hidden rounded-lg p-8"
         >
           {form}
         </div>

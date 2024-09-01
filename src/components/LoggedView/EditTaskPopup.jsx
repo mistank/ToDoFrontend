@@ -10,6 +10,7 @@ import "../../index.css";
 import close from "../../assets/icons/close.png";
 import { useContext } from "react";
 import { ThemeContext } from "../../ThemeContext.jsx";
+import UploadFileSection from "./UploadFileSection.jsx";
 
 // bg-transparent border border-white border-solid rounded-3xl backdrop-filter backdrop-blur-md bg-opacity-10
 
@@ -186,231 +187,245 @@ export default function EditTaskPopup({
       style={{
         zIndex: 1001,
       }}
-      className="z-100 absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 backdrop-blur-sm backdrop-filter"
+      className="z-100 absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-30 backdrop-blur-sm backdrop-filter"
     >
       <div
-        className="w-[90vw] max-w-md rounded-lg p-8 text-white shadow-2xl"
+        className="flex flex-row gap-5 rounded-lg p-8 text-white shadow-2xl xs:flex-col-reverse"
         style={{
           backgroundColor: lighterColor,
         }}
       >
-        <h2 className="mb-4 text-lg font-semibold">Edit Task</h2>
-        <input
-          value={newTaskName}
-          type="text"
-          placeholder="Task name"
-          style={{
-            backgroundColor: darkerColor,
-            color: textColor,
-          }}
-          className="mb-4 w-full rounded-lg bg-[#131517] p-2 focus:outline-none"
-          onChange={(e) => {
-            setNewTaskName(e.target.value);
-          }}
-        />
-        {tasks.some((task) => task.name === newTask) && (
-          <p className="mb-4 text-[#D8000C]">Task already exists</p>
-        )}
-        <textarea
-          value={newTaskDescription}
-          placeholder="Task description"
-          onChange={(e) => {
-            setNewTaskDescription(e.target.value);
-          }}
-          style={{
-            backgroundColor: darkerColor,
-            color: textColor,
-          }}
-          className="mb-4 max-h-48 w-full rounded-lg bg-[#131517] p-2 focus:outline-none"
-          rows="3" // Adjust the number of rows as needed
-        />
-        <Select
-          value={{
-            value: newTaskCategory,
-            label: newTaskCategory.name,
-          }}
-          onChange={(selectedOption) => {
-            setNewTaskCategory(selectedOption.value);
-          }}
-          options={categories.map((category) => ({
-            value: category,
-            label: category.name,
-          }))}
-          styles={{
-            placeholder: (provided) => ({
-              ...provided,
-            }),
-            control: (provided) => ({
-              ...provided,
-              backgroundColor: darkerColor,
-              borderColor: "transparent",
-              boxShadow: "none",
-              "&:hover": {
-                borderColor: "transparent",
-              },
-
-              marginBottom: "1rem",
-            }),
-            option: (provided, state) => ({
-              ...provided,
-              backgroundColor: state.isSelected ? darkerColor : "transparent",
+        <div className="w-[30vw] xs:w-[60vw]">
+          <h2
+            style={{
               color: textColor,
-              "&:hover": {
-                backgroundColor: lighterColor,
-              },
-            }),
-            singleValue: (provided) => ({
-              ...provided,
-              color: textColor,
-            }),
-            menu: (provided) => ({
-              ...provided,
-              backgroundColor: darkerColor,
-            }),
-          }}
-        />
-
-        <DatePicker
-          selected={newTaskDeadline}
-          onChange={(date) => {
-            setNewTaskDeadline(date.setHours(23, 59, 58, 999));
-          }}
-          style={{
-            backgroundColor: darkerColor,
-            color: textColor,
-          }}
-          className="custom-datepicker mb-4 w-[200%] rounded-lg p-2 text-white focus:outline-none"
-          placeholderText="Task deadline"
-          calendarClassName=""
-          minDate={new Date()}
-          dateFormat="dd.MM.yyyy." //ovo mozda pokvari ubacivanje datuma u bazu pa obrati paznju
-        />
-        <Select
-          value={
-            newTaskPriority && {
-              value: newTaskPriority,
-              label: newTaskPriority,
-            }
-          }
-          onChange={(selectedOption) =>
-            setNewTaskPriority(selectedOption.value)
-          }
-          options={priorities.map((priority) => ({
-            value: priority,
-            label: priority,
-          }))}
-          styles={{
-            placeholder: (provided) => ({
-              ...provided,
-              color: "#9CA3AF",
-            }),
-            control: (provided) => ({
-              ...provided,
-              backgroundColor: darkerColor,
-              borderColor: "transparent",
-              boxShadow: "none",
-              "&:hover": {
-                borderColor: "transparent",
-              },
-              marginBottom: "1rem",
-            }),
-            option: (provided, state) => ({
-              ...provided,
-              backgroundColor: state.isSelected ? darkerColor : "transparent",
-              color: textColor,
-              "&:hover": {
-                backgroundColor: lighterColor,
-              },
-            }),
-            singleValue: (provided) => ({
-              ...provided,
-              color: textColor,
-            }),
-            menu: (provided) => ({
-              ...provided,
-              backgroundColor: darkerColor,
-            }),
-          }}
-        />
-        <div className="">
-          <div
+            }}
+            className="mb-4 text-lg font-semibold"
+          >
+            Edit Task
+          </h2>
+          <input
+            value={newTaskName}
+            type="text"
+            placeholder="Task name"
             style={{
               backgroundColor: darkerColor,
               color: textColor,
             }}
-            className={`${darkTheme ? "scrollbar" : ""} my-4 flex h-36 flex-wrap overflow-y-scroll rounded-lg p-2`}
-          >
+            className="mb-4 w-full rounded-lg bg-[#131517] p-2 focus:outline-none"
+            onChange={(e) => {
+              setNewTaskName(e.target.value);
+            }}
+          />
+          {tasks.some((task) => task.name === newTask) && (
+            <p className="mb-4 text-[#D8000C]">Task already exists</p>
+          )}
+          <textarea
+            value={newTaskDescription}
+            placeholder="Task description"
+            onChange={(e) => {
+              setNewTaskDescription(e.target.value);
+            }}
+            style={{
+              backgroundColor: darkerColor,
+              color: textColor,
+            }}
+            className="mb-4 max-h-48 w-full rounded-lg bg-[#131517] p-2 focus:outline-none"
+            rows="3" // Adjust the number of rows as needed
+          />
+          <Select
+            value={{
+              value: newTaskCategory,
+              label: newTaskCategory.name,
+            }}
+            onChange={(selectedOption) => {
+              setNewTaskCategory(selectedOption.value);
+            }}
+            options={categories.map((category) => ({
+              value: category,
+              label: category.name,
+            }))}
+            styles={{
+              placeholder: (provided) => ({
+                ...provided,
+              }),
+              control: (provided) => ({
+                ...provided,
+                backgroundColor: darkerColor,
+                borderColor: "transparent",
+                boxShadow: "none",
+                "&:hover": {
+                  borderColor: "transparent",
+                },
+
+                marginBottom: "1rem",
+              }),
+              option: (provided, state) => ({
+                ...provided,
+                backgroundColor: state.isSelected ? darkerColor : "transparent",
+                color: textColor,
+                "&:hover": {
+                  backgroundColor: lighterColor,
+                },
+              }),
+              singleValue: (provided) => ({
+                ...provided,
+                color: textColor,
+              }),
+              menu: (provided) => ({
+                ...provided,
+                backgroundColor: darkerColor,
+              }),
+            }}
+          />
+
+          <DatePicker
+            selected={newTaskDeadline}
+            onChange={(date) => {
+              setNewTaskDeadline(date.setHours(23, 59, 58, 999));
+            }}
+            style={{
+              backgroundColor: darkerColor,
+              color: textColor,
+            }}
+            className="custom-datepicker mb-4 w-full rounded-lg p-2 text-white focus:outline-none"
+            placeholderText="Task deadline"
+            calendarClassName=""
+            minDate={new Date()}
+            dateFormat="dd.MM.yyyy." //ovo mozda pokvari ubacivanje datuma u bazu pa obrati paznju
+          />
+          <Select
+            value={
+              newTaskPriority && {
+                value: newTaskPriority,
+                label: newTaskPriority,
+              }
+            }
+            onChange={(selectedOption) =>
+              setNewTaskPriority(selectedOption.value)
+            }
+            options={priorities.map((priority) => ({
+              value: priority,
+              label: priority,
+            }))}
+            styles={{
+              placeholder: (provided) => ({
+                ...provided,
+                color: "#9CA3AF",
+              }),
+              control: (provided) => ({
+                ...provided,
+                backgroundColor: darkerColor,
+                borderColor: "transparent",
+                boxShadow: "none",
+                "&:hover": {
+                  borderColor: "transparent",
+                },
+                marginBottom: "1rem",
+              }),
+              option: (provided, state) => ({
+                ...provided,
+                backgroundColor: state.isSelected ? darkerColor : "transparent",
+                color: textColor,
+                "&:hover": {
+                  backgroundColor: lighterColor,
+                },
+              }),
+              singleValue: (provided) => ({
+                ...provided,
+                color: textColor,
+              }),
+              menu: (provided) => ({
+                ...provided,
+                backgroundColor: darkerColor,
+              }),
+            }}
+          />
+          <div className="">
             <div
               style={{
+                backgroundColor: darkerColor,
                 color: textColor,
               }}
-              className="mr-2 h-10 rounded-lg p-2"
+              className={`${darkTheme ? "scrollbar" : ""} my-4 flex h-36 flex-wrap overflow-y-scroll rounded-lg p-2`}
             >
-              Assigned to:{" "}
-            </div>
-            {people.length > 0 &&
-              people.map((person) => (
-                <div
-                  key={person.id}
+              <div
+                style={{
+                  color: textColor,
+                }}
+                className="mr-2 h-10 rounded-lg p-2"
+              >
+                Assigned to:{" "}
+              </div>
+              {people.length > 0 &&
+                people.map((person) => (
+                  <div
+                    key={person.id}
+                    className="mb-2 mr-2 flex h-10 items-center justify-between gap-3 overflow-hidden text-nowrap rounded-lg bg-gray-400 p-2"
+                  >
+                    {person.firstName + " " + person.lastName}
+                    <button
+                      className="h-full cursor-pointer"
+                      onClick={() => removeFromTask(task.id, person.id)}
+                    >
+                      <img src={close} className="h-[50%]" />
+                    </button>
+                  </div>
+                ))}
+              {isAddingNewMember ? (
+                <div>
+                  <input
+                    type="text"
+                    value={searchTerm}
+                    onChange={handleInputChange}
+                    onKeyDown={handleKeyDown}
+                    className="mb-2 mr-2 flex h-10 items-center justify-between gap-3 rounded-lg bg-gray-400 p-2 focus:outline-none"
+                    placeholder="Enter new member name"
+                    list="users"
+                    ref={inputRef}
+                  />
+                  <datalist id="users">
+                    {usersOnProject
+                      .filter(
+                        (user) => !people.some((user2) => user2.id === user.id),
+                      )
+                      .map((user) => (
+                        <option
+                          key={user.id}
+                          value={user.firstName + " " + user.lastName}
+                        />
+                      ))}
+                  </datalist>
+                </div>
+              ) : (
+                <button
+                  onClick={handleAddNewMember}
                   className="mb-2 mr-2 flex h-10 items-center justify-between gap-3 rounded-lg bg-gray-400 p-2"
                 >
-                  {person.firstName + " " + person.lastName}
-                  <button
-                    className="h-full cursor-pointer"
-                    onClick={() => removeFromTask(task.id, person.id)}
-                  >
-                    <img src={close} className="h-[50%]" />
-                  </button>
-                </div>
-              ))}
-            {isAddingNewMember ? (
-              <div>
-                <input
-                  type="text"
-                  value={searchTerm}
-                  onChange={handleInputChange}
-                  onKeyDown={handleKeyDown}
-                  className="mb-2 mr-2 flex h-10 items-center justify-between gap-3 rounded-lg bg-gray-400 p-2 focus:outline-none"
-                  placeholder="Enter new member name"
-                  list="users"
-                  ref={inputRef}
-                />
-                <datalist id="users">
-                  {usersOnProject
-                    .filter(
-                      (user) => !people.some((user2) => user2.id === user.id),
-                    )
-                    .map((user) => (
-                      <option
-                        key={user.id}
-                        value={user.firstName + " " + user.lastName}
-                      />
-                    ))}
-                </datalist>
-              </div>
-            ) : (
-              <button
-                onClick={handleAddNewMember}
-                className="mb-2 mr-2 flex h-10 items-center justify-between gap-3 rounded-lg bg-gray-400 p-2"
-              >
-                Add New
-              </button>
-            )}
+                  Add New
+                </button>
+              )}
+            </div>
+          </div>
+          <div>
+            <button
+              onClick={handleSave}
+              className="rounded-lg bg-[#5051F9] px-4 py-2 hover:bg-[#4646f8] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+            >
+              Save
+            </button>
+            <button
+              onClick={onClose}
+              className="ml-4 rounded-lg bg-[#5051F9] px-4 py-2 hover:bg-[#4646f8] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+            >
+              Cancel
+            </button>
           </div>
         </div>
-        <div>
-          <button
-            onClick={handleSave}
-            className="rounded-lg bg-[#5051F9] px-4 py-2 hover:bg-[#4646f8] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
-          >
-            Save
-          </button>
-          <button
-            onClick={onClose}
-            className="ml-4 rounded-lg bg-[#5051F9] px-4 py-2 hover:bg-[#4646f8] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
-          >
-            Cancel
-          </button>
+        <div className="w-[30vw] xs:w-[60vw]">
+          <div>
+            <UploadFileSection task={task} projectId={projectId} />
+          </div>
         </div>
       </div>
     </div>

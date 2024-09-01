@@ -133,8 +133,8 @@ export default function Projects({ currentProject, setCurrentProject }) {
           <img src={add_cross} className="" />
         </button>
       </div>
-      <div className="flex flex-row justify-between">
-        <div className="w-[25%]">
+      <div className="flex flex-row justify-between gap-10 xs:flex-col sm:flex-row">
+        <div className="xs:w-full sm:w-full lg:w-1/3">
           <h3 className="p-5 text-xl font-semibold">Current Project</h3>
           {
             // Ako trenutni projekat nije postavljen, prikaži poruku
@@ -158,10 +158,10 @@ export default function Projects({ currentProject, setCurrentProject }) {
             )
           }
         </div>
-        <div className="w-[65%]">
+        <div className="w-[100%]">
           <h3 className="p-5 text-xl font-semibold">Other Projects</h3>
           <div className="no-scrollbar max-h-[80vh] overflow-y-auto pb-60">
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-4 sm:grid-cols-[repeat(auto-fit,minmax(20vw,1fr))]">
               {currentProject === null
                 ? projects.map((project) => (
                     <ProjectCard

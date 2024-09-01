@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
 import three_dots from "../../assets/icons/three_dots.svg";
@@ -7,6 +8,7 @@ import axios from "axios";
 import { getAccessToken } from "../../utils/access_token.js";
 import { useContext } from "react";
 import { ThemeContext } from "../../ThemeContext.jsx";
+import { Dropbox } from "dropbox";
 
 const apiURL = "http://localhost:8000";
 export default function TaskCard({
@@ -21,6 +23,10 @@ export default function TaskCard({
   const [taskOptionsVisible, setTaskOptionsVisible] = useState(false);
   const [editTaskPopupVisible, setEditTaskPopupVisible] = useState(false);
   const [people, setPeople] = useState([]);
+  const [files, setFiles] = useState([]);
+
+  const dropboxAccessToken =
+    "sl.B8FErlGrRei96t7JouqO0_DRCPBSTgY9pfJJbR1LeBqgjjEzF96yUilNGjlPIKufTtxE8sjqwAj2SAmXuI1VX831YPm475j8knN8SXkOJNJn4vTGnRR-TP7lQSxWGFLdS-D2V29LeVNFvZHKO69n";
 
   const { darkTheme } = useContext(ThemeContext);
   const darkerColor = darkTheme ? "#131517" : "#F3F4F8";
@@ -51,6 +57,34 @@ export default function TaskCard({
       setPeople(response.data);
     } catch (error) {
       console.error(error);
+    }
+  };
+
+  const fetchFilesForTask = async () => {
+    const dbx = new Dropbox({ accessToken: dropboxAccessToken });
+    try {
+      const response = await dbx.filesListFolder({ path: `/${task.id}` });
+      setFiles(response.entries);
+    } catch (error) {
+      console.error(
+        "Error fetching files from Dropbox:",
+        error.response.data.detail,
+      );
+    }
+  };
+
+  const handleFileUpload = async (event) => {
+    const file = event.target.files[0];
+    const dbx = new Dropbox({ accessToken: dropboxAccessToken });
+
+    try {
+      await dbx.filesUpload({
+        path: `/${task.id}/${file.name}`,
+        contents: file,
+      });
+      fetchFilesForTask(); // Refresh file list after upload
+    } catch (error) {
+      console.error("Error uploading file to Dropbox:", error);
     }
   };
 
@@ -118,6 +152,7 @@ export default function TaskCard({
             </div>
           )}
         </div>
+
         {taskOptionsVisible && (
           <TaskOptionsModal
             task={task}

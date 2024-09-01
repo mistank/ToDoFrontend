@@ -55,7 +55,7 @@ export default function TaskOptionsModal({
           animation: `${taskOptionsVisible ? "fadein 0.25s" : ""}`,
           transition: "transform 0.3s ease-out",
           boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.3)",
-          backgroundColor: darkerColor,
+          backgroundColor: lighterColor,
         }}
         className="absolute right-[16px] top-[40px] w-48 rounded-lg"
       >

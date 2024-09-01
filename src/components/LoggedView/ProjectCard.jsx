@@ -26,7 +26,7 @@ export default function ProjectCard({
 
   return (
     <>
-      <div className="relative flex h-56 min-w-[30vh] flex-col gap-3 rounded-lg border-2 border-[#5F6388] p-5 shadow-xl">
+      <div className="relative flex h-56 flex-col gap-3 overflow-hidden rounded-lg border-2 border-[#5F6388] p-5 shadow-xl">
         <div className="flex justify-end">
           <div className="h-[35px]">
             <button
@@ -40,13 +40,19 @@ export default function ProjectCard({
             </button>
           </div>
         </div>
-        <h3 className="text-xl font-bold">{project.name}</h3>
-        <p className="text-gray-300">{project.summary}</p>
+        <h3 className="overflow-hidden text-ellipsis whitespace-nowrap text-xl font-bold">
+          {project.name}
+        </h3>
+        <p className="overflow-hidden text-ellipsis whitespace-nowrap text-gray-300">
+          {project.summary}
+        </p>
         <div className="flex items-center justify-between">
-          <span>{formatDate(project.deadline)}</span>
+          <span className="overflow-hidden whitespace-nowrap">
+            {formatDate(project.deadline)}
+          </span>
         </div>
         <div>
-          <span className="text-sm text-gray-400">
+          <span className="overflow-hidden text-sm text-gray-400">
             Project Owner: {project.user.firstName} {project.user.lastName}
           </span>
         </div>
@@ -65,6 +71,7 @@ export default function ProjectCard({
           />
         )}
       </div>
+
       {editProjectPopupVisible && (
         <EditProjectPopup
           project={project}

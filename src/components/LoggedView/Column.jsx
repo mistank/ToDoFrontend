@@ -211,7 +211,12 @@ export default function Column({
   };
 
   return (
-    <div className="h-[100%] min-w-[20%] max-w-[25%] flex-1 overflow-x-visible rounded-lg">
+    <div
+      style={{
+        flex: "0 0 auto",
+      }}
+      className="h-[100%] min-w-[20vw] flex-1 overflow-x-visible rounded-lg"
+    >
       <div className="mb-4 flex min-w-full justify-between rounded-lg bg-gray-500 p-4 align-middle">
         <h2 className="text-xl font-bold">
           {status.name} ({columnTasks.length})
