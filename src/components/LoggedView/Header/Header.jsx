@@ -3,6 +3,8 @@ import UserLog from "./UserLog.jsx";
 // import SearchBar from "./SearchBar.jsx";
 import { useContext } from "react";
 import { ThemeContext } from "../../../ThemeContext.jsx";
+import logo from "../../../assets/Logo.svg";
+import logo_light from "../../../assets/Logo_light.svg";
 
 export default function Header({ setMode }) {
   const { darkTheme } = useContext(ThemeContext);
@@ -15,7 +17,7 @@ export default function Header({ setMode }) {
       <button className="h-[80%]">
         <img
           className=" h-full"
-          src={`${darkTheme ? "/src/assets/Logo.svg" : "/src/assets/Logo_light.svg"}`}
+          src={`${darkTheme ? logo : logo_light}`}
           alt="logo"
         />
       </button>

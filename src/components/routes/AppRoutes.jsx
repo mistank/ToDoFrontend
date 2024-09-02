@@ -12,16 +12,21 @@ import ChangePasswordForm from "../UnloggedView/ChangePasswordForm.jsx";
 
 function AppRoutes() {
   const { isAuthenticated } = useContext(AuthContext);
-
+  const base = "/ToDoFrontend";
   return (
     <Router>
       <Routes>
         <Route
-          path="/"
-          element={isAuthenticated ? <LoggedView /> : <Navigate to="/login" />}
+          path={`${base}/`}
+          element={
+            isAuthenticated ? <LoggedView /> : <Navigate to={`${base}/login`} />
+          }
         />
-        <Route path="/login" element={<UnloggedView />} />
-        <Route path="/reset-password" element={<ChangePasswordForm />} />
+        <Route path={`${base}/login`} element={<UnloggedView />} />
+        <Route
+          path={`${base}/reset-password`}
+          element={<ChangePasswordForm />}
+        />
       </Routes>
     </Router>
   );

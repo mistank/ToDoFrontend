@@ -3,6 +3,10 @@ import { useState } from "react";
 import UserModal from "../../Modals/UserModal.jsx";
 import { useContext } from "react";
 import { ThemeContext } from "../../../ThemeContext.jsx";
+import arrow_down from "../../../assets/icons/arrow-down.png";
+import arrow_down_light from "../../../assets/icons/arrow-down-light.svg";
+import user from "../../../assets/icons/user.svg";
+import user_light from "../../../assets/icons/user-light.svg";
 
 // }
 export default function UserLog({ setMode }) {
@@ -26,12 +30,12 @@ export default function UserLog({ setMode }) {
         <div className="flex flex-row items-center">
           <img
             className="h-6 w-6"
-            src={`${darkTheme ? "/src/assets/icons/user.svg" : "/src/assets/icons/user-light.svg"}`}
+            src={`${darkTheme ? user : user_light}`}
             alt="user"
           />
           <img
             className={`h-4 w-4 transition-transform duration-500 ${userModalIsOpen ? "rotate-180" : ""}`}
-            src={`${darkTheme ? "/src/assets/icons/arrow-down.png" : "/src/assets/icons/arrow-down-light.svg"}`}
+            src={`${darkTheme ? arrow_down : arrow_down_light}`}
             alt=""
           />
         </div>

@@ -3,6 +3,8 @@ import { useContext, useEffect, useRef } from "react";
 import { AuthContext } from "../AuthProvider.jsx";
 import useGoogleLogout from "../hooks/useGoogleLogout.jsx";
 import { ThemeContext } from "../../ThemeContext.jsx";
+import profile from "../../assets/icons/user.svg";
+import profile_light from "../../assets/icons/user-light.svg";
 
 export default function UserModal({ isOpen, onClose, setMode }) {
   const modalRef = useRef();
@@ -60,7 +62,7 @@ export default function UserModal({ isOpen, onClose, setMode }) {
       <div className="p-4">
         <img
           className="mx-auto h-16 w-16 rounded-full object-cover"
-          src={`${darkTheme ? "/src/assets/icons/user.svg" : "/src/assets/icons/user-light.svg"}`}
+          src={`${darkTheme ? profile : profile_light}`}
           alt="Profile"
         />
         <h2
