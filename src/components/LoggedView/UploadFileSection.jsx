@@ -12,8 +12,7 @@ export default function UploadFileSection({ task, projectId }) {
   const darkerColor = darkTheme ? "#131517" : "#F3F4F8";
   const lighterColor = darkTheme ? "#1E1F25" : "#FBFAFF";
   const textColor = darkTheme ? "#FFFFFF" : "#000000";
-  const dropboxAccessToken =
-    "sl.B8KD9TYqjFOANfbT4plAFOOQvQdnkZ1CMYmFxzSXPudfr3ZmEjDr2CsXEhsm7_iko6waQfWO_03YDTKVeFTi7x_evOCCSBaXQPIkgm-231gh_tgAbQMHqdpZGY1gFALx7Lkl5rB6RC1ILfjaH5OP";
+  const dropboxAccessToken = import.meta.env.VITE_DROPBOX_ACCESS_TOKEN;
 
   useEffect(() => {
     fetchFilesForTask();

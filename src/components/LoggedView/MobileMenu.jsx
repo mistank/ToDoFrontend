@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import SidebarButton from "./SidebarButton.jsx";
 import add_person from "../../assets/icons/menu-icons/add_person.svg";
 import add_person_white from "../../assets/icons/menu-icons/add_person_white.svg";

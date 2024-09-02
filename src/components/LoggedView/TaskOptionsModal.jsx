@@ -74,16 +74,15 @@ export default function TaskOptionsModal({
             Delete
           </button>
           <button
-            className={`flex items-center justify-start gap-5 rounded-lg p-2 text-left hover:bg-gray-600 hover:bg-opacity-50 ${!isOwner ? "disabled-button" : ""} `}
+            className={`flex items-center justify-start gap-5 rounded-lg p-2 text-left hover:bg-gray-600 hover:bg-opacity-50 `}
             onClick={() => {
               setEditTaskPopupVisible(
                 (editTaskPopupVisible) => !editTaskPopupVisible,
               );
             }}
-            disabled={!isOwner}
           >
             <img className="h-5 w-5" src={edit_icon} />
-            Edit
+            Details
           </button>
         </div>
       </div>

@@ -11,6 +11,7 @@ import close from "../../assets/icons/close.png";
 import { useContext } from "react";
 import { ThemeContext } from "../../ThemeContext.jsx";
 import UploadFileSection from "./UploadFileSection.jsx";
+import { AuthContext } from "../AuthProvider.jsx";
 
 // bg-transparent border border-white border-solid rounded-3xl backdrop-filter backdrop-blur-md bg-opacity-10
 
@@ -27,7 +28,10 @@ export default function EditTaskPopup({
   people,
   setPeople,
   projectId,
+  currentProject,
 }) {
+  const auth = useContext(AuthContext);
+  const isOwner = auth.userInfo.id === currentProject.user.id;
   const [newTaskName, setNewTaskName] = useState(task.name);
   const [newTaskDescription, setNewTaskDescription] = useState(
     task.description,
@@ -195,7 +199,12 @@ export default function EditTaskPopup({
           backgroundColor: lighterColor,
         }}
       >
-        <div className="w-[30vw] xs:w-[60vw]">
+        <div
+          style={{
+            pointerEvents: isOwner ? "auto" : "none",
+          }}
+          className="w-[30vw] xs:w-[60vw]"
+        >
           <h2
             style={{
               color: textColor,
@@ -416,7 +425,7 @@ export default function EditTaskPopup({
             </button>
             <button
               onClick={onClose}
-              className="ml-4 rounded-lg bg-[#5051F9] px-4 py-2 hover:bg-[#4646f8] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+              className="pointer-events-auto ml-4 rounded-lg bg-[#5051F9] px-4 py-2 hover:bg-[#4646f8] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
             >
               Cancel
             </button>
