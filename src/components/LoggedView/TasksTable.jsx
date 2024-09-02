@@ -70,7 +70,7 @@ export default function TasksTable({ tasks, setTasks }) {
         className={`shadow-lgs flex h-[70vh] w-[100%] flex-col rounded-lg text-white`}
       >
         <div
-          className={`${darkTheme ? "scrollbar" : ""} h-[85%] w-[100%] overflow-y-scroll rounded-lg pt-8 text-white`}
+          className={`${darkTheme ? "scrollbar" : "light-scrollbar"} h-[85%] w-[100%] overflow-y-scroll rounded-lg pt-8 text-white`}
         >
           <table
             {...getTableProps()}

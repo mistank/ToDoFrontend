@@ -152,7 +152,7 @@ export default function TaskListView() {
   return (
     <>
       <div className="mb-6 flex items-center justify-between pr-8">
-        <h2 className="text-3xl font-bold">Your tasks</h2>
+        <h2 className="text-3xl font-bold xs:text-lg">Your tasks</h2>
         {/* Ubaciti combo box za filtraciju */}
         <div>
           <ButtonToolbar>
@@ -173,7 +173,7 @@ export default function TaskListView() {
           </ButtonToolbar>
         </div>
       </div>
-      <div className="mb-6 flex items-center justify-between pr-8">
+      <div className="mb-6 flex items-center justify-between">
         <ButtonToolbar>
           <ButtonGroup>
             {activeButton === "Date" ? (

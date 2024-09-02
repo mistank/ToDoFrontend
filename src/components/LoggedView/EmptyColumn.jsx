@@ -64,7 +64,12 @@ export default function EmptyColumn({
 
   return (
     <>
-      <div className="flex h-[90%] min-w-[25%] max-w-[30%] rounded-lg pr-8">
+      <div
+        style={{
+          flex: "0 0 auto",
+        }}
+        className="flex h-[90%] min-w-[20vw] rounded-lg pr-8"
+      >
         <button
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}

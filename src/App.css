@@ -73,11 +73,27 @@ body {
 }
 
 .scrollbar::-webkit-scrollbar {
-  background: #1e1f25;
+  background: transparent;
 }
 .scrollbar::-webkit-scrollbar-thumb {
   background: #2f3037;
   border-radius: 10px;
+}
+
+.scrollbar::-webkit-scrollbar-corner {
+  background: #1e1f25;
+}
+
+.light-scrollbar::-webkit-scrollbar {
+  background: transparent;
+}
+.light-scrollbar::-webkit-scrollbar-thumb {
+  background: #c0c0c0;
+  border-radius: 10px;
+}
+
+.light-scrollbar::-webkit-scrollbar-corner {
+  background: transparent;
 }
 
 /* Prilagođavanje osnovne boje pickera */

@@ -51,16 +51,16 @@ export default function Mainboard({ mode, setMode }) {
 
   return (
     <main
-      className="flex h-full w-full"
-      style={{ backgroundColor: darkerColor }}
+      className="flex w-full"
+      style={{ backgroundColor: darkerColor, height: "calc(100vh - 80px)" }}
     >
       <Sidebar setMode={setMode} currentProject={currentProject} />
-      <div className="flex w-[100%] flex-col items-center justify-start px-5">
+      <div className="flex h-full w-full flex-col items-center justify-start overflow-hidden px-5">
         <div
           style={{
             backgroundColor: lighterColor,
             color: textColor,
-            flex: "1 1 0",
+            flex: "1",
           }}
           className="scrollbar shadow-lgs mb-5 mt-5 w-full overflow-hidden rounded-lg p-8"
         >

@@ -9,7 +9,7 @@ export default function Header({ setMode }) {
   const color = darkTheme ? "#1E1F25" : "#FBFAFF";
   return (
     <header
-      className={`z-20 flex h-[10vh] flex-row items-center justify-between px-5 pt-2`}
+      className={`z-20 flex h-20 flex-row items-center justify-between px-5 pt-2`}
       style={{ backgroundColor: color }}
     >
       <button className="h-[80%]">

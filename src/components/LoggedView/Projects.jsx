@@ -91,7 +91,10 @@ export default function Projects({ currentProject, setCurrentProject }) {
       owner: userInfo.id,
     };
     try {
-      console.log("Creating project:", newProject);
+      if (projects.map((p) => p.name).includes(newProject.name)) {
+        alert("Project with this name already exists");
+        return;
+      }
       const response = await axios.post(`${apiURL}/projects/`, newProject, {
         headers: {
           Authorization: `Bearer ${getAccessToken()}`,
@@ -123,7 +126,7 @@ export default function Projects({ currentProject, setCurrentProject }) {
   };
 
   return (
-    <div>
+    <>
       <div className="mb-4 flex items-center justify-between">
         <h2 className="text-3xl font-bold">Projects</h2>
         <button
@@ -200,6 +203,6 @@ export default function Projects({ currentProject, setCurrentProject }) {
           projects={projects}
         />
       )}
-    </div>
+    </>
   );
 }

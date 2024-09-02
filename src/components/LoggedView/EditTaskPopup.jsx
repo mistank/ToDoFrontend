@@ -423,7 +423,7 @@ export default function EditTaskPopup({
           </div>
         </div>
         <div className="w-[30vw] xs:w-[60vw]">
-          <div>
+          <div className="h-[30vh]">
             <UploadFileSection task={task} projectId={projectId} />
           </div>
         </div>

@@ -13,7 +13,7 @@ export default function UploadFileSection({ task, projectId }) {
   const lighterColor = darkTheme ? "#1E1F25" : "#FBFAFF";
   const textColor = darkTheme ? "#FFFFFF" : "#000000";
   const dropboxAccessToken =
-    "sl.B8H9cVvMMLOIkcezF-akwfPPPhesnGDexgVsS9qovrTQnCUWBl4Lac1YvW0aIw6LUuXDgEPnh-sHbBbNOeFphWiwUAfUwrNNklykp7sLYsoKNXtDkjs6KfK13YpUqoZNFjOBU_GgryY0k9frHhMK";
+    "sl.B8KD9TYqjFOANfbT4plAFOOQvQdnkZ1CMYmFxzSXPudfr3ZmEjDr2CsXEhsm7_iko6waQfWO_03YDTKVeFTi7x_evOCCSBaXQPIkgm-231gh_tgAbQMHqdpZGY1gFALx7Lkl5rB6RC1ILfjaH5OP";
 
   useEffect(() => {
     fetchFilesForTask();
@@ -163,8 +163,8 @@ export default function UploadFileSection({ task, projectId }) {
   };
 
   return (
-    <div className="w-full">
-      <div className="mb-4 flex w-full items-center justify-between">
+    <div className="flex h-full w-full flex-col">
+      <div className="mb-4 flex w-full flex-shrink-0 items-center justify-between">
         <h2
           style={{
             color: textColor,
@@ -186,7 +186,10 @@ export default function UploadFileSection({ task, projectId }) {
           onChange={handleFileUpload}
         />
       </div>
-      <ul className="space-y-2">
+      <ul
+        style={{ flex: "1" }}
+        className={`${darkTheme ? "scrollbar" : ""} space-y-2 overflow-y-scroll`}
+      >
         {files.map((file) => (
           <li
             key={file.id}
@@ -197,12 +200,12 @@ export default function UploadFileSection({ task, projectId }) {
           >
             <button
               onClick={() => handleDownload(file.path_display)}
-              className="w-[70%] overflow-hidden whitespace-nowrap text-left text-gray-800"
+              className="w-[80%] overflow-hidden whitespace-nowrap text-left text-gray-800"
             >
               {file.name}
             </button>
             <button
-              className="flex h-7 w-[30%] items-center justify-end pr-5 text-center text-blue-500 hover:text-blue-700 focus:outline-none"
+              className="flex h-7 w-[20%] items-center justify-end pr-5 text-center text-blue-500 hover:text-blue-700 focus:outline-none"
               onClick={() => handleDeleteFile(file.path_display)}
               rel="noopener noreferrer"
             >

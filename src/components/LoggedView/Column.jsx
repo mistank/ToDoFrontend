@@ -231,7 +231,7 @@ export default function Column({
         ) : null}
       </div>
       <div
-        className="no-scrollbar flex h-[80vh] flex-col gap-4 overflow-x-hidden pb-48"
+        className="no-scrollbar flex h-[80vh] flex-col gap-4 overflow-x-hidden overflow-y-scroll pb-48"
         onDragOver={handleDragOver}
         onDragEnter={handleDragEnter}
         onDragLeave={handleDragLeave}

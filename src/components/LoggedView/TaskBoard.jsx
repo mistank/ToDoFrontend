@@ -1,15 +1,20 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import Column from "./Column";
 import EmptyColumn from "./EmptyColumn";
 import { getAccessToken } from "../../utils/access_token.js";
+import { ThemeContext } from "../../ThemeContext.jsx";
 
 const apiURL = "http://localhost:8000";
 
 export default function TaskBoard({ currentProject, setMode }) {
   const [tasks, setTasks] = useState([]);
   const [statuses, setStatuses] = useState([]);
+  const { darkTheme } = useContext(ThemeContext);
+  const darkerColor = darkTheme ? "#131517" : "#F3F4F8";
+  const lighterColor = darkTheme ? "#1E1F25" : "#FBFAFF";
+  const textColor = darkTheme ? "#FFFFFF" : "#000000";
 
   useEffect(() => {
     if (currentProject) {
@@ -59,7 +64,13 @@ export default function TaskBoard({ currentProject, setMode }) {
         </button>
       </div>
       {currentProject != null || currentProject != undefined ? ( // Dodata provera da li je currentProject postavljen
-        <div className="flex h-[100%] min-w-[full] max-w-[200%] flex-row gap-6 overflow-x-auto overflow-y-clip text-white">
+        <div
+          style={{
+            backgroundColor: lighterColor,
+            color: textColor,
+          }}
+          className={`${darkTheme ? "scrollbar" : "light-scrollbar"} flex h-[90%] min-w-[full] flex-row gap-6 overflow-y-clip overflow-x-scroll text-white`}
+        >
           {statuses.map((status) => (
             <Column
               key={status.id}

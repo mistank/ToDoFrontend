@@ -5,6 +5,7 @@ import { useContext } from "react";
 import { ThemeContext } from "../../ThemeContext.jsx";
 import "@theme-toggles/react/css/Classic.css";
 import { Classic } from "@theme-toggles/react";
+import MobileMenu from "./MobileMenu.jsx";
 
 export default function Sidebar({ setMode, currentProject }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -23,23 +24,18 @@ export default function Sidebar({ setMode, currentProject }) {
         />
       </button>
       <div
-        style={{ zIndex: 100 }}
-        className={`fixed left-0 h-full w-full transform bg-[#1E1F25] transition-transform duration-500 ease-in-out ${isOpen ? "translate-x-0" : "-translate-x-full"} sm:static sm:w-auto sm:bg-transparent`}
+        hidden={!isOpen}
+        style={{
+          zIndex: 100,
+          transition: "transform 0.5s ease-in-out, opacity 0.5s ease-in-out",
+        }}
+        className={`fixed left-0 h-full w-full transform bg-[#1E1F25] transition-transform duration-500 ease-in-out sm:static sm:w-auto sm:bg-transparent`}
       >
-        <button
-          onClick={() => setIsOpen(false)}
-          className="ml-5 mt-5 rounded-lg bg-[#5051F9] p-3 xs:block sm:hidden"
-        >
-          <img
-            className="h-8"
-            src="/src/assets/icons/close.png"
-            alt="Close sidebar"
-          />
-        </button>
+        <MobileMenu setMode={setMode} setIsOpen={setIsOpen} />
       </div>
       <section
-        style={{ backgroundColor: color }}
-        className={`relative z-10 flex w-20 flex-col items-center justify-center gap-5  xs:hidden`}
+        style={{ backgroundColor: color, flexShrink: 0 }}
+        className={`relative z-10 flex h-full w-20 flex-col items-center justify-center gap-5  xs:hidden`}
       >
         <Icons setMode={setMode} currentProject={currentProject}></Icons>
         <Classic
