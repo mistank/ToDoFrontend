@@ -7,6 +7,7 @@ const apiUrl = "http://localhost:8000";
 export const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
+  const base = "/ToDoFrontend";
   const [isAuthenticated, setIsAuthenticated] = useState(
     localStorage.getItem("isAuthenticated") == "true",
   );
@@ -50,7 +51,7 @@ export function AuthProvider({ children }) {
   const login = (navigate) => {
     setIsAuthenticated(true);
     localStorage.setItem("isAuthenticated", "true");
-    navigate("/");
+    navigate("/ToDoFrontend/");
   };
   const logout = () => {
     setIsAuthenticated(false);
