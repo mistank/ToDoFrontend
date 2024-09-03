@@ -7,7 +7,7 @@ import { AuthContext } from "../AuthProvider.jsx";
 import { ThemeContext } from "../../ThemeContext.jsx";
 import Select from "react-select";
 
-const apiURL = "http://localhost:8000";
+const apiURL = "https://localhost:8000";
 
 export default function AddPeople({ currentProject, setMode }) {
   const [people, setPeople] = useState([]);

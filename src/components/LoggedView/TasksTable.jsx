@@ -7,7 +7,7 @@ import { getAccessToken } from "../../utils/access_token.js";
 import { ThemeContext } from "../../ThemeContext.jsx";
 import moment from "moment";
 
-const apiURL = "http://localhost:8000";
+const apiURL = "https://localhost:8000";
 export default function TasksTable({ tasks, setTasks }) {
   const { darkTheme } = useContext(ThemeContext);
   const darkerColor = darkTheme ? "#131517" : "#F3F4F8";

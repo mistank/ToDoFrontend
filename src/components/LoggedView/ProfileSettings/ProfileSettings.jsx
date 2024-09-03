@@ -10,7 +10,7 @@ import Details from "./Details.jsx";
 import ChangePasswordForm from "./ChangePassword.jsx";
 import { ThemeContext } from "../../../ThemeContext.jsx";
 
-const apiUrl = "http://localhost:8000";
+const apiURL = "https://localhost:8000";
 
 export default function ProfileSettings({ setMode }) {
   const { userInfo, setUserInfo, logout } = useContext(AuthContext);
@@ -30,7 +30,7 @@ export default function ProfileSettings({ setMode }) {
     // console.log("CSRF Token: " + csrfToken);
     axios
       .put(
-        `${apiUrl}/users/${userInfo.username}`,
+        `${apiURL}/users/${userInfo.username}`,
         {
           firstName,
           lastName,
@@ -58,7 +58,7 @@ export default function ProfileSettings({ setMode }) {
     const fetchDataAsync = async () => {
       const accessToken = getAccessToken();
       try {
-        const response = await axios.get(`${apiUrl}/current-user`, {
+        const response = await axios.get(`${apiURL}/current-user`, {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },

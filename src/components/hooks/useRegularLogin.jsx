@@ -3,7 +3,7 @@ import { useContext } from "react";
 import axios from "axios";
 import { AuthContext } from "../AuthProvider.jsx";
 import { useNavigate } from "react-router-dom";
-const apiUrl = "http://127.0.0.1:8000";
+const apiURL = "http://127.0.0.1:8000";
 
 export default function useRegularLogin() {
   const { login, setUserInfo } = useContext(AuthContext);
@@ -15,7 +15,7 @@ export default function useRegularLogin() {
       formData.append("username", username);
       formData.append("password", password);
 
-      const response = await axios.post(apiUrl + "/login", formData, {
+      const response = await axios.post(apiURL + "/login", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -25,7 +25,8 @@ export default function useRegularLogin() {
       document.cookie = `accessToken=${accessToken}; path=/; max-age=3600; Secure; SameSite=Strict`;
       login(navigate); // Pretpostavka da login funkcija prima neke podatke iz odgovora
     } catch (error) {
-      alert(("Error:", error.response.data.detail));
+      console.log("Error:", error);
+      alert(("Error:", error));
     }
   };
 

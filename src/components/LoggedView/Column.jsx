@@ -9,7 +9,7 @@ import delete_column from "../../assets/icons/delete_column.svg";
 import CreateTaskPopup from "./CreateTaskPopup.jsx";
 import { AuthContext } from "../AuthProvider.jsx";
 
-const apiURL = "http://localhost:8000";
+const apiURL = "https://localhost:8000";
 
 export default function Column({
   status,

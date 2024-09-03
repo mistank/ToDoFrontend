@@ -11,7 +11,7 @@ import {
   ReversedRadioButton,
 } from "react-radio-buttons";
 
-const apiURL = "http://localhost:8000";
+const apiURL = "https://localhost:8000";
 export default function AddPeoplePopup({
   currentProject,
   roles,

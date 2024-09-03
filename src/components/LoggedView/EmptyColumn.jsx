@@ -7,7 +7,7 @@ import { getAccessToken } from "../../utils/access_token.js";
 import CreateStatusPopup from "./CreateStatusPopup.jsx";
 import { AuthContext } from "../AuthProvider.jsx";
 
-const apiURL = "http://localhost:8000";
+const apiURL = "https://localhost:8000";
 
 export default function EmptyColumn({
   projectId,

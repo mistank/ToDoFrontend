@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-const apiURL = "http://localhost:8000";
+const apiURL = "https://localhost:8000";
 export default function ChangePasswordForm() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");

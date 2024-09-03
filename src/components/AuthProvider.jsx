@@ -3,7 +3,7 @@ import { createContext, useState, useEffect } from "react";
 import { getAccessToken } from "../utils/access_token.js";
 import axios from "axios";
 
-const apiUrl = "http://localhost:8000";
+const apiURL = "https://localhost:8000";
 export const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
@@ -27,7 +27,7 @@ export function AuthProvider({ children }) {
   const fetchDataAsync = async () => {
     const accessToken = getAccessToken();
     try {
-      const response = await axios.get(`${apiUrl}/current-user`, {
+      const response = await axios.get(`${apiURL}/current-user`, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },

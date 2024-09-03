@@ -6,7 +6,7 @@ import axios from "axios";
 import { getAccessToken } from "../../utils/access_token.js";
 import { ThemeContext } from "../../ThemeContext.jsx";
 
-const apiURL = "http://localhost:8000";
+const apiURL = "https://localhost:8000";
 export default function UsersTable({
   people,
   setPeople,

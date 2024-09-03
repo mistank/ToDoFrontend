@@ -6,7 +6,7 @@ import { ThemeContext } from "../../../ThemeContext.jsx";
 import { getAccessToken } from "../../../utils/access_token.js";
 
 export default function ChangePasswordForm() {
-  const apiURL = "http://localhost:8000";
+  const apiURL = "https://localhost:8000";
 
   const [oldPassword, setOldPassword] = useState("");
   const [password, setPassword] = useState("");
