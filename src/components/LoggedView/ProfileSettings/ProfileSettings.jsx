@@ -10,7 +10,7 @@ import Details from "./Details.jsx";
 import ChangePasswordForm from "./ChangePassword.jsx";
 import { ThemeContext } from "../../../ThemeContext.jsx";
 
-const apiURL = "https://localhost:8000";
+const apiURL = "http://localhost:8000";
 
 export default function ProfileSettings({ setMode }) {
   const { userInfo, setUserInfo, logout } = useContext(AuthContext);

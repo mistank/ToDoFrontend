@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { getUserInfo } from "../../api_calls/user_info.js";
 import axios from "axios";
 
-const apiURL = "https://localhost:8000";
+const apiURL = "http://localhost:8000";
 export default function useGoogleLoginHook() {
   const { login, setUserInfo, userInfo } = useContext(AuthContext);
   const navigate = useNavigate();

@@ -6,7 +6,7 @@ import EmptyColumn from "./EmptyColumn";
 import { getAccessToken } from "../../utils/access_token.js";
 import { ThemeContext } from "../../ThemeContext.jsx";
 
-const apiURL = "https://localhost:8000";
+const apiURL = "http://localhost:8000";
 
 export default function TaskBoard({ currentProject, setMode }) {
   const [tasks, setTasks] = useState([]);

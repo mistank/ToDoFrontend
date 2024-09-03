@@ -3,7 +3,7 @@ import { createContext, useState, useEffect } from "react";
 import { getAccessToken } from "../utils/access_token.js";
 import axios from "axios";
 
-const apiURL = "https://localhost:8000";
+const apiURL = "http://localhost:8000";
 export const AuthContext = createContext();
 
 export function AuthProvider({ children }) {

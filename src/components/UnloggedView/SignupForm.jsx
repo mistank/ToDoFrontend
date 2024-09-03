@@ -6,7 +6,7 @@ import useRegularLogin from "../hooks/useRegularLogin.jsx";
 import { useGoogleLogin } from "@react-oauth/google";
 import useGoogleSignupHook from "../hooks/useGoogleSignup.jsx";
 
-const apiURL = "https://localhost:8000";
+const apiURL = "http://localhost:8000";
 export default function SignUpForm({ setMode }) {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");

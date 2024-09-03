@@ -8,7 +8,7 @@ import { getAccessToken } from "../../utils/access_token.js";
 import CreateProjectPopup from "./CreateProjectPopup.jsx";
 import { AuthContext } from "../AuthProvider.jsx";
 
-const apiURL = "https://localhost:8000";
+const apiURL = "http://localhost:8000";
 
 export default function Projects({ currentProject, setCurrentProject }) {
   const { userInfo, setUserInfo, logout } = useContext(AuthContext);

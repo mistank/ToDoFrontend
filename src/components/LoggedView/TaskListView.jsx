@@ -8,7 +8,7 @@ import "rsuite/ButtonGroup/styles/index.css";
 import "rsuite/ButtonToolbar/styles/index.css";
 import { ThemeContext } from "../../ThemeContext.jsx";
 
-const apiURL = "https://localhost:8000";
+const apiURL = "http://localhost:8000";
 export default function TaskListView() {
   const { userInfo } = useContext(AuthContext);
   const [tasks, setTasks] = useState([]);
