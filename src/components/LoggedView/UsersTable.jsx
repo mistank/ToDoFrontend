@@ -5,6 +5,8 @@ import { useTable } from "react-table";
 import axios from "axios";
 import { getAccessToken } from "../../utils/access_token.js";
 import { ThemeContext } from "../../ThemeContext.jsx";
+import Skeleton from "@mui/material/Skeleton";
+import Stack from "@mui/material/Stack";
 
 const apiURL = "http://localhost:8000";
 export default function UsersTable({
@@ -14,6 +16,8 @@ export default function UsersTable({
   currentProject,
   isOwner,
   setFetchedPeople,
+  toast,
+  loading,
 }) {
   const [editingRowIndex, setEditingRowIndex] = useState(null);
   const [role, setRole] = useState(null);
@@ -31,7 +35,7 @@ export default function UsersTable({
       })
       .then((response) => {
         console.log(response.data);
-
+        toast.success("User role updated successfully");
         setFetchedPeople((prevPeople) =>
           prevPeople.map((person) =>
             person.id === row.original.id
@@ -48,7 +52,8 @@ export default function UsersTable({
         );
       })
       .catch((error) => {
-        console.error("Error updating user role:", error);
+        toast.error("Error updating user role" + error.response.data.detail);
+        // console.error("Error updating user role:", error);
       });
     setEditingRowIndex(null);
   };
@@ -60,14 +65,6 @@ export default function UsersTable({
   };
 
   const handleRemove = async (row) => {
-    console.log("Remove", row);
-    console.log(
-      JSON.stringify({
-        pid: currentProject.id,
-        uid: row.original.id,
-        //nije bitno koji rid stoji, moze bilo koji, to je samo da bih ispunio schemu iz backenda
-      }),
-    );
     const payload = {
       pid: currentProject.id,
       uid: row.original.id,
@@ -84,8 +81,9 @@ export default function UsersTable({
       setPeople((prevPeople) =>
         prevPeople.filter((person) => person.id !== row.original.id),
       );
+      toast.success("User successfully removed from project");
     } catch (error) {
-      console.error("Error removing user:", error);
+      toast.error("Error removing user" + error.response.data.detail);
     }
   };
 
@@ -232,19 +230,31 @@ export default function UsersTable({
                 return (
                   <>
                     <tr key={i} {...row.getRowProps()}>
-                      {row.cells.map((cell) => (
-                        <td
-                          key={cell.column.id}
-                          {...cell.getCellProps()}
-                          style={{ width: cell.column.width }} // Primena širine kolone
-                          className="whitespace-nowrap px-6 py-4 text-sm text-gray-400"
-                        >
-                          {editingRowIndex === row.index &&
-                          cell.column.id === "role_name"
-                            ? renderRoleSelect(row)
-                            : cell.render("Cell")}
-                        </td>
-                      ))}
+                      {row.cells.map((cell) =>
+                        cell ? (
+                          <td
+                            key={cell.column.id}
+                            {...cell.getCellProps()}
+                            style={{ width: cell.column.width }} // Primena širine kolone
+                            className="whitespace-nowrap px-6 py-4 text-sm text-gray-400"
+                          >
+                            {editingRowIndex === row.index &&
+                            cell.column.id === "role_name"
+                              ? renderRoleSelect(row)
+                              : cell.render("Cell")}
+                          </td>
+                        ) : (
+                          <td key={cell.column.id}>
+                            <Stack spacing={2}>
+                              <Skeleton
+                                variant="text"
+                                width={200}
+                                height={20}
+                              />
+                            </Stack>
+                          </td>
+                        ),
+                      )}
                     </tr>
                   </>
                 );

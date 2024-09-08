@@ -12,6 +12,8 @@ import { useContext } from "react";
 import { ThemeContext } from "../../ThemeContext.jsx";
 import UploadFileSection from "./UploadFileSection.jsx";
 import { AuthContext } from "../AuthProvider.jsx";
+import { Slide, ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 // bg-transparent border border-white border-solid rounded-3xl backdrop-filter backdrop-blur-md bg-opacity-10
 
@@ -433,7 +435,11 @@ export default function EditTaskPopup({
         </div>
         <div className="w-[30vw] xs:w-[60vw]">
           <div className="h-[30vh]">
-            <UploadFileSection task={task} projectId={projectId} />
+            <UploadFileSection
+              task={task}
+              projectId={projectId}
+              toast={toast}
+            />
           </div>
         </div>
       </div>

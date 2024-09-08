@@ -12,6 +12,7 @@ import { AuthContext } from "../AuthProvider.jsx";
 const apiURL = "http://localhost:8000";
 
 export default function Column({
+  toast,
   status,
   tasks,
   columnTasks,
@@ -38,25 +39,36 @@ export default function Column({
 
   async function deleteTask(taskId) {
     console.log("Deleting task with id:", taskId);
-    try {
-      const response = await axios.delete(`${apiURL}/tasks/${taskId}`, {
+
+    const deleteTaskPromise = () => {
+      return axios.delete(`${apiURL}/tasks/${taskId}`, {
         headers: {
           Authorization: `Bearer ${getAccessToken()}`,
         },
       });
-      setTasks(tasks.filter((t) => t.id !== taskId));
-    } catch (error) {
-      if (error.response && error.response.status === 401) {
-        alert("You are not authorized to view this page. Please log in");
-        logout();
-      }
-      console.error("Failed to delete task:", error);
-    }
+    };
+
+    toast
+      .promise(deleteTaskPromise(), {
+        pending: "Deleting task...",
+        success: "Task deleted successfully",
+        error: "Failed to delete task",
+      })
+      .then((response) => {
+        setTasks(tasks.filter((t) => t.id !== taskId));
+      })
+      .catch((error) => {
+        if (error.response && error.response.status === 401) {
+          alert("You are not authorized to view this page. Please log in");
+          logout();
+        }
+        console.error("Failed to delete task:", error);
+      });
   }
 
   async function editTask(task) {
-    try {
-      const response = await axios.put(
+    const editTaskPromise = () => {
+      return axios.put(
         `${apiURL}/tasks/${task.id}`,
         {
           name: task.name,
@@ -73,20 +85,31 @@ export default function Column({
           },
         },
       );
-      setTasks(tasks.map((t) => (t.id === task.id ? response.data : t)));
-    } catch (error) {
-      if (error.response && error.response.status === 401) {
-        alert("You are not authorized to view this page. Please log in");
-        logout();
-      }
-      console.error("Failed to edit task:", error);
-    }
+    };
+
+    toast
+      .promise(editTaskPromise(), {
+        pending: "Editing task...",
+        success: "Task edited successfully",
+        error: "Failed to edit task",
+      })
+      .then((response) => {
+        setTasks(tasks.map((t) => (t.id === task.id ? response.data : t)));
+      })
+      .catch((error) => {
+        if (error.response && error.response.status === 401) {
+          alert("You are not authorized to view this page. Please log in");
+          logout();
+        }
+        console.error("Failed to edit task:", error);
+      });
   }
 
   async function deleteColumn() {
     console.log("Deleting column with id:", status.id);
-    try {
-      const response = await axios.delete(
+
+    const deleteColumnPromise = () => {
+      return axios.delete(
         `${apiURL}/delete_project_status/${projectId}`,
         { data: status }, // Axios DELETE zahtevi zahtevaju da se telo zahteva šalje kao `data` svojstvo
         {
@@ -95,10 +118,20 @@ export default function Column({
           },
         },
       );
-      setStatuses(statuses.filter((s) => s.id !== status.id));
-    } catch (error) {
-      console.error("Failed to delete column:", error);
-    }
+    };
+
+    toast
+      .promise(deleteColumnPromise(), {
+        pending: "Deleting column...",
+        success: "Column deleted successfully",
+        error: "Failed to delete column",
+      })
+      .then((response) => {
+        setStatuses(statuses.filter((s) => s.id !== status.id));
+      })
+      .catch((error) => {
+        console.error("Failed to delete column:", error);
+      });
   }
 
   useEffect(() => {
@@ -137,9 +170,8 @@ export default function Column({
     newTaskCategory,
     newTaskPriority,
   ) {
-    try {
-      console.log("Deadline provera", newTaskDeadline);
-      const response = await axios.post(
+    const addTaskPromise = () => {
+      return axios.post(
         `${apiURL}/tasks/`,
         {
           name: newTask,
@@ -156,14 +188,24 @@ export default function Column({
           },
         },
       );
-      setTasks([...tasks, response.data]);
-    } catch (error) {
-      if (error.response && error.response.status === 401) {
-        alert("You are not authorized to view this page. Please log in");
-        logout();
-      }
-      console.error("Failed to add task:", error);
-    }
+    };
+
+    toast
+      .promise(addTaskPromise(), {
+        pending: "Adding task...",
+        success: "Task added successfully!",
+        error: "Failed to add task",
+      })
+      .then((response) => {
+        setTasks([...tasks, response.data]);
+      })
+      .catch((error) => {
+        if (error.response && error.response.status === 401) {
+          alert("You are not authorized to view this page. Please log in");
+          logout();
+        }
+        console.error("Failed to add task:", error);
+      });
   }
 
   const handleDragOver = (e) => {
@@ -218,7 +260,7 @@ export default function Column({
       className="h-[100%] min-w-[20vw] flex-1 overflow-x-visible rounded-lg"
     >
       <div className="mb-4 flex min-w-full justify-between rounded-lg bg-gray-500 p-4 align-middle">
-        <h2 className="text-xl font-bold">
+        <h2 className="text-xl font-bold text-white">
           {status.name} ({columnTasks.length})
         </h2>
         {isTasksEmpty ? (

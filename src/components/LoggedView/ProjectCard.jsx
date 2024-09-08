@@ -12,6 +12,7 @@ export default function ProjectCard({
   deleteProject,
   setCurrentProject,
   currentProject,
+  toast,
 }) {
   const [projectOptionsVisible, setProjectOptionsVisible] = useState(false);
   const [editProjectPopupVisible, setEditProjectPopupVisible] = useState(false);
@@ -82,6 +83,7 @@ export default function ProjectCard({
             setProjectOptionsVisible(false);
           }}
           editProject={editProject}
+          toast={toast}
         />
       )}
     </>

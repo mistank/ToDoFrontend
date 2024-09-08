@@ -7,6 +7,9 @@ import ProjectCard from "./ProjectCard.jsx";
 import { getAccessToken } from "../../utils/access_token.js";
 import CreateProjectPopup from "./CreateProjectPopup.jsx";
 import { AuthContext } from "../AuthProvider.jsx";
+import { Slide, ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { ThemeContext } from "../../ThemeContext.jsx";
 
 const apiURL = "http://localhost:8000";
 
@@ -14,12 +17,16 @@ export default function Projects({ currentProject, setCurrentProject }) {
   const { userInfo, setUserInfo, logout } = useContext(AuthContext);
   const [projects, setProjects] = useState([]);
   const [isPopupVisible, setIsPopupVisible] = useState(false);
+  const { darkTheme } = useContext(ThemeContext);
+  const darkerColor = darkTheme ? "#131517" : "#F3F4F8";
+  const lighterColor = darkTheme ? "#1E1F25" : "#FBFAFF";
+  const textColor = darkTheme ? "#FFFFFF" : "#000000";
 
   //zelim da se ponovo renderuju projekti kada se promeni currentProject
 
   async function editProject(project) {
-    try {
-      const response = await axios.put(
+    const editProjectPromise = () => {
+      return axios.put(
         `${apiURL}/projects/${project.id}`,
         {
           name: project.name,
@@ -35,34 +42,55 @@ export default function Projects({ currentProject, setCurrentProject }) {
           },
         },
       );
-      setProjects(
-        projects.map((p) => (p.id === project.id ? response.data : p)),
-      );
-    } catch (error) {
-      if (error.response && error.response.status === 401) {
-        alert("You are not authorized to view this page. Please log in");
-        logout();
-      }
-      console.error("Failed to edit project:", error);
-    }
+    };
+
+    toast
+      .promise(editProjectPromise(), {
+        pending: "Editing project...",
+        success: "Project edited successfully!",
+        error: "Failed to edit project",
+      })
+      .then((response) => {
+        setProjects(
+          projects.map((p) => (p.id === project.id ? response.data : p)),
+        );
+      })
+      .catch((error) => {
+        if (error.response && error.response.status === 401) {
+          alert("You are not authorized to view this page. Please log in");
+          logout();
+        }
+        console.error("Failed to edit project:", error);
+      });
   }
 
   async function deleteProject(projectId) {
     console.log("Deleting project with id:", projectId);
-    try {
-      const response = await axios.delete(`${apiURL}/projects/${projectId}`, {
+
+    const deleteProjectPromise = () => {
+      return axios.delete(`${apiURL}/projects/${projectId}`, {
         headers: {
           Authorization: `Bearer ${getAccessToken()}`,
         },
       });
-      setProjects(projects.filter((p) => p.id !== projectId));
-    } catch (error) {
-      if (error.response && error.response.status === 401) {
-        alert("You are not authorized to view this page. Please log in");
-        logout();
-      }
-      console.error("Failed to delete project:", error);
-    }
+    };
+
+    toast
+      .promise(deleteProjectPromise(), {
+        pending: "Deleting project...",
+        success: "Project deleted successfully!",
+        error: "Failed to delete project",
+      })
+      .then((response) => {
+        setProjects(projects.filter((p) => p.id !== projectId));
+      })
+      .catch((error) => {
+        if (error.response && error.response.status === 401) {
+          alert("You are not authorized to view this page. Please log in");
+          logout();
+        }
+        console.error("Failed to delete project:", error);
+      });
   }
 
   const fetchProjects = async () => {
@@ -90,25 +118,37 @@ export default function Projects({ currentProject, setCurrentProject }) {
       deadline: project.deadline,
       owner: userInfo.id,
     };
-    try {
+
+    const addProjectPromise = () => {
       if (projects.map((p) => p.name).includes(newProject.name)) {
-        alert("Project with this name already exists");
-        return;
+        return Promise.reject(
+          new Error("Project with this name already exists"),
+        );
       }
-      const response = await axios.post(`${apiURL}/projects/`, newProject, {
+      return axios.post(`${apiURL}/projects/`, newProject, {
         headers: {
           Authorization: `Bearer ${getAccessToken()}`,
           "Content-Type": "application/json",
         },
       });
-      setProjects([...projects, response.data]);
-    } catch (error) {
-      if (error.response && error.response.status === 401) {
-        alert("You are not authorized to view this page. Please log in");
-        //logout();
-      }
-      console.error("Failed to create project:", error);
-    }
+    };
+
+    toast
+      .promise(addProjectPromise(), {
+        pending: "Creating project...",
+        success: "Project created successfully!",
+        error: "Failed to create project",
+      })
+      .then((response) => {
+        setProjects([...projects, response.data]);
+      })
+      .catch((error) => {
+        if (error.response && error.response.status === 401) {
+          alert("You are not authorized to view this page. Please log in");
+          logout();
+        }
+        console.error("Failed to create project:", error);
+      });
   }
 
   useEffect(() => {
@@ -127,6 +167,18 @@ export default function Projects({ currentProject, setCurrentProject }) {
 
   return (
     <>
+      <ToastContainer
+        position="bottom-left"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnHover
+        draggable
+        theme={darkTheme ? "dark" : "light"}
+        transition={Slide}
+      />
       <div className="mb-4 flex items-center justify-between">
         <h2 className="text-3xl font-bold">Projects</h2>
         <button
@@ -176,6 +228,7 @@ export default function Projects({ currentProject, setCurrentProject }) {
                       deleteProject={deleteProject}
                       setCurrentProject={setCurrentProject}
                       currentProject={currentProject}
+                      toast={toast}
                     />
                   ))
                 : projects
@@ -189,6 +242,7 @@ export default function Projects({ currentProject, setCurrentProject }) {
                         editProject={editProject}
                         deleteProject={deleteProject}
                         setCurrentProject={setCurrentProject}
+                        toast={toast}
                       />
                     ))}
             </div>
@@ -201,6 +255,7 @@ export default function Projects({ currentProject, setCurrentProject }) {
           onClose={hidePopupForm}
           addProject={addProject}
           projects={projects}
+          toast={toast}
         />
       )}
     </>

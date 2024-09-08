@@ -2,8 +2,10 @@
 import DatePicker from "react-datepicker";
 import { useState, useContext, useEffect } from "react";
 import { ThemeContext } from "../../ThemeContext.jsx";
+import { Slide, ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-export default function CreateProjectPopup({ onClose, addProject }) {
+export default function CreateProjectPopup({ onClose, addProject, toast }) {
   const [newProjectName, setNewProjectName] = useState("");
   const [newProjectDescription, setNewProjectDescription] = useState("");
   const [newProjectDeadline, setNewProjectDeadline] = useState(null);
@@ -71,13 +73,13 @@ export default function CreateProjectPopup({ onClose, addProject }) {
               setNewProjectDeadline(null);
               onClose();
             }}
-            className="rounded-lg bg-[#5051F9] px-4 py-2 hover:bg-[#4646f8] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+            className="rounded-lg bg-[#5051F9] px-4 py-2 font-bold text-white hover:bg-[#4646f8] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
           >
             Add Project
           </button>
           <button
             onClick={onClose}
-            className="ml-4 rounded-lg bg-[#5051F9] px-4 py-2 hover:bg-[#4646f8] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+            className="ml-4 rounded-lg bg-[#5051F9] px-4 py-2 font-bold text-white hover:bg-[#4646f8] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
           >
             Cancel
           </button>

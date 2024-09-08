@@ -5,11 +5,14 @@ import axios from "axios";
 import { getAccessToken } from "../../utils/access_token.js";
 import { useContext } from "react";
 import { ThemeContext } from "../../ThemeContext.jsx";
+import AsyncSelect from "react-select/async";
 import {
   RadioGroup,
   RadioButton,
   ReversedRadioButton,
 } from "react-radio-buttons";
+import { Slide, ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const apiURL = "http://localhost:8000";
 export default function AddPeoplePopup({
@@ -18,11 +21,13 @@ export default function AddPeoplePopup({
   onClose,
   setPeople,
   people,
+  notify,
 }) {
   const [isAddingNewMember, setIsAddingNewMember] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [usersNotOnProject, setUsersNotOnProject] = useState([]);
   const [selectedRole, setSelectedRole] = useState(null);
+  const [userToAdd, setUserToAdd] = useState(null);
   const [notifText, setNotifText] = useState(
     "Press Enter to add user to project",
   );
@@ -38,40 +43,46 @@ export default function AddPeoplePopup({
       .then((response) => setUsersNotOnProject(response.data));
   }, [currentProject]);
 
-  const handleAdd = async () => {
+  const handleAdd = () => {
     if (selectedRole == null) {
       setNotifText("You must select the role before adding");
       return;
     }
-    const user = usersNotOnProject.find(
-      (user) => user.firstName + " " + user.lastName === searchTerm,
-    );
-    if (user) {
-      const response = await axios.post(
-        `${apiURL}/projects/add_user/`,
-        JSON.stringify({
-          pid: currentProject.id,
-          uid: user.id,
-          rid: 2,
-        }),
-        {
-          headers: {
-            Authorization: `Bearer ${getAccessToken()}`,
-            "Content-Type": "application/json",
+    if (userToAdd) {
+      axios
+        .post(
+          `${apiURL}/projects/add_user/`,
+          JSON.stringify({
+            pid: currentProject.id,
+            uid: userToAdd.id,
+            rid: 2,
+          }),
+          {
+            headers: {
+              Authorization: `Bearer ${getAccessToken()}`,
+              "Content-Type": "application/json",
+            },
           },
-        },
-      );
-      setPeople((prevPeople) => [
-        ...prevPeople,
-        {
-          id: user.id,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          email: user.email,
-          role_name: selectedRole,
-        },
-      ]);
-      onClose();
+        )
+        .then((response) => {
+          toast.success("User added to project");
+          setPeople((prevPeople) => [
+            ...prevPeople,
+            {
+              id: userToAdd.id,
+              firstName: userToAdd.firstName,
+              lastName: userToAdd.lastName,
+              email: userToAdd.email,
+              role_name: selectedRole,
+            },
+          ]);
+          onClose();
+        })
+        .catch((error) => {
+          toast.error(
+            "Failed to add user to project. " + error.response.data.detail,
+          );
+        });
     } else {
       console.error("User not found");
     }
@@ -87,11 +98,22 @@ export default function AddPeoplePopup({
 
   const handleKeyDown = async (e) => {
     if (e.key === "Enter") {
-      try {
-        handleAdd();
-      } catch (error) {
-        console.error("Failed to add new member to project:", error);
-      }
+      handleAdd();
+    }
+  };
+
+  const searchUsersNotFromProject = async (inputValue) => {
+    try {
+      const response = await axios.get(
+        `${apiURL}/search-users-not-from-project/${currentProject.id}/${inputValue}`,
+      );
+      return response.data.map((user) => ({
+        label: user.firstName + user.lastName + ` (${user.email})`,
+        value: user,
+      }));
+    } catch (error) {
+      console.error("Error fetching users:", error);
+      return [];
     }
   };
 
@@ -112,7 +134,62 @@ export default function AddPeoplePopup({
         >
           <div>
             <div className="mb-10">
-              <input
+              <AsyncSelect
+                styles={{
+                  control: (baseStyles, state) => ({
+                    ...baseStyles,
+                    borderStyle: "none",
+                    color: textColor,
+                    ":focus": {
+                      borderColor: "none",
+                      outline: "none",
+                      color: textColor,
+                    },
+                    backgroundColor: darkerColor,
+                  }),
+                  singleValue: (baseStyles, state) => ({
+                    ...baseStyles,
+                    color: textColor,
+                    ":focus": {
+                      borderColor: "none",
+                      outline: "none",
+                      color: textColor,
+                    },
+                  }),
+                  valueContainer: (baseStyles, state) => ({
+                    ...baseStyles,
+                    ":focus": {
+                      borderColor: "none",
+                      outline: "none",
+                      color: textColor,
+                    },
+                  }),
+                  input: (baseStyles, state) => ({
+                    ...baseStyles,
+                    color: textColor,
+                  }),
+                  menu: (baseStyles, state) => ({
+                    ...baseStyles,
+                    backgroundColor: state.isSelected
+                      ? lighterColor
+                      : darkerColor,
+                    color: textColor,
+                  }),
+                  option: (baseStyles, state) => ({
+                    ...baseStyles,
+                    backgroundColor: state.isSelected
+                      ? lighterColor
+                      : darkerColor,
+                    color: textColor,
+                  }),
+                }}
+                cacheOptions
+                loadOptions={searchUsersNotFromProject}
+                onChange={(selectedOption) => {
+                  setUserToAdd(selectedOption.value);
+                }}
+              />
+              {/* <input
                 type="text"
                 value={searchTerm}
                 style={{ backgroundColor: darkerColor }}
@@ -134,7 +211,7 @@ export default function AddPeoplePopup({
                       value={user.firstName + " " + user.lastName}
                     />
                   ))}
-              </datalist>
+              </datalist> */}
               <p
                 className={`text-sm  ${notifText.startsWith("Press") ? "text-gray-600" : "text-red-500"}`}
               >

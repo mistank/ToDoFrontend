@@ -5,6 +5,8 @@ import Column from "./Column";
 import EmptyColumn from "./EmptyColumn";
 import { getAccessToken } from "../../utils/access_token.js";
 import { ThemeContext } from "../../ThemeContext.jsx";
+import { Slide, ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const apiURL = "http://localhost:8000";
 
@@ -52,17 +54,31 @@ export default function TaskBoard({ currentProject, setMode }) {
 
   return (
     <>
-      <div className="xs: mb-6 flex items-center gap-3 pr-8 xs:flex-col xs:justify-start sm:justify-between">
-        <h2 className="font-bold  xs:text-lg sm:text-2xl lg:text-3xl">
-          Task Board - {currentProject?.name}
-        </h2>
-        <button
-          className="flex h-10 w-36 items-center justify-center text-nowrap rounded-lg bg-[#5051F9] p-4 font-bold text-white hover:bg-[#4646f8]"
-          onClick={() => setMode("projects-view")}
-        >
-          Change Project
-        </button>
-      </div>
+      <ToastContainer
+        position="bottom-left"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnHover
+        draggable
+        theme={darkTheme ? "dark" : "light"}
+        transition={Slide}
+      />
+      {currentProject && (
+        <div className="xs: mb-6 flex items-center gap-3 pr-8 xs:flex-col xs:justify-start sm:justify-between">
+          <h2 className="font-bold  xs:text-lg sm:text-2xl lg:text-3xl">
+            Task Board - {currentProject?.name}
+          </h2>
+          <button
+            className="flex h-10 w-36 items-center justify-center text-nowrap rounded-lg bg-[#5051F9] p-4 font-bold text-white hover:bg-[#4646f8]"
+            onClick={() => setMode("projects-view")}
+          >
+            Change Project
+          </button>
+        </div>
+      )}
       {currentProject != null || currentProject != undefined ? ( // Dodata provera da li je currentProject postavljen
         <div
           style={{
@@ -73,6 +89,7 @@ export default function TaskBoard({ currentProject, setMode }) {
         >
           {statuses.map((status) => (
             <Column
+              toast={toast}
               key={status.id}
               status={status}
               statuses={statuses}
@@ -89,6 +106,7 @@ export default function TaskBoard({ currentProject, setMode }) {
             />
           ))}
           <EmptyColumn
+            toast={toast}
             statuses={statuses}
             setStatuses={setStatuses}
             projectId={currentProject.id}

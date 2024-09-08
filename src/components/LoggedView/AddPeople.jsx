@@ -6,6 +6,8 @@ import AddPeoplePopup from "./AddPeoplePopup.jsx";
 import { AuthContext } from "../AuthProvider.jsx";
 import { ThemeContext } from "../../ThemeContext.jsx";
 import Select from "react-select";
+import { Slide, ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const apiURL = "http://localhost:8000";
 
@@ -15,6 +17,8 @@ export default function AddPeople({ currentProject, setMode }) {
   const [addPeoplePopup, setAddPeoplePopup] = useState(false);
   const [roles, setRoles] = useState([]);
   const [roleFilter, setRoleFilter] = useState("");
+  const [loading, setLoading] = useState(true);
+
   const auth = useContext(AuthContext);
   const { darkTheme } = useContext(ThemeContext);
   const darkerColor = darkTheme ? "#131517" : "#F3F4F8";
@@ -50,7 +54,7 @@ export default function AddPeople({ currentProject, setMode }) {
     axios
       .get(`${apiURL}/users-from-project/${currentProject.id}`)
       .then((response) => {
-        console.log("Fetched people:", response.data);
+        setLoading(false);
         setFetchedPeople(response.data);
         setPeople(response.data);
       })
@@ -88,6 +92,18 @@ export default function AddPeople({ currentProject, setMode }) {
 
   return currentProject != null || currentProject != undefined ? (
     <>
+      <ToastContainer
+        position="bottom-left"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnHover
+        draggable
+        theme={darkTheme ? "dark" : "light"}
+        transition={Slide}
+      />
       <div className="mb-6 flex items-center justify-between pr-8">
         <h2 className="text-3xl font-bold">Add People</h2>
         <div className="flex gap-10">
@@ -160,12 +176,14 @@ export default function AddPeople({ currentProject, setMode }) {
         </div>
       </div>
       <UsersTable
+        loading={loading}
         people={people}
         roles={roles}
         setPeople={setPeople}
         currentProject={currentProject}
         isOwner={isOwner}
         setFetchedPeople={setFetchedPeople}
+        toast={toast}
       />
       {addPeoplePopup && (
         <AddPeoplePopup
@@ -175,6 +193,7 @@ export default function AddPeople({ currentProject, setMode }) {
           people={people}
           setPeople={setPeople}
           onClose={() => setAddPeoplePopup(false)}
+          toast={toast}
         />
       )}
     </>
