@@ -12,6 +12,7 @@ import list_icon from "../../assets/icons/menu-icons/list_icon.svg";
 import list_icon_white from "../../assets/icons/menu-icons/list_icon_white.svg";
 import { useContext } from "react";
 import { ThemeContext } from "../../ThemeContext.jsx";
+import closeIcon from "../../assets/icons/close.png";
 
 export default function MobileMenu({ setMode, setIsOpen }) {
   const { darkTheme, setDarkTheme } = useContext(ThemeContext);
@@ -23,11 +24,7 @@ export default function MobileMenu({ setMode, setIsOpen }) {
         onClick={() => setIsOpen(false)}
         className="fixed right-5 top-0 ml-5 mt-5 rounded-lg bg-[#5051F9] p-3 xs:block sm:hidden"
       >
-        <img
-          className="h-5"
-          src="/src/assets/icons/close.png"
-          alt="Close sidebar"
-        />
+        <img className="h-5" src={closeIcon} alt="Close sidebar" />
       </button>
       <div className="flex flex-col gap-5">
         <div

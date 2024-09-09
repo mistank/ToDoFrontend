@@ -6,6 +6,7 @@ import { ThemeContext } from "../../ThemeContext.jsx";
 import "@theme-toggles/react/css/Classic.css";
 import { Classic } from "@theme-toggles/react";
 import MobileMenu from "./MobileMenu.jsx";
+import rightArrow from "../../assets/icons/right-arrow.png";
 
 export default function Sidebar({ setMode, currentProject }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -17,11 +18,7 @@ export default function Sidebar({ setMode, currentProject }) {
         onClick={() => setIsOpen(true)}
         className="absolute mt-5 h-10 rounded-r-full bg-[#5051F9] xs:block sm:hidden"
       >
-        <img
-          className="h-[75%]"
-          src="/src/assets/icons/right-arrow.png"
-          alt="Open sidebar"
-        />
+        <img className="h-[75%]" src={rightArrow} alt="Open sidebar" />
       </button>
       <div
         hidden={!isOpen}

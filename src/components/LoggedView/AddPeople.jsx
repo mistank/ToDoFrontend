@@ -176,7 +176,6 @@ export default function AddPeople({ currentProject, setMode }) {
         </div>
       </div>
       <UsersTable
-        loading={loading}
         people={people}
         roles={roles}
         setPeople={setPeople}

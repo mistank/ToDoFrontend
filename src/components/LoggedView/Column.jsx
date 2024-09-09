@@ -8,6 +8,8 @@ import { getAccessToken } from "../../utils/access_token.js";
 import delete_column from "../../assets/icons/delete_column.svg";
 import CreateTaskPopup from "./CreateTaskPopup.jsx";
 import { AuthContext } from "../AuthProvider.jsx";
+import arrow_left from "../../assets/icons/arrow-left.svg";
+import arrow_right from "../../assets/icons/arrow-right.svg";
 
 const apiURL = "http://localhost:8000";
 
@@ -252,6 +254,30 @@ export default function Column({
     document.body.style.overflow = "auto"; // Dozvoljava skrolovanje kada se popup zatvori
   };
 
+  const moveColumnLeft = () => {
+    const index = statuses.indexOf(status);
+    if (index > 0) {
+      const newStatuses = [...statuses];
+      [newStatuses[index - 1], newStatuses[index]] = [
+        newStatuses[index],
+        newStatuses[index - 1],
+      ];
+      setStatuses(newStatuses);
+    }
+  };
+
+  const moveColumnRight = () => {
+    const index = statuses.indexOf(status);
+    if (index < statuses.length - 1) {
+      const newStatuses = [...statuses];
+      [newStatuses[index + 1], newStatuses[index]] = [
+        newStatuses[index],
+        newStatuses[index + 1],
+      ];
+      setStatuses(newStatuses);
+    }
+  };
+
   return (
     <div
       style={{
@@ -259,18 +285,29 @@ export default function Column({
       }}
       className="h-[100%] min-w-[20vw] flex-1 overflow-x-visible rounded-lg"
     >
-      <div className="mb-4 flex min-w-full justify-between rounded-lg bg-gray-500 p-4 align-middle">
+      <div className="group mb-4 flex min-w-full justify-between rounded-lg bg-gray-500 p-4 align-middle">
         <h2 className="text-xl font-bold text-white">
           {status.name} ({columnTasks.length})
         </h2>
-        {isTasksEmpty ? (
-          <button
-            className={`w-6 ${isOwner ? "" : "hidden"}`}
-            onClick={() => deleteColumn()}
-          >
-            <img src={delete_column} />
-          </button>
-        ) : null}
+        <div className="flex items-center gap-5 ">
+          <div className="flex items-center gap-5 opacity-0 transition-opacity duration-200 ease-out group-hover:opacity-100">
+            <button onClick={moveColumnLeft}>
+              <img src={arrow_left} className="h-5 w-5" />
+            </button>
+            <button onClick={moveColumnRight}>
+              <img src={arrow_right} className="h-5 w-5" />
+            </button>
+          </div>
+
+          {isTasksEmpty ? (
+            <button
+              className={`w-6 ${isOwner ? "" : "hidden"}`}
+              onClick={() => deleteColumn()}
+            >
+              <img src={delete_column} />
+            </button>
+          ) : null}
+        </div>
       </div>
       <div
         className="no-scrollbar flex h-[80vh] flex-col gap-4 overflow-x-hidden overflow-y-scroll pb-48"

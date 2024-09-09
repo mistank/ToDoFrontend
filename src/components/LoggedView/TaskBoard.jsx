@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext, forwardRef } from "react";
 import axios from "axios";
 import Column from "./Column";
 import EmptyColumn from "./EmptyColumn";
@@ -103,6 +103,7 @@ export default function TaskBoard({ currentProject, setMode }) {
               tasks={tasks}
               setTasks={setTasks}
               currentProject={currentProject}
+              index={statuses.indexOf(status)}
             />
           ))}
           <EmptyColumn
