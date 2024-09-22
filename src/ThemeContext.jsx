@@ -7,7 +7,7 @@ const ThemeProvider = ({ children }) => {
   // Proverite localStorage prilikom inicijalizacije teme
   const getInitialTheme = () => {
     const savedTheme = localStorage.getItem("darkTheme");
-    return savedTheme !== null ? JSON.parse(savedTheme) : true; // Podrazumevana vrednost je true (dark theme)
+    return savedTheme !== null ? JSON.parse(savedTheme) : false; // Podrazumevana vrednost je true (dark theme)
   };
 
   const [darkTheme, setDarkTheme] = useState(getInitialTheme);

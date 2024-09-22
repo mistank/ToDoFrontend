@@ -117,7 +117,6 @@ export default function AddPeople({ currentProject, setMode }) {
             type="text"
             onChange={(e) => handleSearch(e.target.value)}
           />
-          {/* asdasdfa adsfasdf */}
           <Select
             onChange={handleSelectChange}
             escapeClearsValue={true}
@@ -199,7 +198,7 @@ export default function AddPeople({ currentProject, setMode }) {
   ) : (
     <div className="flex h-[100%] items-center justify-center">
       <button
-        className="h-16 rounded-lg bg-[#5051F9] p-4 text-white"
+        className="h-16 rounded-lg bg-[#5051F9] p-4 font-bold text-white"
         onClick={() => setMode("projects-view")}
       >
         Select a Project

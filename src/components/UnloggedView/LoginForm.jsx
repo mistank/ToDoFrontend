@@ -3,10 +3,18 @@
 import googleIcon from "../../assets/icons/google_icon.svg";
 import useGoogleLoginHook from "../hooks/useGoogleLogin.jsx";
 import useRegularLogin from "../hooks/useRegularLogin.jsx";
-
+import { useState, useContext } from "react";
+import shownPassword from "../../assets/icons/show_password.svg";
+import hiddenPassword from "../../assets/icons/hidden_password.svg";
+import { ThemeContext } from "@emotion/react";
 export default function LoginForm({ setMode }) {
   const initiateGoogleLogin = useGoogleLoginHook();
   const initiateRegularLogin = useRegularLogin();
+  const [visibility, setVisibility] = useState(false);
+  const { darkTheme } = useContext(ThemeContext);
+  const darkerColor = darkTheme ? "#131517" : "#F3F4F8";
+  const lighterColor = darkTheme ? "#1E1F25" : "#FBFAFF";
+  const textColor = darkTheme ? "#FFFFFF" : "#000000";
 
   const handleRegularLogin = () => {
     // Handle regular login logic here
@@ -18,7 +26,7 @@ export default function LoginForm({ setMode }) {
   console.log("local storage: ", localStorage.getItem("isAuthenticated"));
 
   return (
-    <form className="flex w-[80%] flex-col items-center space-y-4 text-white">
+    <form className="flex w-[80%] flex-col items-center space-y-4 ">
       <h2 className="mb-2 w-[100%] text-left text-3xl font-bold">Login</h2>
       <p className="w-[100%] text-left ">
         Please enter your credentials to login.
@@ -27,20 +35,31 @@ export default function LoginForm({ setMode }) {
         type="text"
         placeholder="Username"
         autoComplete="name"
-        className=" w-[100%] rounded-md border bg-transparent p-2 placeholder:text-white focus:outline-none"
+        className=" w-[100%] rounded-md border bg-transparent p-2  focus:outline-none"
       />
-      <input
-        type="password"
-        placeholder="Password"
-        autoComplete="email"
-        className="w-[100%] rounded-md border bg-transparent p-2 placeholder:text-white focus:outline-none"
-      />
-      <div className="flex w-[100%] items-center">
+      <div className="relative w-full">
+        <input
+          type={visibility ? "text" : "password"}
+          placeholder="Password"
+          autoComplete="email"
+          className="w-[100%] rounded-md border bg-transparent p-2  focus:outline-none"
+        />
+        <button
+          onClick={(event) => {
+            event.preventDefault();
+            setVisibility((visibility) => !visibility);
+          }}
+          className="absolute right-5 top-1/2 translate-y-[-50%]"
+        >
+          <img src={visibility ? shownPassword : hiddenPassword} alt="" />
+        </button>
+      </div>
+      {/* <div className="flex w-[100%] items-center">
         <input type="checkbox" id="remember-me" />
         <label htmlFor="remember-me" className="ml-2">
           Remember me
         </label>
-      </div>
+      </div> */}
       <button
         onClick={(event) => {
           event.preventDefault();

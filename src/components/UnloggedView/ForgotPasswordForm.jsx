@@ -25,7 +25,7 @@ export default function ForgotPasswordForm({ setMode }) {
   };
 
   return (
-    <form className="relative flex w-[80%] flex-col items-center space-y-4 text-white">
+    <form className="relative flex w-[80%] flex-col items-center space-y-4 ">
       <h2 className="mb-2 w-[100%] text-left text-3xl font-bold">
         Forgot Password
       </h2>
@@ -37,11 +37,11 @@ export default function ForgotPasswordForm({ setMode }) {
         placeholder="Email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
-        className=" w-[100%] rounded-md border bg-transparent p-2 placeholder:text-white focus:outline-none"
+        className=" w-[100%] rounded-md border bg-transparent p-2  focus:outline-none"
       />
       <button
         type="submit"
-        className="w-[100%] rounded-md bg-blue-500 p-2 text-white"
+        className="w-[100%] rounded-md bg-[#5051F9] p-2 text-white"
         onClick={handleSubmit}
         disabled={isLoading}
       >

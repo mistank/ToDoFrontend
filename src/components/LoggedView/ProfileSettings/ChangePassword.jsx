@@ -47,7 +47,6 @@ export default function ChangePasswordForm() {
           //Posalji korisnika na login stranicu
           window.location.href = "/login";
         });
-      console.log("Password reset successfully:", response.data);
     } catch (error) {
       alert(
         "Error resetting password. " + error.response.data.detail.toString(),

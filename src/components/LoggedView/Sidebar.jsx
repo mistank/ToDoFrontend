@@ -8,10 +8,12 @@ import { Classic } from "@theme-toggles/react";
 import MobileMenu from "./MobileMenu.jsx";
 import rightArrow from "../../assets/icons/right-arrow.png";
 
-export default function Sidebar({ setMode, currentProject }) {
+export default function Sidebar({ mode, setMode, currentProject }) {
   const [isOpen, setIsOpen] = useState(false);
   const { darkTheme, toggleTheme } = useContext(ThemeContext);
-  const color = darkTheme ? "#1E1F25" : "#FBFAFF";
+  const darkerColor = darkTheme ? "#131517" : "#F3F4F8";
+  const lighterColor = darkTheme ? "#1E1F25" : "#FBFAFF";
+  const textColor = darkTheme ? "#FFFFFF" : "#000000";
   return (
     <>
       <button
@@ -31,10 +33,18 @@ export default function Sidebar({ setMode, currentProject }) {
         <MobileMenu setMode={setMode} setIsOpen={setIsOpen} />
       </div>
       <section
-        style={{ backgroundColor: color, flexShrink: 0 }}
+        style={{
+          backgroundColor: lighterColor,
+          color: textColor,
+          flexShrink: 0,
+        }}
         className={`relative z-10 flex h-full w-20 flex-col items-center justify-center gap-5  xs:hidden`}
       >
-        <Icons setMode={setMode} currentProject={currentProject}></Icons>
+        <Icons
+          mode={mode}
+          setMode={setMode}
+          currentProject={currentProject}
+        ></Icons>
         <Classic
           duration={500}
           toggle={toggleTheme}

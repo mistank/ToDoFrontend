@@ -16,6 +16,7 @@ export default function TaskListView() {
   const [activeSubOption, setActiveSubOption] = useState("");
   const [filterBy, setFilterBy] = useState("");
   const [sortBy, setSortBy] = useState("date");
+  const [originalTasks, setOriginalTasks] = useState([]);
 
   const { darkTheme } = useContext(ThemeContext);
   const darkerColor = darkTheme ? "#131517" : "#F3F4F8";
@@ -35,12 +36,25 @@ export default function TaskListView() {
         },
       })
       .then((response) => {
-        console.log(response.data);
+        response.data;
+        setOriginalTasks(response.data);
         setTasks(response.data);
       })
       .catch((error) => {
         console.error(error);
       });
+  };
+
+  const handleSearch = (searchTerm) => {
+    if (searchTerm === "") {
+      setTasks(originalTasks);
+      return;
+    }
+    setTasks(
+      originalTasks.filter((task) =>
+        task.name.toLowerCase().includes(searchTerm.toLowerCase()),
+      ),
+    );
   };
 
   useEffect(() => {
@@ -69,10 +83,10 @@ export default function TaskListView() {
   });
 
   const filterTasks = (tasks) => {
-    console.log("Filter by: ", filterBy);
+    "Filter by: ", filterBy;
     if (filterBy === "Today") {
       const today = new Date().toISOString().split("T")[0];
-      console.log("Danas je: ", today);
+      "Danas je: ", today;
       return tasks.filter((task) => task.deadline.split("T")[0] === today);
     } else if (filterBy === "This week") {
       const now = new Date();
@@ -107,12 +121,12 @@ export default function TaskListView() {
   };
 
   const sortTasks = (tasks) => {
-    console.log("Sort by: ", sortBy);
+    "Sort by: ", sortBy;
     if (sortBy === "date") {
-      console.log("Sortiram po datumu");
+      ("Sortiram po datumu");
       return tasks.sort((a, b) => new Date(a.deadline) - new Date(b.deadline));
     } else if (sortBy === "priority") {
-      console.log("Sortiram po prioritetu");
+      ("Sortiram po prioritetu");
       const priorityOrder = ["High", "Medium", "Low"];
       return tasks.sort(
         (a, b) =>
@@ -154,23 +168,35 @@ export default function TaskListView() {
       <div className="mb-6 flex items-center justify-between pr-8">
         <h2 className="text-3xl font-bold xs:text-lg">Your tasks</h2>
         {/* Ubaciti combo box za filtraciju */}
-        <div>
-          <ButtonToolbar>
-            <ButtonGroup>
-              <Button
-                style={buttonStyles(activeButton === "Date", true)}
-                onClick={() => handleToggle("Date")}
-              >
-                Date
-              </Button>
-              <Button
-                style={buttonStyles(activeButton === "Priority", false)}
-                onClick={() => handleToggle("Priority")}
-              >
-                Priority
-              </Button>
-            </ButtonGroup>
-          </ButtonToolbar>
+        <div className="flex gap-5">
+          <input
+            style={{
+              backgroundColor: darkerColor,
+              color: textColor,
+            }}
+            className="h-10 w-64 rounded-lg p-4 focus:outline-none"
+            placeholder="Search by name, email.."
+            type="text"
+            onChange={(e) => handleSearch(e.target.value)}
+          />
+          <div>
+            <ButtonToolbar>
+              <ButtonGroup>
+                <Button
+                  style={buttonStyles(activeButton === "Date", true)}
+                  onClick={() => handleToggle("Date")}
+                >
+                  Date
+                </Button>
+                <Button
+                  style={buttonStyles(activeButton === "Priority", false)}
+                  onClick={() => handleToggle("Priority")}
+                >
+                  Priority
+                </Button>
+              </ButtonGroup>
+            </ButtonToolbar>
+          </div>
         </div>
       </div>
       <div className="mb-6 flex items-center justify-between">

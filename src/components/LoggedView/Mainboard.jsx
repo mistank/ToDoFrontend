@@ -54,7 +54,7 @@ export default function Mainboard({ mode, setMode }) {
       className="flex w-full"
       style={{ backgroundColor: darkerColor, height: "calc(100vh - 80px)" }}
     >
-      <Sidebar setMode={setMode} currentProject={currentProject} />
+      <Sidebar mode={mode} setMode={setMode} currentProject={currentProject} />
       <div className="flex h-full w-full flex-col items-center justify-start overflow-hidden px-5">
         <div
           style={{

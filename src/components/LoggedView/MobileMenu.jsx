@@ -16,25 +16,29 @@ import closeIcon from "../../assets/icons/close.png";
 
 export default function MobileMenu({ setMode, setIsOpen }) {
   const { darkTheme, setDarkTheme } = useContext(ThemeContext);
+  const darkerColor = darkTheme ? "#131517" : "#F3F4F8";
+  const lighterColor = darkTheme ? "#1E1F25" : "#FBFAFF";
   const textColor = darkTheme ? "#FFFFFF" : "#000000";
 
   return (
-    <div className="absolute flex h-full w-full items-center justify-center transition-transform duration-500 ease-in-out">
+    <div
+      style={{ backgroundColor: lighterColor, color: textColor }}
+      className="absolute flex h-full w-full items-center justify-center transition-transform duration-500 ease-in-out"
+    >
       <button
         onClick={() => setIsOpen(false)}
         className="fixed right-5 top-0 ml-5 mt-5 rounded-lg bg-[#5051F9] p-3 xs:block sm:hidden"
       >
         <img className="h-5" src={closeIcon} alt="Close sidebar" />
       </button>
-      <div className="flex flex-col gap-5">
+      <div className="flex flex-col gap-5  px-5">
         <div
           style={{ color: textColor }}
-          className="flex w-56 flex-row items-center justify-between"
+          className="flex w-56 flex-row items-center justify-between rounded-lg bg-[#5051F9]  px-5"
         >
-          <span>Projects</span>
+          <span className="text-white">Projects</span>
           <SidebarButton
-            icon={projects_icon}
-            whiteIcon={projects_icon_white}
+            icon={projects_icon_white}
             onClick={() => {
               setMode("projects-view");
               setIsOpen(false);
@@ -43,12 +47,11 @@ export default function MobileMenu({ setMode, setIsOpen }) {
         </div>
         <div
           style={{ color: textColor }}
-          className="flex w-56 flex-row items-center justify-between"
+          className="flex w-56 flex-row items-center justify-between rounded-lg bg-[#5051F9] px-5"
         >
-          <span>Task View</span>
+          <span className="text-white">Task View</span>
           <SidebarButton
-            icon={list_icon}
-            whiteIcon={list_icon_white}
+            icon={list_icon_white}
             onClick={() => {
               setMode("task-list-view");
               setIsOpen(false);
@@ -57,12 +60,11 @@ export default function MobileMenu({ setMode, setIsOpen }) {
         </div>
         <div
           style={{ color: textColor }}
-          className="flex w-56 flex-row items-center justify-between"
+          className="flex w-56 flex-row items-center justify-between rounded-lg bg-[#5051F9] px-5"
         >
-          <span> Kanban View</span>
+          <span className="text-white"> Kanban View</span>
           <SidebarButton
-            icon={kanban}
-            whiteIcon={kanban_white}
+            icon={kanban_white}
             onClick={() => {
               setMode("task-view");
               setIsOpen(false);
@@ -71,12 +73,11 @@ export default function MobileMenu({ setMode, setIsOpen }) {
         </div>
         <div
           style={{ color: textColor }}
-          className="flex w-56 flex-row items-center justify-between"
+          className="flex w-56 flex-row items-center justify-between rounded-lg bg-[#5051F9] px-5 "
         >
-          <span>Add People</span>
+          <span className="text-white">Add People</span>
           <SidebarButton
-            icon={add_person}
-            whiteIcon={add_person_white}
+            icon={add_person_white}
             onClick={() => {
               setMode("add-people");
               setIsOpen(false);
@@ -85,12 +86,11 @@ export default function MobileMenu({ setMode, setIsOpen }) {
         </div>
         <div
           style={{ color: textColor }}
-          className="flex w-56 flex-row items-center justify-between"
+          className="flex w-56 flex-row items-center justify-between rounded-lg bg-[#5051F9] px-5"
         >
-          <span>Settings</span>
+          <span className="text-white">Settings</span>
           <SidebarButton
-            icon={setting_icon}
-            whiteIcon={setting_icon_white}
+            icon={setting_icon_white}
             onClick={() => {
               setMode("profile-settings");
               setIsOpen(false);

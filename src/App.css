@@ -192,3 +192,8 @@ body {
   flex-direction: column;
   box-sizing: border-box;
 }
+
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 30px var(--background-color) inset !important; /* Pozadinska boja */
+  -webkit-text-fill-color: var(--text-color) !important; /* Boja teksta */
+}

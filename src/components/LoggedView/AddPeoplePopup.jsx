@@ -108,7 +108,7 @@ export default function AddPeoplePopup({
         `${apiURL}/search-users-not-from-project/${currentProject.id}/${inputValue}`,
       );
       return response.data.map((user) => ({
-        label: user.firstName + user.lastName + ` (${user.email})`,
+        label: user.firstName + " " + user.lastName + ` (${user.email})`,
         value: user,
       }));
     } catch (error) {

@@ -50,7 +50,7 @@ export default function CreateStatusPopup({
             }}
             className="rounded-lg bg-[#5051F9] px-4 py-2 font-bold text-white hover:bg-[#4646f8] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
           >
-            Dodaj kolonu
+            Add Status
           </button>
           <button
             onClick={onClose}

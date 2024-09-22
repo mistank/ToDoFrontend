@@ -12,9 +12,8 @@ import setting_icon_white from "../../assets/icons/menu-icons/setting_icon_white
 import list_icon from "../../assets/icons/menu-icons/list_icon.svg";
 import list_icon_white from "../../assets/icons/menu-icons/list_icon_white.svg";
 
-export default function Icons({ setMode, currentProject }) {
+export default function Icons({ mode, setMode, currentProject }) {
   return (
-    // <div className="w-full h-auto space-y-10 flex flex-col">
     <>
       <SidebarButton
         icon={projects_icon}
@@ -22,6 +21,7 @@ export default function Icons({ setMode, currentProject }) {
         onClick={() => {
           setMode("projects-view");
         }}
+        isActive={mode == "projects-view"}
       />
       <SidebarButton
         icon={list_icon}
@@ -29,6 +29,7 @@ export default function Icons({ setMode, currentProject }) {
         onClick={() => {
           setMode("task-list-view");
         }}
+        isActive={mode == "task-list-view"}
       />
       <SidebarButton
         icon={kanban}
@@ -36,6 +37,7 @@ export default function Icons({ setMode, currentProject }) {
         onClick={() => {
           setMode("task-view");
         }}
+        isActive={mode == "task-view"}
       />
       <SidebarButton
         icon={add_person}
@@ -43,6 +45,7 @@ export default function Icons({ setMode, currentProject }) {
         onClick={() => {
           setMode("add-people");
         }}
+        isActive={mode == "add-people"}
       />
       <SidebarButton
         icon={setting_icon}
@@ -50,6 +53,7 @@ export default function Icons({ setMode, currentProject }) {
         onClick={() => {
           setMode("profile-settings");
         }}
+        isActive={mode == "profile-settings"}
       />
     </>
 

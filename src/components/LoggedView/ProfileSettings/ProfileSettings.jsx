@@ -88,12 +88,12 @@ export default function ProfileSettings({ setMode }) {
       <div className="mb-6 flex items-center justify-between">
         <h2 className="text-3xl font-bold">Settings</h2>
         <div>
-          <button
+          {/* <button
             onClick={() => localStorage.setItem("mode", "projects-view")}
             className="mr-4 rounded bg-[#5051F9] px-4 py-2 font-bold text-white hover:bg-gray-600"
           >
             Cancel
-          </button>
+          </button> */}
           <button
             className="rounded bg-[#5051F9] px-4 py-2 font-bold text-white hover:bg-[#6d6dfc]"
             onClick={() => {

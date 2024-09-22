@@ -16,6 +16,7 @@ const apiURL = "http://localhost:8000";
 export default function Projects({ currentProject, setCurrentProject }) {
   const { userInfo, setUserInfo, logout } = useContext(AuthContext);
   const [projects, setProjects] = useState([]);
+  const [originalProjects, setOriginalProjects] = useState([]);
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const { darkTheme } = useContext(ThemeContext);
   const darkerColor = darkTheme ? "#131517" : "#F3F4F8";
@@ -54,6 +55,11 @@ export default function Projects({ currentProject, setCurrentProject }) {
         setProjects(
           projects.map((p) => (p.id === project.id ? response.data : p)),
         );
+        setOriginalProjects(
+          originalProjects.map((p) =>
+            p.id === project.id ? response.data : p,
+          ),
+        );
       })
       .catch((error) => {
         if (error.response && error.response.status === 401) {
@@ -65,7 +71,7 @@ export default function Projects({ currentProject, setCurrentProject }) {
   }
 
   async function deleteProject(projectId) {
-    console.log("Deleting project with id:", projectId);
+    "Deleting project with id:", projectId;
 
     const deleteProjectPromise = () => {
       return axios.delete(`${apiURL}/projects/${projectId}`, {
@@ -83,6 +89,7 @@ export default function Projects({ currentProject, setCurrentProject }) {
       })
       .then((response) => {
         setProjects(projects.filter((p) => p.id !== projectId));
+        setOriginalProjects(originalProjects.filter((p) => p.id !== projectId));
       })
       .catch((error) => {
         if (error.response && error.response.status === 401) {
@@ -101,6 +108,7 @@ export default function Projects({ currentProject, setCurrentProject }) {
           Authorization: `Bearer ${getAccessToken()}`,
         },
       });
+      setOriginalProjects(response.data);
       setProjects(response.data); // Pretpostavimo da response.data sadrži niz projekata
     } catch (error) {
       if (error.response && error.response.status === 401) {
@@ -120,7 +128,7 @@ export default function Projects({ currentProject, setCurrentProject }) {
     };
 
     const addProjectPromise = () => {
-      if (projects.map((p) => p.name).includes(newProject.name)) {
+      if (originalProjects.map((p) => p.name).includes(newProject.name)) {
         return Promise.reject(
           new Error("Project with this name already exists"),
         );
@@ -141,6 +149,7 @@ export default function Projects({ currentProject, setCurrentProject }) {
       })
       .then((response) => {
         setProjects([...projects, response.data]);
+        setOriginalProjects([...originalProjects, response.data]);
       })
       .catch((error) => {
         if (error.response && error.response.status === 401) {
@@ -165,6 +174,27 @@ export default function Projects({ currentProject, setCurrentProject }) {
     document.body.style.overflow = "auto"; // Dozvoljava skrolovanje kada se popup zatvori
   };
 
+  const handleSearch = (searchTerm) => {
+    if (searchTerm === "") {
+      setProjects(originalProjects); // Resetujte na originalnu listu projekata
+      return;
+    }
+
+    const filteredProjects = originalProjects.filter((project) =>
+      project.name.toLowerCase().includes(searchTerm.toLowerCase()),
+    );
+
+    // Dodajte currentProject ako nije već u filtriranoj listi
+    if (
+      currentProject &&
+      !filteredProjects.some((project) => project.id === currentProject.id)
+    ) {
+      filteredProjects.push(currentProject);
+    }
+
+    setProjects(filteredProjects);
+  };
+
   return (
     <>
       <ToastContainer
@@ -181,12 +211,24 @@ export default function Projects({ currentProject, setCurrentProject }) {
       />
       <div className="mb-4 flex items-center justify-between">
         <h2 className="text-3xl font-bold">Projects</h2>
-        <button
-          className="h-12 w-12 rounded-lg border-2 border-[#5F6388]"
-          onClick={() => showPopupForm()}
-        >
-          <img src={add_cross} className="" />
-        </button>
+        <div className="flex items-center gap-10">
+          <input
+            style={{
+              backgroundColor: darkerColor,
+              color: textColor,
+            }}
+            className="h-10 w-64 rounded-lg p-4 focus:outline-none"
+            placeholder="Search by name.."
+            type="text"
+            onChange={(e) => handleSearch(e.target.value)}
+          />
+          <button
+            className="h-12 w-12 rounded-lg border-2 border-[#5F6388]"
+            onClick={() => showPopupForm()}
+          >
+            <img src={add_cross} className="" />
+          </button>
+        </div>
       </div>
       <div className="flex flex-row justify-between gap-10 xs:flex-col sm:flex-row">
         <div className="xs:w-full sm:w-full lg:w-1/3">
@@ -216,7 +258,7 @@ export default function Projects({ currentProject, setCurrentProject }) {
         <div className="w-[100%]">
           <h3 className="p-5 text-xl font-semibold">Other Projects</h3>
           <div className="no-scrollbar max-h-[80vh] overflow-y-auto pb-60">
-            <div className="grid gap-4 sm:grid-cols-[repeat(auto-fit,minmax(20vw,1fr))]">
+            <div className="grid gap-4 sm:grid-cols-[repeat(auto-fit,minmax(20vw,20vw))]">
               {currentProject === null
                 ? projects.map((project) => (
                     <ProjectCard
