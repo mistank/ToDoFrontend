@@ -16,33 +16,38 @@ export default function LoginForm({ setMode }) {
   const lighterColor = darkTheme ? "#1E1F25" : "#FBFAFF";
   const textColor = darkTheme ? "#FFFFFF" : "#000000";
 
-  const handleRegularLogin = () => {
-    // Handle regular login logic here
-    const username = document.querySelector("input[type=text]").value;
-    const password = document.querySelector("input[type=password]").value;
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleRegularLogin = (event) => {
+    event.preventDefault();
     initiateRegularLogin(username, password);
   };
 
   console.log("local storage: ", localStorage.getItem("isAuthenticated"));
 
   return (
-    <form className="flex w-[80%] flex-col items-center space-y-4 ">
+    <form className="flex w-[80%] flex-col items-center space-y-4">
       <h2 className="mb-2 w-[100%] text-left text-3xl font-bold">Login</h2>
-      <p className="w-[100%] text-left ">
+      <p className="w-[100%] text-left">
         Please enter your credentials to login.
       </p>
       <input
         type="text"
         placeholder="Username"
         autoComplete="name"
-        className=" w-[100%] rounded-md border bg-transparent p-2  focus:outline-none"
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+        className="w-[100%] rounded-md border bg-transparent p-2 focus:outline-none"
       />
       <div className="relative w-full">
         <input
           type={visibility ? "text" : "password"}
           placeholder="Password"
           autoComplete="email"
-          className="w-[100%] rounded-md border bg-transparent p-2  focus:outline-none"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className="w-[100%] rounded-md border bg-transparent p-2 focus:outline-none"
         />
         <button
           onClick={(event) => {

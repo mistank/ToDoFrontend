@@ -22,7 +22,8 @@ export default function useRegularLogin() {
         withCredentials: true,
       });
       const accessToken = response.data.access_token;
-      document.cookie = `accessToken=${accessToken}; path=/; max-age=3600; Secure; SameSite=Strict`;
+      document.cookie = `accessToken=${accessToken}; path=/; max-age=3600; SameSite=Lax`;
+
       login(navigate); // Pretpostavka da login funkcija prima neke podatke iz odgovora
     } catch (error) {
       console.log("Error:", error);
