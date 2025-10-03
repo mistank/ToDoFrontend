@@ -26,8 +26,11 @@ export default function useRegularLogin() {
 
       login(navigate); // Pretpostavka da login funkcija prima neke podatke iz odgovora
     } catch (error) {
-      console.log("Error:", error);
-      alert(("Error:", error));
+      if (error.response && error.response.status === 401) {
+        alert("Pogrešno korisničko ime ili lozinka");
+      } else {
+        alert("Došlo je do greške. Pokušajte ponovo.");
+      }
     }
   };
 
