@@ -33,7 +33,7 @@ export default function EditTaskPopup({
   currentProject,
 }) {
   const auth = useContext(AuthContext);
-  const isOwner = auth.userInfo.id === currentProject.user.id;
+  const isOwner = auth.userInfo.id === currentProject.owner;
   const [newTaskName, setNewTaskName] = useState(task.name);
   const [newTaskDescription, setNewTaskDescription] = useState(
     task.description,

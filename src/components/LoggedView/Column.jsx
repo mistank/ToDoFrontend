@@ -29,7 +29,7 @@ export default function Column({
   const [isTasksEmpty, setIsTasksEmpty] = useState(false); // State za praćenje da li su taskovi prazni
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const [people, setPeople] = useState([]);
-  const isOwner = userInfo.id === currentProject.user.id;
+  const isOwner = userInfo.id === currentProject.owner;
   const [newTask, setNewTask] = useState({
     name: "",
     description: "",
@@ -289,7 +289,7 @@ export default function Column({
         <h2 className="text-xl font-bold text-white">
           {status.name} ({columnTasks.length})
         </h2>
-        <div className="flex items-center gap-5 ">
+        <div className="flex items-center gap-5">
           <div className="flex items-center gap-5 opacity-0 transition-opacity duration-200 ease-out group-hover:opacity-100">
             <button onClick={moveColumnLeft}>
               <img src={arrow_left} className="h-5 w-5" />

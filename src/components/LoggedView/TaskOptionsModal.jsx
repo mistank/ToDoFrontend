@@ -24,7 +24,7 @@ export default function TaskOptionsModal({
   const modalRef = useRef();
 
   const auth = useContext(AuthContext);
-  const isOwner = auth.userInfo.id === currentProject.user.id;
+  const isOwner = auth.userInfo.id === currentProject.owner;
   const { darkTheme } = useContext(ThemeContext);
   const darkerColor = darkTheme ? "#131517" : "#F3F4F8";
   const lighterColor = darkTheme ? "#1E1F25" : "#FBFAFF";
@@ -74,7 +74,7 @@ export default function TaskOptionsModal({
             Delete
           </button>
           <button
-            className={`flex items-center justify-start gap-5 rounded-lg p-2 text-left hover:bg-gray-600 hover:bg-opacity-50 `}
+            className={`flex items-center justify-start gap-5 rounded-lg p-2 text-left hover:bg-gray-600 hover:bg-opacity-50`}
             onClick={() => {
               setEditTaskPopupVisible(
                 (editTaskPopupVisible) => !editTaskPopupVisible,

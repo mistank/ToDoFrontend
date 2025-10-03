@@ -61,7 +61,7 @@ export default function AddPeople({ currentProject, setMode }) {
       .catch((error) => console.error("Error fetching data:", error));
   };
 
-  const isOwner = auth.userInfo.id === currentProject?.user.id;
+  const isOwner = auth.userInfo.id === currentProject?.owner;
 
   const handleSearch = (searchTerm) => {
     if (searchTerm === "") {

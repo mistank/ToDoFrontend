@@ -27,7 +27,7 @@ export default function ProjectOptionsModal({
 }) {
   const modalRef = useRef();
   const { userInfo } = useContext(AuthContext);
-  const isOwner = userInfo.id === project.user.id;
+  const isOwner = userInfo.id === project.owner;
   const { darkTheme } = useContext(ThemeContext);
   const darkerColor = darkTheme ? "#131517" : "#F3F4F8";
   const lighterColor = darkTheme ? "#1E1F25" : "#FBFAFF";

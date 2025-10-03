@@ -54,7 +54,7 @@ export default function ProjectCard({
         </div>
         <div>
           <span className="overflow-hidden text-sm text-gray-400">
-            Project Owner: {project.user.firstName} {project.user.lastName}
+            {/* Project Owner: {project.owner.firstName} {project.owner.lastName} */}
           </span>
         </div>
         {projectOptionsVisible && (

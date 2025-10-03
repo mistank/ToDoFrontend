@@ -19,7 +19,7 @@ export default function EmptyColumn({
   const [isPopupVisible, setIsPopupVisible] = useState(false); // State za praćenje vidljivosti popup forme
   const [newStatus, setNewStatus] = useState(""); // State za praćenje unetog statusa
   const { userInfo } = useContext(AuthContext);
-  const isOwner = userInfo.id === currentProject?.user.id;
+  const isOwner = userInfo.id === currentProject?.owner;
   const addColumn = () => {
     axios
       .post(
