@@ -10,7 +10,6 @@ export default function useRegularLogin() {
   const navigate = useNavigate();
   const initiateRegularLogin = async (username, password) => {
     try {
-      // Regular login logic here
       const formData = new FormData();
       formData.append("username", username);
       formData.append("password", password);
@@ -24,7 +23,7 @@ export default function useRegularLogin() {
       const accessToken = response.data.access_token;
       document.cookie = `accessToken=${accessToken}; path=/; max-age=3600; SameSite=Lax`;
 
-      login(navigate); // Pretpostavka da login funkcija prima neke podatke iz odgovora
+      login(navigate);
     } catch (error) {
       if (error.response && error.response.status === 401) {
         alert("Pogrešno korisničko ime ili lozinka");
